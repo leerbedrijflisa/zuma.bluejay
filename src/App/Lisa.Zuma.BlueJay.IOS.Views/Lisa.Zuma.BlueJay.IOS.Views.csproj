@@ -99,4 +99,10 @@
     <Compile Include="AppDelegate.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <ProjectReference Include="..\Lisa.Zuma.BlueJay.IOS.Models\Lisa.Zuma.BlueJay.IOS.Models.csproj">
+      <Project>{6F9D4C63-C542-4D87-8DBA-22A82498E3BA}</Project>
+      <Name>Lisa.Zuma.BlueJay.IOS.Models</Name>
+    </ProjectReference>
+  </ItemGroup>
 </Project>
