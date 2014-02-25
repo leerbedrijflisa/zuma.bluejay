@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Collections.Generic;
 
 namespace Lisa.Zuma.BlueJay.IOS.Data
 {
@@ -21,12 +22,21 @@ namespace Lisa.Zuma.BlueJay.IOS.Data
 			db.CreateTable<Profile>();
 			db.CreateTable<User>();
 
+			db.Insert (new Dosier { Name = "Martijn Olga" });
+
 		}
 
 		public void DummyLoggedIn(int id)
 		{
 			db.Query<User>("UPDATE User SET LoggedIn = 0");
 			db.Query<User>("UPDATE User SET LoggedIn = 1 WHERE ID = '"+ id +"'");
+		}
+
+		public List<Dosier> GetDosiers(int id)
+		{
+			var Result = db.Query<Dosier>("SELECT * FROM Dosier WHERE ID='"+id+"'");
+
+			return Result;
 		}
 	}
 }
