@@ -9,6 +9,7 @@ namespace Lisa.Zuma.BlueJay.IOS
 	public partial class SummaryViewController : UIViewController
 	{
 		private TableHelper tableHelper;
+		private TableSource tableSource;
 
 		public SummaryViewController () : base ("SummaryViewController", null)
 		{
@@ -27,11 +28,14 @@ namespace Lisa.Zuma.BlueJay.IOS
 
 			tblCell.Source = tableHelper.DataForList();
 
+			tableHelper.DataForList().RowClicked += tableSource_RowClicked;
 		}
 
+		
 		public void tableSource_RowClicked (object sender, RowClickedEventArgs e)
 		{
-			Console.WriteLine (e.ClickedItem.Id);
+			TimelineViewController timeLineViewController = new TimelineViewController ();
+			this.NavigationController.PushViewController (timeLineViewController, true);
 		}
 	}
 }

@@ -22,8 +22,6 @@ namespace Lisa.Zuma.BlueJay.IOS.Data
 			db.CreateTable<Profile>();
 			db.CreateTable<User>();
 
-			db.Insert (new Dosier { Name = "Martijn Olga" });
-
 		}
 
 		public void DummyLoggedIn(int id)

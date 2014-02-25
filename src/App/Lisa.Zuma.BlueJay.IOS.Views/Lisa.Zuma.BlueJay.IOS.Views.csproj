@@ -89,6 +89,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
+    <Folder Include="HTML\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Info.plist" />
@@ -105,6 +106,10 @@
     <Compile Include="SummaryViewController.designer.cs">
       <DependentUpon>SummaryViewController.cs</DependentUpon>
     </Compile>
+    <Compile Include="TimelineViewController.cs" />
+    <Compile Include="TimelineViewController.designer.cs">
+      <DependentUpon>TimelineViewController.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -116,5 +121,6 @@
   <ItemGroup>
     <InterfaceDefinition Include="loginViewController.xib" />
     <InterfaceDefinition Include="SummaryViewController.xib" />
+    <InterfaceDefinition Include="TimelineViewController.xib" />
   </ItemGroup>
 </Project>
