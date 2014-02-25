@@ -11,7 +11,7 @@ namespace Lisa.Zuma.BlueJay.Web.Data
     public class BlueJayContext : DbContext
     {
         public BlueJayContext()
-            : this("name=BlueJayContext")
+            : this("DefaultConnection")
         {
         }
 
