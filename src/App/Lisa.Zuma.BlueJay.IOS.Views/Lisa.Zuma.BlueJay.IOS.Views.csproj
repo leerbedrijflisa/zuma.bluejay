@@ -101,6 +101,10 @@
     <Compile Include="loginViewController.designer.cs">
       <DependentUpon>loginViewController.cs</DependentUpon>
     </Compile>
+    <Compile Include="SummaryViewController.cs" />
+    <Compile Include="SummaryViewController.designer.cs">
+      <DependentUpon>SummaryViewController.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -111,5 +115,6 @@
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="loginViewController.xib" />
+    <InterfaceDefinition Include="SummaryViewController.xib" />
   </ItemGroup>
 </Project>
