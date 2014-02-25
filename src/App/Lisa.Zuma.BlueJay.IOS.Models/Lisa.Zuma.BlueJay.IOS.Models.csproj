@@ -90,6 +90,9 @@
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
     <Compile Include="DataHelper.cs" />
+    <Compile Include="TableSource.cs" />
+    <Compile Include="TableItem.cs" />
+    <Compile Include="RowClickedEventArgs.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Lisa.Zuma.BlueJay.IOS.Data\Lisa.Zuma.BlueJay.IOS.Data.csproj">
