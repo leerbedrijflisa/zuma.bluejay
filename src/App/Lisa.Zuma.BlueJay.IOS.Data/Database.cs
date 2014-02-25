@@ -21,8 +21,6 @@ namespace Lisa.Zuma.BlueJay.IOS.Data
 				db.CreateTable<User>();
 			}
 		}
-
-
 	}
 }
 
