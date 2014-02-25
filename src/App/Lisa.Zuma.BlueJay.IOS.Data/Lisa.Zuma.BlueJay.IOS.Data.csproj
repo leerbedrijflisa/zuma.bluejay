@@ -5,12 +5,12 @@
     <Platform Condition=" '$(Platform)' == '' ">iPhoneSimulator</Platform>
     <ProductVersion>10.0.0</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{EC12A1E5-641A-407E-9669-25D16E30B36A}</ProjectGuid>
+    <ProjectGuid>{87827FCE-C3EF-447D-8058-255C67F4E346}</ProjectGuid>
     <ProjectTypeGuids>{6BC8ED88-2882-458C-8E55-DFD12B67127B};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
-    <OutputType>Exe</OutputType>
-    <RootNamespace>Lisa.Zuma.BlueJay.IOS</RootNamespace>
+    <OutputType>Library</OutputType>
+    <RootNamespace>Lisa.Zuma.BlueJay.IOS.Data</RootNamespace>
     <IPhoneResourcePrefix>Resources</IPhoneResourcePrefix>
-    <AssemblyName>LisaZumaBlueJayIOS</AssemblyName>
+    <AssemblyName>LisaZumaBlueJayIOSData</AssemblyName>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|iPhoneSimulator' ">
     <DebugSymbols>true</DebugSymbols>
@@ -99,10 +99,4 @@
     <Compile Include="AppDelegate.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
-  <ItemGroup>
-    <ProjectReference Include="..\Lisa.Zuma.BlueJay.IOS.Models\Lisa.Zuma.BlueJay.IOS.Models.csproj">
-      <Project>{6F9D4C63-C542-4D87-8DBA-22A82498E3BA}</Project>
-      <Name>Lisa.Zuma.BlueJay.IOS.Models</Name>
-    </ProjectReference>
-  </ItemGroup>
 </Project>
