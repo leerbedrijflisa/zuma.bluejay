@@ -87,8 +87,14 @@
     <Reference Include="System.Core" />
     <Reference Include="monotouch" />
   </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Main.cs" />
-  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <Compile Include="DataHelper.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Lisa.Zuma.BlueJay.IOS.Data\Lisa.Zuma.BlueJay.IOS.Data.csproj">
+      <Project>{87827FCE-C3EF-447D-8058-255C67F4E346}</Project>
+      <Name>Lisa.Zuma.BlueJay.IOS.Data</Name>
+    </ProjectReference>
+  </ItemGroup>
 </Project>

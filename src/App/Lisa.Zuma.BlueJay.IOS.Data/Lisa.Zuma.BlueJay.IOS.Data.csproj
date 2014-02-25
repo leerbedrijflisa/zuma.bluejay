@@ -88,12 +88,12 @@
     <Reference Include="monotouch" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Main.cs" />
     <Compile Include="Components\SQLite.cs" />
     <Compile Include="Entities\Dosier.cs" />
     <Compile Include="Entities\Notes.cs" />
     <Compile Include="Entities\Profile.cs" />
     <Compile Include="Entities\User.cs" />
+    <Compile Include="Database.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
