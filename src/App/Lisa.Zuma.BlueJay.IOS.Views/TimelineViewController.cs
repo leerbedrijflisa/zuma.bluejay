@@ -25,6 +25,8 @@ namespace Lisa.Zuma.BlueJay.IOS
 
 			string url = "http://maikeldehoog.nl/timeline";
 			wvTimeline.LoadRequest(new NSUrlRequest(new NSUrl(url)));
+
+			wvTimeline.ScalesPageToFit = true;
 			
 			// Perform any additional setup after loading the view, typically from a nib.
 		}

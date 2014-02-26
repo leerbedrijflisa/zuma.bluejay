@@ -90,6 +90,7 @@
   <ItemGroup>
     <Folder Include="Resources\" />
     <Folder Include="HTML\" />
+    <Folder Include="HTML\timeline\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Info.plist" />
@@ -122,5 +123,19 @@
     <InterfaceDefinition Include="loginViewController.xib" />
     <InterfaceDefinition Include="SummaryViewController.xib" />
     <InterfaceDefinition Include="TimelineViewController.xib" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="HTML\timeline\images\active-unit.png" />
+    <Content Include="HTML\timeline\images\icons-2.png" />
+    <Content Include="HTML\timeline\images\icons-3.png" />
+    <Content Include="HTML\timeline\images\icons-4.png" />
+    <Content Include="HTML\timeline\images\icons-5.png" />
+    <Content Include="HTML\timeline\images\icons.png" />
+    <Content Include="HTML\timeline\images\line.png" />
+    <Content Include="HTML\timeline\stylesheets\all.css" />
+    <Content Include="HTML\timeline\stylesheets\timeline.css" />
+    <Content Include="HTML\timeline\index.html" />
+    <Content Include="HTML\timeline\item.html" />
+    <Content Include="HTML\timeline\media.html" />
   </ItemGroup>
 </Project>

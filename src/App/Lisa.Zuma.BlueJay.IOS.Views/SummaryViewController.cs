@@ -21,22 +21,23 @@ namespace Lisa.Zuma.BlueJay.IOS
 			base.DidReceiveMemoryWarning ();
 		}
 
+		public void RowClicked_handler (object sender, RowClickedEventArgs e){
+			TimelineViewController timeLineViewController = new TimelineViewController ();
+			this.NavigationController.PushViewController (timeLineViewController, true);
+		}
+
 		public override void ViewDidLoad ()
 		{
 			base.ViewDidLoad ();
 			this.NavigationItem.SetHidesBackButton (true, false);
 
-			tblCell.Source = tableHelper.DataForList();
+			var sourceFromTablehelper = tableHelper.DataForList();
 
-			tableHelper.DataForList().RowClicked += tableSource_RowClicked;
+			sourceFromTablehelper.RowClicked += RowClicked_handler;
+			tblCell.Source = sourceFromTablehelper;
 		}
 
-		
-		public void tableSource_RowClicked (object sender, RowClickedEventArgs e)
-		{
-			TimelineViewController timeLineViewController = new TimelineViewController ();
-			this.NavigationController.PushViewController (timeLineViewController, true);
-		}
+
 	}
 }
 

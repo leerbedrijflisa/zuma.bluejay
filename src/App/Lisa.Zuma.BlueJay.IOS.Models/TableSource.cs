@@ -30,7 +30,6 @@ namespace Lisa.Zuma.BlueJay.IOS.Models {
 		/// </summary>
 		public override void RowSelected (UITableView tableView, NSIndexPath indexPath)
 		{
-			Console.WriteLine ("");
 			tableView.DeselectRow (indexPath, false);
 			var args = new RowClickedEventArgs ();
 			args.ClickedItem = tableItems[indexPath.Row];
@@ -38,7 +37,6 @@ namespace Lisa.Zuma.BlueJay.IOS.Models {
 		}
 
 		public event RowClickedEventHandler RowClicked;
-
 
 		protected void OnRowClicked(RowClickedEventArgs e)
 		{
