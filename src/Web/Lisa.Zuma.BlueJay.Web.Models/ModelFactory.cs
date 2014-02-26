@@ -34,6 +34,7 @@ namespace Lisa.Zuma.BlueJay.Web.Models
                 {
                     var noteMediaModel = new NoteMediaModel
                     {
+                        Id = media.Id,
                         Name = media.Name
                     };
 
@@ -50,6 +51,7 @@ namespace Lisa.Zuma.BlueJay.Web.Models
         {
             var model = new NoteModel
             {
+                Id = note.Id,
                 Text = note.Text,
                 Media = new List<NoteMediaModel>()
             };
@@ -58,6 +60,7 @@ namespace Lisa.Zuma.BlueJay.Web.Models
             {
                 var noteMediaModel = new NoteMediaModel
                 {
+                    Id = media.Id,
                     Name = media.Name,
                     EncodedData = LoadMediaAndEncode(media)
                 };
