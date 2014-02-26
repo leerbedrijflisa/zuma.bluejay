@@ -45,6 +45,29 @@ namespace Lisa.Zuma.BlueJay.Web.Models
 
             return model;
         }
+
+        public static NoteModel Create(Note note)
+        {
+            var model = new NoteModel
+            {
+                Text = note.Text,
+                Media = new List<NoteMediaModel>()
+            };
+
+            foreach (var media in note.Media)
+            {
+                var noteMediaModel = new NoteMediaModel
+                {
+                    Name = media.Name,
+                    EncodedData = LoadMediaAndEncode(media)
+                };
+
+                model.Media.Add(noteMediaModel);
+            }
+
+            return model;
+        }
+
         private static string LoadMediaAndEncode(NoteMedia media) 
         {
 #if DEBUG
