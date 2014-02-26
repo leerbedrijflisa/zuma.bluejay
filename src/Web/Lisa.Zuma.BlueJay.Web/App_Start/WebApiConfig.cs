@@ -27,6 +27,12 @@ namespace Lisa.Zuma.BlueJay.Web
                 defaults: new { id = RouteParameter.Optional }
             );
 
+            config.Routes.MapHttpRoute(
+                name: "NoteApi",
+                routeTemplate: "api/dossier/{id}/notes",
+                defaults: new { controller = "note", id = RouteParameter.Optional }
+            );
+
             RegisterSerialization(config);
         }
 
