@@ -93,6 +93,33 @@ namespace Lisa.Zuma.BlueJay.Web.Controllers
             return CreatedAtRoute("NoteApi", new { dossierId = dossierId }, model);
         }
 
+        /// <summary>
+        /// Updates the note with the newly received value(s).
+        /// </summary>
+        /// <param name="dossierId">The id of the dossier to which this note belongs.</param>
+        /// <param name="noteModel">The model describing the contents of the note.</param>
+        /// <returns></returns>
+        public IHttpActionResult Put(int dossierId, [FromBody] NoteModel noteModel)
+        {
+            var dossier = Db.Dossiers.FirstOrDefault(d => d.Id == dossierId);
+            if (dossier == null)
+            {
+                return NotFound();
+            }
+
+            var note = dossier.Notes.FirstOrDefault(n => n.Id == noteModel.Id);
+            if (note == null)
+            {
+                return NotFound();
+            }
+
+            note.Text = noteModel.Text;
+            Db.SaveChanges();
+
+            var result = ModelFactory.Create(note);
+            return Ok(result);
+        }
+
         public NoteMedia StoreMedia(NoteMediaModel media)
         {
             var result = new NoteMedia();
