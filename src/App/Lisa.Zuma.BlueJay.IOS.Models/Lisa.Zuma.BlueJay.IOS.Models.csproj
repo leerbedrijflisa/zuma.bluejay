@@ -94,6 +94,7 @@
     <Compile Include="TableItem.cs" />
     <Compile Include="RowClickedEventArgs.cs" />
     <Compile Include="TableHelper.cs" />
+    <Compile Include="TemplateParser.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Lisa.Zuma.BlueJay.IOS.Data\Lisa.Zuma.BlueJay.IOS.Data.csproj">

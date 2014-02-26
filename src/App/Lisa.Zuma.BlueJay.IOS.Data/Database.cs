@@ -36,6 +36,13 @@ namespace Lisa.Zuma.BlueJay.IOS.Data
 
 			return Result;
 		}
+
+		public List<Notes> GetNotesFromDosier(int id)
+		{
+			var Result = db.Query<Notes>("SELECT * FROM Dosier WHERE ID='"+id+"'");
+
+			return Result;
+		}
 	}
 }
 
