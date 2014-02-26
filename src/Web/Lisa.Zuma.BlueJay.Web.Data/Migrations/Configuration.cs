@@ -1,9 +1,12 @@
 namespace Lisa.Zuma.BlueJay.Web.Data.Migrations
 {
+    using Lisa.Zuma.BlueJay.Web.Data.Entities;
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Migrations;
+    using System.Collections.Generic;
     using System.Linq;
+    using System.IO;
 
     internal sealed class Configuration : DbMigrationsConfiguration<Lisa.Zuma.BlueJay.Web.Data.BlueJayContext>
     {
@@ -15,17 +18,60 @@ namespace Lisa.Zuma.BlueJay.Web.Data.Migrations
         protected override void Seed(Lisa.Zuma.BlueJay.Web.Data.BlueJayContext context)
         {
             //  This method will be called after migrating to the latest version.
+            var dossier = new Dossier
+            {
+                Profile = new Profile()
+            };
 
-            //  You can use the DbSet<T>.AddOrUpdate() helper extension method 
-            //  to avoid creating duplicate seed data. E.g.
-            //
-            //    context.People.AddOrUpdate(
-            //      p => p.FullName,
-            //      new Person { FullName = "Andrew Peters" },
-            //      new Person { FullName = "Brice Lambson" },
-            //      new Person { FullName = "Rowan Miller" }
-            //    );
-            //
+            var parent = new User
+            {
+                Type = "PARENT",
+                Dossiers = new List<Dossier>
+                {
+                    dossier
+                }
+            };
+
+            var mentor = new User
+            {
+                Type = "MENTOR",
+                Dossiers = new List<Dossier>
+                {
+                    dossier
+                }
+            };
+
+            context.Users.AddOrUpdate(
+                u => u.Type,
+                parent,
+                mentor
+            );
+
+            try
+            {
+                context.SaveChanges();
+            }
+            catch (System.Data.Entity.Validation.DbEntityValidationException e)
+            {
+                var outputLines = new List<string>();
+                foreach (var eve in e.EntityValidationErrors)
+                {
+                    outputLines.Add(string.Format(
+                        "{0}: Entity of type \"{1}\" in state \"{2}\" has the following validation errors:",
+                        DateTime.Now, eve.Entry.Entity.GetType().Name, eve.Entry.State));
+
+                    foreach (var ve in eve.ValidationErrors)
+                    {
+                        outputLines.Add(string.Format(
+                            "- Property: \"{0}\", Error: \"{1}\"",
+                            ve.PropertyName, ve.ErrorMessage));
+                    }
+                }
+
+                System.IO.File.AppendAllLines(@"d:\errors.txt", outputLines);
+                
+                throw;
+            }
         }
     }
 }

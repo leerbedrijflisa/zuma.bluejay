@@ -5,6 +5,7 @@ using System.Net.Http;
 using System.Web.Http;
 using Microsoft.Owin.Security.OAuth;
 using Newtonsoft.Json.Serialization;
+using Newtonsoft.Json;
 
 namespace Lisa.Zuma.BlueJay.Web
 {
@@ -25,6 +26,22 @@ namespace Lisa.Zuma.BlueJay.Web
                 routeTemplate: "api/{controller}/{id}",
                 defaults: new { id = RouteParameter.Optional }
             );
+
+            RegisterSerialization(config);
+        }
+
+        public static void RegisterSerialization(HttpConfiguration config)
+        {
+            var jsonFormatter = config.Formatters.JsonFormatter;
+            
+            // Get serializer and perform configuration
+            var serializerSettings = jsonFormatter.SerializerSettings;
+            serializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+            serializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Serialize;
+            serializerSettings.PreserveReferencesHandling = PreserveReferencesHandling.Objects;
+
+            // Remove XML formatter
+            config.Formatters.Remove(config.Formatters.XmlFormatter);
         }
     }
 }
