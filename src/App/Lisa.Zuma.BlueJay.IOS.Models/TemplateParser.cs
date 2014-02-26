@@ -1,12 +1,13 @@
 using System;
 using Lisa.Zuma.BlueJay.IOS.Data;
+using System.Collections.Generic;
 
 namespace Lisa.Zuma.BlueJay.IOS.Models
 {
 	public class TemplateParser
 	{
 		private Database db;
-		private string ParentHTML;
+		private List<Notes> NoteItem;
 
 		public TemplateParser ()
 		{
@@ -15,20 +16,65 @@ namespace Lisa.Zuma.BlueJay.IOS.Models
 
 		public string ParseTimelineFromDosier(int id)
 		{
-			ParentHTML = System.IO.File.ReadAllText("HTML/timeline/index.html");
-			Console.WriteLine (ParentHTML);
+			NoteItem = db.GetNotesFromDosier (1);
+
+
+			var ParentHTML = System.IO.File.ReadAllText("HTML/timeline/index.html");
+
+			var ReturnHTML = ParentHTML.Replace("###TIMELINE-ITEMS###", ParseTimelineItems());
 
 			return ParentHTML;
 		}
 
 		private string ParseTimelineItems()
 		{
-			return "";
+			string ItemRole = "";
+			string ItemSide = ""; 
+
+			string ReturnHTML = "";
+
+			NoteItem = db.GetNotesFromDosier(1);
+
+			foreach(var note in NoteItem){
+
+				var OwnerRole = 1;//db.GetUserById(note.OwnerID());
+				var ItemHTML = System.IO.File.ReadAllText("HTML/timeline/item.html");
+
+				switch (OwnerRole) {
+					case 1:
+						ItemRole = "Moeder";
+						ItemSide = "right";
+						break;
+
+					case 2:
+						ItemRole = "Begeleider";
+						ItemSide = "right";
+						break;
+				}
+
+				ItemHTML = ItemHTML.Replace("###ITEM_DIRECTION###", ItemSide);
+				ItemHTML = ItemHTML.Replace("###ITEM_PROFILENAME###", OwnerRole.ToString());
+				ItemHTML = ItemHTML.Replace("###ITEM_PROFILEROLE###", ItemRole);
+				ItemHTML = ItemHTML.Replace("###ITEM_POSTDATE###", "20 minuten geleden");
+				ItemHTML = ItemHTML.Replace ("###ITEM_CONTENT###",  ParseItemMedia(note.ID));
+			}
+
+			return ReturnHTML;
 		}
 
-		private string ParseItemMedia()
+		private string ParseItemMedia(int id)
 		{
-			return "";
+			Notes MediaString = db.GetMediaFromNoteByID (id);
+
+			var MediaHTML = System.IO.File.ReadAllText("HTML/timeline/item.html");
+			string ReturnHTML = "";
+
+			var MediaTags = MediaHTML.Split('$');
+
+			ReturnHTML += MediaTags[1].Replace ("###ITEM_CONTENT###", MediaString.Text);	
+			ReturnHTML += MediaTags [2].Replace ("###ITEM_CONTENT###", MediaString.Media);	
+
+			return ReturnHTML;
 		}
 
 	}

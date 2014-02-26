@@ -8,6 +8,8 @@ namespace Lisa.Zuma.BlueJay.IOS.Data
 	{
 		private string pathToDatabase;
 		private SQLite.SQLiteConnection db;
+		private User ReturnUser;
+		private Notes ReturnNote;
 
 		public Database ()
 		{
@@ -39,10 +41,32 @@ namespace Lisa.Zuma.BlueJay.IOS.Data
 
 		public List<Notes> GetNotesFromDosier(int id)
 		{
-			var Result = db.Query<Notes>("SELECT * FROM Dosier WHERE ID='"+id+"'");
+			var Result = db.Query<Notes>("SELECT * FROM Notes WHERE ID='"+id+"'");
 
 			return Result;
 		}
+
+		public User GetUserById(int id)
+		{
+			var Result = db.Query<User>("SELECT * FROM User WHERE id='"+id+"'");
+
+			foreach (var Query in Result) {
+				ReturnUser = Query;
+			}
+
+			return ReturnUser;
+		}
+
+		public Notes GetMediaFromNoteByID(int id)
+		{
+			var Result = db.Query<Notes>("SELECT * FROM Notes WHERE id='"+id+"' LIMIT 1");
+
+			foreach (var Query in Result) {
+				ReturnNote = Query;
+			}
+			return ReturnNote;
+		}
+
 	}
 }
 
