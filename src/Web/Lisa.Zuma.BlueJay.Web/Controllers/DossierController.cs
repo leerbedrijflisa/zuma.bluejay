@@ -18,10 +18,14 @@ namespace Lisa.Zuma.BlueJay.Web.Controllers
             var user = db.Users.FirstOrDefault(u => u.Id == userId);
             if (user == null)
             {
-                return null;
+                return NotFound();
             }
 
-            var dossier = db.Dossiers.FirstOrDefault(d => d.Watchers.Contains(user));
+            var dossier = db.Dossiers.FirstOrDefault(d => d.Watchers.Count(u => u.Id == user.Id) > 0);
+            if (dossier == null)
+            {
+                return NotFound();
+            }
 
             return Ok(dossier);
         }
