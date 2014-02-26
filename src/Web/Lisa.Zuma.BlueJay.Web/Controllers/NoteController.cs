@@ -120,6 +120,26 @@ namespace Lisa.Zuma.BlueJay.Web.Controllers
             return Ok(result);
         }
 
+        public IHttpActionResult Delete(int dossierId, int id)
+        {
+            var dossier = Db.Dossiers.FirstOrDefault(d => d.Id == dossierId);
+            if (dossier == null)
+            {
+                return NotFound();
+            }
+
+            var note = dossier.Notes.FirstOrDefault(n => n.Id == id);
+            if (note == null)
+            {
+                return NotFound();
+            }
+
+            dossier.Notes.Remove(note);
+            Db.SaveChanges();
+
+            return Ok();
+        }
+
         public NoteMedia StoreMedia(NoteMediaModel media)
         {
             var result = new NoteMedia();
