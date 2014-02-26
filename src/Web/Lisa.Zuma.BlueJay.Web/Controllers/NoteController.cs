@@ -35,6 +35,30 @@ namespace Lisa.Zuma.BlueJay.Web.Controllers
             return Ok(result);
         }
 
+        /// <summary>
+        /// Gets the note belonging to the requested dossier, identified by the given id.
+        /// </summary>
+        /// <param name="dossierId">The id of the dossier from which to retrieve the note.</param>
+        /// <param name="id">The id of the note that should be retrieved.</param>
+        /// <returns></returns>
+        public IHttpActionResult Get(int dossierId, int id)
+        {
+            var dossier = Db.Dossiers.FirstOrDefault(d => d.Id == dossierId);
+            if (dossier == null)
+            {
+                return NotFound();
+            }
+
+            var note = dossier.Notes.FirstOrDefault(n => n.Id == id);
+            if (note == null)
+            {
+                return NotFound();
+            }
+
+            var noteModel = ModelFactory.Create(note);
+            return Ok(noteModel);
+        }
+
         public IHttpActionResult Post(int dossierId, [FromBody] NoteModel noteModel)
         {
             var dossier = Db.Dossiers.FirstOrDefault(d => d.Id == dossierId);
