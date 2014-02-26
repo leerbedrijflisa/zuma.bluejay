@@ -10,19 +10,17 @@ using System.Web.Http;
 
 namespace Lisa.Zuma.BlueJay.Web.Controllers
 {
-    public class DossierController : ApiController
+    public class DossierController : BaseApiController
     {
-        private BlueJayContext db = new BlueJayContext();
-
         public IHttpActionResult Get(int id)
         {
-            var user = db.Users.FirstOrDefault(u => u.Id == id);
+            var user = Db.Users.FirstOrDefault(u => u.Id == id);
             if (user == null)
             {
                 return NotFound();
             }
 
-            var dossier = db.Dossiers.FirstOrDefault(d => d.Watchers.Count(u => u.Id == user.Id) > 0);
+            var dossier = Db.Dossiers.FirstOrDefault(d => d.Watchers.Count(u => u.Id == user.Id) > 0);
             if (dossier == null)
             {
                 return NotFound();
