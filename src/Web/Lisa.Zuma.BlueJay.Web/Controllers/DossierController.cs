@@ -1,5 +1,6 @@
 ﻿using Lisa.Zuma.BlueJay.Web.Data;
 using Lisa.Zuma.BlueJay.Web.Data.Entities;
+using Lisa.Zuma.BlueJay.Web.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,7 +28,9 @@ namespace Lisa.Zuma.BlueJay.Web.Controllers
                 return NotFound();
             }
 
-            return Ok(dossier);
+            var dossierModel = ModelFactory.Create(dossier);
+
+            return Ok(dossierModel);
         }
     }
 }
