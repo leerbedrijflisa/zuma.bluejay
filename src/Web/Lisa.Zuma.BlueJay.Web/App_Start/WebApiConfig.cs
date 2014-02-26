@@ -29,7 +29,7 @@ namespace Lisa.Zuma.BlueJay.Web
 
             config.Routes.MapHttpRoute(
                 name: "NoteApi",
-                routeTemplate: "api/dossier/{id}/notes",
+                routeTemplate: "api/dossier/{dossierId}/notes/{id}",
                 defaults: new { controller = "note", id = RouteParameter.Optional }
             );
 

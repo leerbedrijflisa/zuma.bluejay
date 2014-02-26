@@ -15,10 +15,10 @@ namespace Lisa.Zuma.BlueJay.Web.Controllers
         /// <summary>
         /// Gets a list of notes belonging to the requested dossier.
         /// </summary>
-        /// <param name="id">The id of the dossier from which to retrieve the notes.</param>
-        public IHttpActionResult Get(int id)
+        /// <param name="dossierId">The id of the dossier from which to retrieve the notes.</param>
+        public IHttpActionResult Get(int dossierId)
         {
-            var dossier = Db.Dossiers.FirstOrDefault(d => d.Id == id);
+            var dossier = Db.Dossiers.FirstOrDefault(d => d.Id == dossierId);
             if (dossier == null)
             {
                 return NotFound();
@@ -35,9 +35,9 @@ namespace Lisa.Zuma.BlueJay.Web.Controllers
             return Ok(result);
         }
 
-        public IHttpActionResult Post(int id, [FromBody] NoteModel noteModel)
+        public IHttpActionResult Post(int dossierId, [FromBody] NoteModel noteModel)
         {
-            var dossier = Db.Dossiers.FirstOrDefault(d => d.Id == id);
+            var dossier = Db.Dossiers.FirstOrDefault(d => d.Id == dossierId);
             if (dossier == null)
             {
                 return NotFound();
@@ -58,7 +58,7 @@ namespace Lisa.Zuma.BlueJay.Web.Controllers
             dossier.Notes.Add(note);
             Db.SaveChanges();
 
-            return CreatedAtRoute("NoteApi", new { id = id }, noteModel);
+            return CreatedAtRoute("NoteApi", new { id = dossierId }, noteModel);
         }
 
         public NoteMedia StoreMedia(NoteMediaModel media)
