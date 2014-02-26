@@ -14,9 +14,9 @@ namespace Lisa.Zuma.BlueJay.Web.Controllers
     {
         private BlueJayContext db = new BlueJayContext();
 
-        public IHttpActionResult Get(int userId)
+        public IHttpActionResult Get(int id)
         {
-            var user = db.Users.FirstOrDefault(u => u.Id == userId);
+            var user = db.Users.FirstOrDefault(u => u.Id == id);
             if (user == null)
             {
                 return NotFound();
