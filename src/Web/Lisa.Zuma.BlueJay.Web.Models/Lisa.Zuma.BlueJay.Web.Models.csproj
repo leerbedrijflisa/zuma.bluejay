@@ -48,6 +48,12 @@
   <ItemGroup>
     <Folder Include="ViewModels\" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Lisa.Zuma.BlueJay.Web.Data\Lisa.Zuma.BlueJay.Web.Data.csproj">
+      <Project>{ef24823e-06fb-4ae8-8326-e76c629b93f9}</Project>
+      <Name>Lisa.Zuma.BlueJay.Web.Data</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
