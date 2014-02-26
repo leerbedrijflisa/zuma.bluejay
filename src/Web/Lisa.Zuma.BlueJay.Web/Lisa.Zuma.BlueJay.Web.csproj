@@ -256,6 +256,10 @@
       <Project>{ef24823e-06fb-4ae8-8326-e76c629b93f9}</Project>
       <Name>Lisa.Zuma.BlueJay.Web.Data</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Lisa.Zuma.BlueJay.Web.Models\Lisa.Zuma.BlueJay.Web.Models.csproj">
+      <Project>{00faf692-00d2-4d06-865b-b223395f490f}</Project>
+      <Name>Lisa.Zuma.BlueJay.Web.Models</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
