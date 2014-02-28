@@ -10,6 +10,8 @@ namespace Lisa.Zuma.BlueJay.IOS
 	public partial class TimelineViewController : UIViewController
 	{
 		private HTMLTemplates templateParser;
+		private UIView label;
+		UIView OverlayView;
 
 		public TimelineViewController () : base ("TimelineViewController", null)
 		{
@@ -28,6 +30,20 @@ namespace Lisa.Zuma.BlueJay.IOS
 		{
 			base.ViewDidLoad ();
 
+//			Console.WriteLine (ParsedHTML);
+			updateList ();
+
+			this.NavigationItem.SetRightBarButtonItem(
+				new UIBarButtonItem(UIBarButtonSystemItem.Add, (sender,args) => {
+				NewNote();
+			})
+				, true);
+
+			// Perform any additional setup after loading the view, typically from a nib.
+		}
+
+		public void updateList()
+		{
 			var ParsedHTML = templateParser.ParseTimeLine(1);
 
 			string contentDirectoryPath = Path.Combine (NSBundle.MainBundle.BundlePath, "HTML/");
@@ -35,19 +51,39 @@ namespace Lisa.Zuma.BlueJay.IOS
 			wvTimeline.LoadHtmlString(ParsedHTML, new NSUrl(contentDirectoryPath, true));
 
 			wvTimeline.ScalesPageToFit = true;
+		}
 
-			Console.WriteLine (ParsedHTML);
+		public void NewNote()
+		{
+			NewNoteViewController newNoteViewController = new NewNoteViewController(this);
 
+			label = new UIView ();
+			label.Frame = new RectangleF (0, 0, this.View.Frame.Width, this.View.Frame.Height);
+			label.BackgroundColor = UIColor.Black;
+			label.Alpha = 0.5f;
+			View.Add (label);
 
-			this.NavigationItem.SetRightBarButtonItem(
-				new UIBarButtonItem(UIBarButtonSystemItem.Add, (sender,args) => {
+			OverlayView = new UIView ();
+			OverlayView.Frame = new RectangleF (this.View.Frame.Height / 2 - 400, this.View.Frame.Width / 2 - 300, 400, 600);
+			View.Add (OverlayView);
 
-				NewNoteViewController newNoteViewController = new NewNoteViewController();
+			OverlayView.Add (newNoteViewController.View);
 
-				this.NavigationController.PushViewController(newNoteViewController, true);
-			})
-				, true);
-			// Perform any additional setup after loading the view, typically from a nib.
+			this.NavigationController.SetNavigationBarHidden (false, true);
+		}
+
+		public void hideNoteCreator()
+		{
+			label.Hidden = true;
+			this.NavigationController.SetNavigationBarHidden (false, true);
+		}
+
+		
+		public override void ViewWillAppear (bool animated)
+		{
+			base.ViewWillAppear (animated);
+
+			updateList ();
 		}
 	}
 }

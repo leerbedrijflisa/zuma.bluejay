@@ -16,6 +16,11 @@ namespace Lisa.Zuma.BlueJay.IOS.Models
 		{
 			database.DummyLoggedIn (id);
 		}
+
+		public void SetNewNote (string text, string media)
+		{
+			database.InsertNote (new Notes{DosierID = 1, Text = text, Media = "https://zumabluejay.blob.core.windows.net/publicfiles/e7fb2c96-e605-4fbb-bd3e-ba334e87cb4f.mp4"});
+		}
 	}
 }
 

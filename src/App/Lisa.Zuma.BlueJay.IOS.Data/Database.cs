@@ -10,6 +10,7 @@ namespace Lisa.Zuma.BlueJay.IOS.Data
 		private SQLite.SQLiteConnection db;
 		private User ReturnUser;
 		private Notes ReturnNote;
+		private User ReturnUserLoggedIn;
 
 		public Database ()
 		{
@@ -24,6 +25,23 @@ namespace Lisa.Zuma.BlueJay.IOS.Data
 			db.CreateTable<Profile>();
 			db.CreateTable<User>();
 
+			CreateDummyInfo ();
+		}
+
+		public void CreateDummyInfo()
+		{
+			var count = db.Query<Dosier>("SELECT * FROM Dosier");
+
+			if (count.Count == 0) {
+				db.Insert (new Dosier{Name = "Martijn"});
+			}
+
+ 			var count2 = db.Query<User>("SELECT * FROM User");
+
+			if (count2.Count == 0) {
+				db.Insert (new User{Role = 1, Name = "Marie-antoinette"});
+				db.Insert (new User{Role = 2, Name = "Debbie"});
+			}
 		}
 
 		public void DummyLoggedIn(int id)
@@ -41,7 +59,7 @@ namespace Lisa.Zuma.BlueJay.IOS.Data
 
 		public List<Notes> GetNotesFromDosier(int id)
 		{
-			var Result = db.Query<Notes>("SELECT * FROM Notes WHERE DosierID='"+id+"'");
+			var Result = db.Query<Notes>("SELECT * FROM Notes WHERE DosierID='"+id+"' ORDER BY ID DESC");
 
 			return Result;
 		}
@@ -56,6 +74,16 @@ namespace Lisa.Zuma.BlueJay.IOS.Data
 
 			return ReturnUser;
 		}
+		public User GetCurrentUser()
+		{
+			var Result = db.Query<User>("SELECT * FROM User WHERE LoggedIn=1");
+
+			foreach (var Query in Result) {
+				ReturnUserLoggedIn = Query;
+			}
+			return ReturnUserLoggedIn;
+			
+		}
 
 		public Notes GetMediaFromNoteByID(int id)
 		{
@@ -65,6 +93,15 @@ namespace Lisa.Zuma.BlueJay.IOS.Data
 				ReturnNote = Query;
 			}
 			return ReturnNote;
+		}
+
+		public void InsertNote(Notes note)
+		{
+			var user = this.GetCurrentUser ();
+
+			note.OwnerID = user.ID;
+
+			db.Insert (note);
 		}
 
 	}
