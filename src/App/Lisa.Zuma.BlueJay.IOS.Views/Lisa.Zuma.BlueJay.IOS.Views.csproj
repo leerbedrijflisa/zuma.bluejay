@@ -105,6 +105,14 @@
     <Compile Include="SummaryViewController.designer.cs">
       <DependentUpon>SummaryViewController.cs</DependentUpon>
     </Compile>
+    <Compile Include="TimelineViewController.cs" />
+    <Compile Include="TimelineViewController.designer.cs">
+      <DependentUpon>TimelineViewController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="NewNoteViewController.cs" />
+    <Compile Include="NewNoteViewController.designer.cs">
+      <DependentUpon>NewNoteViewController.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -116,5 +124,21 @@
   <ItemGroup>
     <InterfaceDefinition Include="loginViewController.xib" />
     <InterfaceDefinition Include="SummaryViewController.xib" />
+    <InterfaceDefinition Include="TimelineViewController.xib" />
+    <InterfaceDefinition Include="NewNoteViewController.xib" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="HTML\all.css" />
+    <Content Include="HTML\timeline\index.html" />
+    <Content Include="HTML\timeline\item.html" />
+    <Content Include="HTML\timeline\media.html" />
+    <Content Include="HTML\timeline.css" />
+    <Content Include="HTML\images\active-unit.png" />
+    <Content Include="HTML\images\icons.png" />
+    <Content Include="HTML\images\icons-2.png" />
+    <Content Include="HTML\images\icons-3.png" />
+    <Content Include="HTML\images\icons-4.png" />
+    <Content Include="HTML\images\icons-5.png" />
+    <Content Include="HTML\images\line.png" />
   </ItemGroup>
 </Project>
