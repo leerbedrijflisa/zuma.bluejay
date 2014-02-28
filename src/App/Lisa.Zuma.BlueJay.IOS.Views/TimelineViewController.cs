@@ -37,7 +37,16 @@ namespace Lisa.Zuma.BlueJay.IOS
 			wvTimeline.ScalesPageToFit = true;
 
 			Console.WriteLine (ParsedHTML);
-			
+
+
+			this.NavigationItem.SetRightBarButtonItem(
+				new UIBarButtonItem(UIBarButtonSystemItem.Add, (sender,args) => {
+
+				NewNoteViewController newNoteViewController = new NewNoteViewController();
+
+				this.NavigationController.PushViewController(newNoteViewController, true);
+			})
+				, true);
 			// Perform any additional setup after loading the view, typically from a nib.
 		}
 	}

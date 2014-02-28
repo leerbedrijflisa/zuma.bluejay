@@ -109,6 +109,10 @@
     <Compile Include="TimelineViewController.designer.cs">
       <DependentUpon>TimelineViewController.cs</DependentUpon>
     </Compile>
+    <Compile Include="NewNoteViewController.cs" />
+    <Compile Include="NewNoteViewController.designer.cs">
+      <DependentUpon>NewNoteViewController.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -121,6 +125,7 @@
     <InterfaceDefinition Include="loginViewController.xib" />
     <InterfaceDefinition Include="SummaryViewController.xib" />
     <InterfaceDefinition Include="TimelineViewController.xib" />
+    <InterfaceDefinition Include="NewNoteViewController.xib" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="HTML\all.css" />
