@@ -134,7 +134,9 @@ namespace Lisa.Zuma.BlueJay.Web.Controllers
                 return NotFound();
             }
 
-            dossier.Notes.Remove(note);
+            // Remove note by calling Db.Notes.Remove(note), dossier.Notes.Remove(note) will crash after Db.SaveChanges()
+            // because it tries to set the relation to NULL to persist the entry in the database.
+            Db.Notes.Remove(note);
             Db.SaveChanges();
 
             return Ok();
