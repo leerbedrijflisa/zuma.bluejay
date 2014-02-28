@@ -3,16 +3,17 @@ using System.Drawing;
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
 using Lisa.Zuma.BlueJay.IOS.Models;
+using System.IO;
 
 namespace Lisa.Zuma.BlueJay.IOS
 {
 	public partial class TimelineViewController : UIViewController
 	{
-		private TemplateParser templateParser;
+		private HTMLTemplates templateParser;
 
 		public TimelineViewController () : base ("TimelineViewController", null)
 		{
-			templateParser = new TemplateParser ();
+			templateParser = new HTMLTemplates ();
 		}
 
 		public override void DidReceiveMemoryWarning ()
@@ -27,11 +28,15 @@ namespace Lisa.Zuma.BlueJay.IOS
 		{
 			base.ViewDidLoad ();
 
-			var ParsedHTML = templateParser.ParseTimelineFromDosier(1);
+			var ParsedHTML = templateParser.ParseTimeLine(1);
 
-			wvTimeline.LoadHtmlString(ParsedHTML, null);
+			string contentDirectoryPath = Path.Combine (NSBundle.MainBundle.BundlePath, "HTML/");
+
+			wvTimeline.LoadHtmlString(ParsedHTML, new NSUrl(contentDirectoryPath, true));
 
 			wvTimeline.ScalesPageToFit = true;
+
+			Console.WriteLine (ParsedHTML);
 			
 			// Perform any additional setup after loading the view, typically from a nib.
 		}

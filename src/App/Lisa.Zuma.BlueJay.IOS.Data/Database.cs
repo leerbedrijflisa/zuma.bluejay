@@ -41,14 +41,14 @@ namespace Lisa.Zuma.BlueJay.IOS.Data
 
 		public List<Notes> GetNotesFromDosier(int id)
 		{
-			var Result = db.Query<Notes>("SELECT * FROM Notes WHERE ID='"+id+"'");
+			var Result = db.Query<Notes>("SELECT * FROM Notes WHERE OwnerID='"+id+"'");
 
 			return Result;
 		}
 
 		public User GetUserById(int id)
 		{
-			var Result = db.Query<User>("SELECT * FROM User WHERE id='"+id+"'");
+			var Result = db.Query<User>("SELECT * FROM User WHERE ID='"+id+"'");
 
 			foreach (var Query in Result) {
 				ReturnUser = Query;
@@ -59,7 +59,7 @@ namespace Lisa.Zuma.BlueJay.IOS.Data
 
 		public Notes GetMediaFromNoteByID(int id)
 		{
-			var Result = db.Query<Notes>("SELECT * FROM Notes WHERE id='"+id+"' LIMIT 1");
+			var Result = db.Query<Notes>("SELECT * FROM Notes WHERE ID='"+id+"' LIMIT 1");
 
 			foreach (var Query in Result) {
 				ReturnNote = Query;

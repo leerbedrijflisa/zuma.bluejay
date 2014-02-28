@@ -8,6 +8,7 @@ namespace Lisa.Zuma.BlueJay.IOS.Models
 	{
 		private Database db;
 		private List<Notes> NoteItem;
+		private string ReturnHTML;
 
 		public TemplateParser ()
 		{
@@ -19,11 +20,11 @@ namespace Lisa.Zuma.BlueJay.IOS.Models
 			NoteItem = db.GetNotesFromDosier (1);
 
 
-			var ParentHTML = System.IO.File.ReadAllText("HTML/timeline/index.html");
+			var ParentHTML = System.IO.File.ReadAllLines("HTML/timeline/index.html");
 
-			var ReturnHTML = ParentHTML.Replace("###TIMELINE-ITEMS###", ParseTimelineItems());
+//			var ReturnHTML = ParentHTML.Replace("###TIMELINE-ITEMS###", ParseTimelineItems());
 
-			return ParentHTML;
+			return ReturnHTML;
 		}
 
 		private string ParseTimelineItems()
@@ -31,7 +32,7 @@ namespace Lisa.Zuma.BlueJay.IOS.Models
 			string ItemRole = "";
 			string ItemSide = ""; 
 
-			string ReturnHTML = "";
+
 
 			NoteItem = db.GetNotesFromDosier(1);
 
@@ -66,7 +67,7 @@ namespace Lisa.Zuma.BlueJay.IOS.Models
 		{
 			Notes MediaString = db.GetMediaFromNoteByID (id);
 
-			var MediaHTML = System.IO.File.ReadAllText("HTML/timeline/item.html");
+			var MediaHTML = System.IO.File.ReadAllText("HTML/timeline/media.html");
 			string ReturnHTML = "";
 
 			var MediaTags = MediaHTML.Split('$');
