@@ -93,13 +93,6 @@
   <ItemGroup>
     <None Include="Info.plist" />
     <None Include="Entitlements.plist" />
-    <None Include="HTML\images\active-unit.png" />
-    <None Include="HTML\images\icons.png" />
-    <None Include="HTML\images\icons-2.png" />
-    <None Include="HTML\images\icons-3.png" />
-    <None Include="HTML\images\icons-4.png" />
-    <None Include="HTML\images\icons-5.png" />
-    <None Include="HTML\images\line.png" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Main.cs" />
@@ -135,5 +128,12 @@
     <Content Include="HTML\timeline\item.html" />
     <Content Include="HTML\timeline\media.html" />
     <Content Include="HTML\timeline.css" />
+    <Content Include="HTML\images\active-unit.png" />
+    <Content Include="HTML\images\icons.png" />
+    <Content Include="HTML\images\icons-2.png" />
+    <Content Include="HTML\images\icons-3.png" />
+    <Content Include="HTML\images\icons-4.png" />
+    <Content Include="HTML\images\icons-5.png" />
+    <Content Include="HTML\images\line.png" />
   </ItemGroup>
 </Project>

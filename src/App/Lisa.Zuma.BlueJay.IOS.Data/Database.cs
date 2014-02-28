@@ -41,7 +41,7 @@ namespace Lisa.Zuma.BlueJay.IOS.Data
 
 		public List<Notes> GetNotesFromDosier(int id)
 		{
-			var Result = db.Query<Notes>("SELECT * FROM Notes WHERE OwnerID='"+id+"'");
+			var Result = db.Query<Notes>("SELECT * FROM Notes WHERE DosierID='"+id+"'");
 
 			return Result;
 		}
