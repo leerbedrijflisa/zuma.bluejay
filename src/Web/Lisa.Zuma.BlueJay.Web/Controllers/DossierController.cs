@@ -1,5 +1,6 @@
 ﻿using Lisa.Zuma.BlueJay.Web.Data;
 using Lisa.Zuma.BlueJay.Web.Data.Entities;
+using Lisa.Zuma.BlueJay.Web.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,25 +10,25 @@ using System.Web.Http;
 
 namespace Lisa.Zuma.BlueJay.Web.Controllers
 {
-    public class DossierController : ApiController
+    public class DossierController : BaseApiController
     {
-        private BlueJayContext db = new BlueJayContext();
-
-        public IHttpActionResult Get(int userId)
+        public IHttpActionResult Get(int id)
         {
-            var user = db.Users.FirstOrDefault(u => u.Id == userId);
+            var user = Db.Users.FirstOrDefault(u => u.Id == id);
             if (user == null)
             {
                 return NotFound();
             }
 
-            var dossier = db.Dossiers.FirstOrDefault(d => d.Watchers.Count(u => u.Id == user.Id) > 0);
+            var dossier = Db.Dossiers.FirstOrDefault(d => d.Watchers.Count(u => u.Id == user.Id) > 0);
             if (dossier == null)
             {
                 return NotFound();
             }
 
-            return Ok(dossier);
+            var dossierModel = ModelFactory.Create(dossier);
+
+            return Ok(dossierModel);
         }
     }
 }
