@@ -22,6 +22,11 @@ namespace Lisa.Zuma.BlueJay.IOS
 		public override void ViewDidLoad ()
 		{
 			base.ViewDidLoad ();
+
+			btnNewItem.TouchUpInside += (sender, e) => {
+				NewProfileItemViewController newProfileItemViewController = new NewProfileItemViewController();
+				this.NavigationController.PushViewController(newProfileItemViewController, true);
+			};
 		}
 	}
 }

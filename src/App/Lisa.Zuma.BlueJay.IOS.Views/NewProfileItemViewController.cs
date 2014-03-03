@@ -22,7 +22,11 @@ namespace Lisa.Zuma.BlueJay.IOS
 		public override void ViewDidLoad ()
 		{
 			base.ViewDidLoad ();
-			
+
+			txtContent.Frame = new RectangleF(txtContent.Frame.Y, txtContent.Frame.X, txtContent.Frame.Width, 200);
+
+
+
 			// Perform any additional setup after loading the view, typically from a nib.
 		}
 	}
