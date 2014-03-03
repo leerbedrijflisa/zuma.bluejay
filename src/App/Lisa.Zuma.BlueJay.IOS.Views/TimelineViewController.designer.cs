@@ -13,6 +13,9 @@ namespace Lisa.Zuma.BlueJay.IOS
 	partial class TimelineViewController
 	{
 		[Outlet]
+		MonoTouch.UIKit.UIButton btnEditProfile { get; set; }
+
+		[Outlet]
 		MonoTouch.UIKit.UIWebView wvTimeline { get; set; }
 		
 		void ReleaseDesignerOutlets ()
@@ -20,6 +23,11 @@ namespace Lisa.Zuma.BlueJay.IOS
 			if (wvTimeline != null) {
 				wvTimeline.Dispose ();
 				wvTimeline = null;
+			}
+
+			if (btnEditProfile != null) {
+				btnEditProfile.Dispose ();
+				btnEditProfile = null;
 			}
 		}
 	}
