@@ -16,18 +16,26 @@ namespace Lisa.Zuma.BlueJay.IOS
 		MonoTouch.UIKit.UIButton btnEditProfile { get; set; }
 
 		[Outlet]
+		MonoTouch.UIKit.UIButton btnNewNote { get; set; }
+
+		[Outlet]
 		MonoTouch.UIKit.UIWebView wvTimeline { get; set; }
 		
 		void ReleaseDesignerOutlets ()
 		{
+			if (btnEditProfile != null) {
+				btnEditProfile.Dispose ();
+				btnEditProfile = null;
+			}
+
 			if (wvTimeline != null) {
 				wvTimeline.Dispose ();
 				wvTimeline = null;
 			}
 
-			if (btnEditProfile != null) {
-				btnEditProfile.Dispose ();
-				btnEditProfile = null;
+			if (btnNewNote != null) {
+				btnNewNote.Dispose ();
+				btnNewNote = null;
 			}
 		}
 	}
