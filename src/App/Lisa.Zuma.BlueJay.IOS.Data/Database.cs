@@ -24,6 +24,7 @@ namespace Lisa.Zuma.BlueJay.IOS.Data
 			db.CreateTable<Dosier>();
 			db.CreateTable<Notes>();
 			db.CreateTable<Profile>();
+			db.CreateTable<ProfileItems>();
 			db.CreateTable<User>();
 
 			CreateDummyInfo ();
@@ -109,6 +110,19 @@ namespace Lisa.Zuma.BlueJay.IOS.Data
 			note.OwnerID = user.ID;
 
 			db.Insert (note);
+		}
+
+		public void InsertProfileItem(ProfileItems newItem)
+		{
+			newItem.ProfileID = 1;
+			db.Insert (newItem);
+		}
+
+		public List<ProfileItems> GetProfileItemsByProfileID(int profileId)
+		{
+			var Result = db.Query<ProfileItems> ("SELECT * FROM ProfileItems WHERE ProfileID='"+ profileId +"'");
+
+			return Result;
 		}
 
 	}

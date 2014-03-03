@@ -94,6 +94,7 @@
     <Compile Include="Entities\Profile.cs" />
     <Compile Include="Entities\User.cs" />
     <Compile Include="Database.cs" />
+    <Compile Include="Entities\ProfileItems.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

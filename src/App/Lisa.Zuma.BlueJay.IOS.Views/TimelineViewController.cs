@@ -33,11 +33,16 @@ namespace Lisa.Zuma.BlueJay.IOS
 //			Console.WriteLine (ParsedHTML);
 			updateList ();
 
-			this.NavigationItem.SetRightBarButtonItem(
-				new UIBarButtonItem(UIBarButtonSystemItem.Add, (sender,args) => {
-				this.NewNote();
-			})
-				, true);
+			btnNewNote.TouchUpInside += (sender, e) => {
+				NewNote();
+			};
+
+			btnEditProfile.TouchUpInside +=  (sender, e) => {
+
+				ProfileViewController profileViewController = new ProfileViewController();
+				this.NavigationController.PushViewController(profileViewController, true);
+
+			};
 
 			// Perform any additional setup after loading the view, typically from a nib.
 		}
@@ -82,7 +87,7 @@ namespace Lisa.Zuma.BlueJay.IOS
 		public override void ViewWillAppear (bool animated)
 		{
 			base.ViewWillAppear (animated);
-
+			this.NavigationController.SetNavigationBarHidden (true, true);
 			updateList ();
 		}
 	}
