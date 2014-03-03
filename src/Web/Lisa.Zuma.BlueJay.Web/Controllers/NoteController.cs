@@ -1,8 +1,12 @@
 ﻿using Lisa.Zuma.BlueJay.Web.Data.Entities;
 using Lisa.Zuma.BlueJay.Web.Models;
 using Lisa.Zuma.BlueJay.Web.Models.DbModels;
+using Microsoft.WindowsAzure;
+using Microsoft.WindowsAzure.Storage;
+using Microsoft.WindowsAzure.Storage.Blob;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -144,20 +148,32 @@ namespace Lisa.Zuma.BlueJay.Web.Controllers
 
         public NoteMedia StoreMedia(NoteMediaModel media)
         {
-            var result = new NoteMedia();
+            var noteMedia = new NoteMedia
+            {
+                Name = media.Name
+            };
 
-#if DEBUG
-            var path = @"D:\zuma_storage\" + media.Name;
-            var bytes = Convert.FromBase64String(media.EncodedData);
-            System.IO.File.WriteAllBytes(path, bytes);
+            var setting = CloudConfigurationManager.GetSetting("ZumaBlueJayStorageConnectionString");
+            var account = CloudStorageAccount.Parse(setting);
 
-            result.Name = media.Name;
-            result.MediaLocation = path;
-#else
-            // TODO: Add support for the cloud
-#endif
+            var blobClient = account.CreateCloudBlobClient();
 
-            return result;
+
+            var container = blobClient.GetContainerReference("bluejay");
+            container.CreateIfNotExists();
+
+            var blockBlob = container.GetBlockBlobReference(Guid.NewGuid().ToString() + Path.GetExtension(media.Name));
+            var policy = new SharedAccessBlobPolicy
+            {
+                Permissions = SharedAccessBlobPermissions.Write,
+                SharedAccessStartTime = DateTime.UtcNow.AddMinutes(-5),
+                SharedAccessExpiryTime = DateTime.UtcNow.AddMinutes(20)
+            };
+            blockBlob.Metadata.Add("Created", DateTime.Now.ToShortDateString());
+            var location = blockBlob.Uri.AbsoluteUri + blockBlob.GetSharedAccessSignature(policy);
+            noteMedia.MediaLocation = location;
+
+            return noteMedia;
         }
     }
 }
