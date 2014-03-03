@@ -117,6 +117,10 @@
     <Compile Include="ProfileViewController.designer.cs">
       <DependentUpon>ProfileViewController.cs</DependentUpon>
     </Compile>
+    <Compile Include="NewProfileItemViewController.cs" />
+    <Compile Include="NewProfileItemViewController.designer.cs">
+      <DependentUpon>NewProfileItemViewController.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -131,6 +135,7 @@
     <InterfaceDefinition Include="TimelineViewController.xib" />
     <InterfaceDefinition Include="NewNoteViewController.xib" />
     <InterfaceDefinition Include="ProfileViewController.xib" />
+    <InterfaceDefinition Include="NewProfileItemViewController.xib" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="HTML\all.css" />
