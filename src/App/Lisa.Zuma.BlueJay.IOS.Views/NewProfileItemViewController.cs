@@ -2,13 +2,19 @@ using System;
 using System.Drawing;
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
+using Lisa.Zuma.BlueJay.IOS.Models;
 
 namespace Lisa.Zuma.BlueJay.IOS
 {
 	public partial class NewProfileItemViewController : UIViewController
 	{
+		private TableHelper tableHelper;
+		private ProfileViewController profileViewController;
+
 		public NewProfileItemViewController () : base ("NewProfileItemViewController", null)
 		{
+			tableHelper = new TableHelper();
+			profileViewController = new ProfileViewController ();
 		}
 
 		public override void DidReceiveMemoryWarning ()
@@ -23,12 +29,21 @@ namespace Lisa.Zuma.BlueJay.IOS
 		{
 			base.ViewDidLoad ();
 
-			txtContent.Frame = new RectangleF(txtContent.Frame.Y, txtContent.Frame.X, txtContent.Frame.Width, 200);
+			UITextView textView = new UITextView ();
+
+			textView.Frame = new RectangleF(txtContent.Frame.Y, txtContent.Frame.X, txtContent.Frame.Width, 200);
+			textView.BackgroundColor = UIColor.FromRGB(242, 242, 242);
 
 
 
-			// Perform any additional setup after loading the view, typically from a nib.
+			btnAddProfileItem.TouchUpInside += (sender, e) => {
+				tableHelper.InsertProfileItem(txtTitle.Text, txtContent.Text);
+				this.NavigationController.PushViewController(profileViewController, true);
+
+			};
+
 		}
+	
 	}
 }
 

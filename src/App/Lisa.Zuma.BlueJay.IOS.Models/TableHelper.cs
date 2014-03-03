@@ -12,12 +12,11 @@ namespace Lisa.Zuma.BlueJay.IOS.Models
 
 		public TableHelper()
 		{
-
+			db = new Database();
 		}
 
 		public TableSource DataForList()
 		{
-			db = new Database();
 
 			List<TableItem> tableItems = new List<TableItem>();
 
@@ -31,7 +30,25 @@ namespace Lisa.Zuma.BlueJay.IOS.Models
 			return new TableSource(tableItems);
 
 		}
-	}
 
+		public TableSource DataForProfileList()
+		{
+			List<TableItem> tableItem = new List<TableItem>();
+
+			var ProfileItems = db.GetProfileItemsByProfileID (1);
+
+			foreach (var profileItem in ProfileItems) 
+			{
+				tableItem.Add (new TableItem(profileItem.ID, profileItem.Title));
+			}
+
+			return new TableSource(tableItem);
+		}
+
+		public void InsertProfileItem(string title, string content)
+		{
+			db.InsertProfileItem (new ProfileItems{Title = title, Content = content});
+		} 
+	}
 }
 
