@@ -100,6 +100,8 @@
     <Compile Include="TemplateParser.cs" />
     <Compile Include="HTMLTemplates.cs" />
     <Compile Include="Camera.cs" />
+    <Compile Include="PickerModel.cs" />
+    <Compile Include="PickerChangedEventArgs.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Lisa.Zuma.BlueJay.IOS.Data\Lisa.Zuma.BlueJay.IOS.Data.csproj">

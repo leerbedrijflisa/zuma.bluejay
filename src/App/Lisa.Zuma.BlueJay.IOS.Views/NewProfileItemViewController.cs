@@ -10,6 +10,8 @@ namespace Lisa.Zuma.BlueJay.IOS
 	{
 		private TableHelper tableHelper;
 		private ProfileViewController profileViewController;
+		private DataHelper dataHelper;
+		private string selectedCat;
 
 		public NewProfileItemViewController () : base ("NewProfileItemViewController", null)
 		{
@@ -34,13 +36,19 @@ namespace Lisa.Zuma.BlueJay.IOS
 			textView.Frame = new RectangleF(txtContent.Frame.Y, txtContent.Frame.X, txtContent.Frame.Width, 200);
 			textView.BackgroundColor = UIColor.FromRGB(242, 242, 242);
 
-
-
 			btnAddProfileItem.TouchUpInside += (sender, e) => {
 				tableHelper.InsertProfileItem(txtTitle.Text, txtContent.Text);
 				this.NavigationController.PushViewController(profileViewController, true);
-
 			};
+
+			PickerModel model = new PickerModel(dataHelper);
+			model.PickerChanged += (sender, e) => {
+				this.selectedCat = e.SelectedValue;
+			};
+
+			UIPickerView picker = new UIPickerView();
+			picker.ShowSelectionIndicator = true;
+			picker.Model = model;	
 
 		}
 	

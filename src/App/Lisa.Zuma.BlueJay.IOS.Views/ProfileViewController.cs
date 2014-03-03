@@ -9,10 +9,13 @@ namespace Lisa.Zuma.BlueJay.IOS
 	public partial class ProfileViewController : UIViewController
 	{
 		private TableHelper tableHelper;
+		private DataHelper dataHelper;
+		private string selectedCat;
 
 		public ProfileViewController () : base ("ProfileViewController", null)
 		{
 			tableHelper = new TableHelper();
+			dataHelper = new DataHelper ();
 		}
 
 		public override void ViewDidLoad ()
