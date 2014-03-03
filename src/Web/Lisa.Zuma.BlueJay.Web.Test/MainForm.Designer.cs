@@ -44,6 +44,7 @@
             this.btnSubmitNote.TabIndex = 0;
             this.btnSubmitNote.Text = "Submit note";
             this.btnSubmitNote.UseVisualStyleBackColor = true;
+            this.btnSubmitNote.Click += new System.EventHandler(this.btnSubmitNote_Click);
             // 
             // lblMessage
             // 
