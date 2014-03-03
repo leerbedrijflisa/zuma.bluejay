@@ -41,6 +41,16 @@ namespace Lisa.Zuma.BlueJay.IOS
 				dataHelper.SetNewNote(inputText.Text, "");
 			};
 
+			this.NavigationItem.SetRightBarButtonItem(
+				new UIBarButtonItem(UIBarButtonSystemItem.Camera, (sender,args) => {
+
+				Camera camera = new Camera();
+
+				camera.Capture(DateTime.Today.ToString());
+
+			})
+				, true);
+
 		}
 	}
 }

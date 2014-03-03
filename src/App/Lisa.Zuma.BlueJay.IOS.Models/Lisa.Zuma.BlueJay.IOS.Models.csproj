@@ -86,6 +86,9 @@
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
     <Reference Include="monotouch" />
+    <Reference Include="Xamarin.Mobile">
+      <HintPath>..\Components\xamarin.mobile-0.7.1\lib\ios\Xamarin.Mobile.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -96,11 +99,19 @@
     <Compile Include="TableHelper.cs" />
     <Compile Include="TemplateParser.cs" />
     <Compile Include="HTMLTemplates.cs" />
+    <Compile Include="Camera.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Lisa.Zuma.BlueJay.IOS.Data\Lisa.Zuma.BlueJay.IOS.Data.csproj">
       <Project>{87827FCE-C3EF-447D-8058-255C67F4E346}</Project>
       <Name>Lisa.Zuma.BlueJay.IOS.Data</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <XamarinComponentReference Include="xamarin.mobile">
+      <InstallationInProgress>True</InstallationInProgress>
+      <Version>0.7.1</Version>
+      <Visible>False</Visible>
+    </XamarinComponentReference>
   </ItemGroup>
 </Project>

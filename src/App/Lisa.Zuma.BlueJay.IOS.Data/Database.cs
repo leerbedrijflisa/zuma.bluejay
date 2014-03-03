@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Linq;
 using System.Collections.Generic;
 
 namespace Lisa.Zuma.BlueJay.IOS.Data
@@ -60,6 +61,12 @@ namespace Lisa.Zuma.BlueJay.IOS.Data
 		public List<Notes> GetNotesFromDosier(int id)
 		{
 			var Result = db.Query<Notes>("SELECT * FROM Notes WHERE DosierID='"+id+"' ORDER BY ID DESC");
+//			db.Table<Notes> ().Where(t => t.ID == id).OrderByDescending(t => t.ID);
+//
+//			var result = from note in db.Table<Notes>()
+//				where note.DosierID == id
+//				orderby note.ID descending
+//				select new { Name = note.ID.ToString() };
 
 			return Result;
 		}

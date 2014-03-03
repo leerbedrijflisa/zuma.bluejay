@@ -25,7 +25,7 @@
                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </textAttributes>
                     <items>
-                        <navigationItem title="Title" id="c7p-Cs-aTl"/>
+                        <navigationItem title="Nieuw bericht plaatsen" id="Kyw-81-RxR"/>
                     </items>
                 </navigationBar>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="3lV-ua-l80">
