@@ -16,31 +16,11 @@ namespace Lisa.Zuma.BlueJay.Web.Models
                 Notes = new List<NoteModel>()
             };
 
-            model.Profile = new ProfileModel
-            {
-                Id = dossier.Profile.Id
-            };
+            model.Profile = ModelFactory.Create(dossier.Profile);
 
             foreach (var note in dossier.Notes)
             {
-                var noteModel = new NoteModel
-                {
-                    Id = note.Id,
-                    Media = new List<NoteMediaModel>(),
-                    Text = note.Text
-                };
-
-                foreach (var media in note.Media)
-                {
-                    var noteMediaModel = new NoteMediaModel
-                    {
-                        Id = media.Id,
-                        Name = media.Name
-                    };
-
-                    noteModel.Media.Add(noteMediaModel);
-                }
-
+                var noteModel = ModelFactory.Create(note);
                 model.Notes.Add(noteModel);
             }
 
@@ -58,13 +38,7 @@ namespace Lisa.Zuma.BlueJay.Web.Models
 
             foreach (var media in note.Media)
             {
-                var noteMediaModel = new NoteMediaModel
-                {
-                    Id = media.Id,
-                    Name = media.Name,
-                    EncodedData = LoadMediaAndEncode(media)
-                };
-
+                var noteMediaModel = ModelFactory.Create(media);
                 model.Media.Add(noteMediaModel);
             }
 
