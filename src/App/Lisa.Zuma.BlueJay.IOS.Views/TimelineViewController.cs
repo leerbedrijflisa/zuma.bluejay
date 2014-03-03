@@ -35,7 +35,7 @@ namespace Lisa.Zuma.BlueJay.IOS
 
 			this.NavigationItem.SetRightBarButtonItem(
 				new UIBarButtonItem(UIBarButtonSystemItem.Add, (sender,args) => {
-				NewNote();
+				this.NewNote();
 			})
 				, true);
 

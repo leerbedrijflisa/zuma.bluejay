@@ -41,6 +41,13 @@ namespace Lisa.Zuma.BlueJay.IOS
 				dataHelper.SetNewNote(inputText.Text, "");
 			};
 
+
+			btnCamera.TouchUpInside += (sender, e) => {
+				Camera camera = new Camera();
+
+				camera.Capture(DateTime.Today.ToString());
+			};
+
 		}
 	}
 }

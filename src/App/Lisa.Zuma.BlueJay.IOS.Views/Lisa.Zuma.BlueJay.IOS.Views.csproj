@@ -141,4 +141,7 @@
     <Content Include="HTML\images\icons-5.png" />
     <Content Include="HTML\images\line.png" />
   </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\camera.png" />
+  </ItemGroup>
 </Project>
