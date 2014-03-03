@@ -71,6 +71,28 @@ namespace Lisa.Zuma.BlueJay.Web.Models
             return model;
         }
 
+        public static NoteMediaModel Create(NoteMedia noteMedia)
+        {
+            var noteMediaModel = new NoteMediaModel
+            {
+                Id = noteMedia.Id,
+                Name = noteMedia.Name,
+                Location = noteMedia.MediaLocation
+            };
+
+            return noteMediaModel;
+        }
+
+        public static ProfileModel Create(Profile profile)
+        {
+            var profileModel = new ProfileModel
+            {
+                Id = profile.Id
+            };
+
+            return profileModel;
+        }
+
         private static string LoadMediaAndEncode(NoteMedia media) 
         {
 #if DEBUG
