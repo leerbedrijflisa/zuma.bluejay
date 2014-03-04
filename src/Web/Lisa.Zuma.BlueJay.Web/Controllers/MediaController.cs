@@ -84,8 +84,10 @@ namespace Lisa.Zuma.BlueJay.Web.Controllers
                 return NotFound();
             }
 
-            var model = ChangeSharedAccessSignature(noteMediaModel);
-            media.MediaLocation = model.Location;
+            var storageHelper = new StorageHelper("ZumaBlueJayStorageConnectionString", "bluejay");
+            var filename = storageHelper.GetFileNameFromSasUri(media.MediaLocation);
+            media.MediaLocation = storageHelper.GetReadableSasUri(filename, new TimeSpan(0, 2, 0)).AbsoluteUri;
+
             Db.SaveChanges();
 
             var result = ModelFactory.Create(media);
