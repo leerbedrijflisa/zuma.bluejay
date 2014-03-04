@@ -1,8 +1,13 @@
 ﻿using Lisa.Zuma.BlueJay.Web.Data.Entities;
+using Lisa.Zuma.BlueJay.Web.Helpers;
 using Lisa.Zuma.BlueJay.Web.Models;
 using Lisa.Zuma.BlueJay.Web.Models.DbModels;
+using Microsoft.WindowsAzure;
+using Microsoft.WindowsAzure.Storage;
+using Microsoft.WindowsAzure.Storage.Blob;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -144,20 +149,17 @@ namespace Lisa.Zuma.BlueJay.Web.Controllers
 
         public NoteMedia StoreMedia(NoteMediaModel media)
         {
-            var result = new NoteMedia();
+            var noteMedia = new NoteMedia
+            {
+                Name = media.Name
+            };
 
-#if DEBUG
-            var path = @"D:\zuma_storage\" + media.Name;
-            var bytes = Convert.FromBase64String(media.EncodedData);
-            System.IO.File.WriteAllBytes(path, bytes);
+            var fileName = Guid.NewGuid().ToString() + Path.GetExtension(media.Name);
+            var storageHelper = new StorageHelper("ZumaBlueJayStorageConnectionString", "bluejay");
 
-            result.Name = media.Name;
-            result.MediaLocation = path;
-#else
-            // TODO: Add support for the cloud
-#endif
+            noteMedia.MediaLocation = storageHelper.GetWriteableSasUri(fileName, new TimeSpan(0, 2, 0)).AbsoluteUri;
 
-            return result;
+            return noteMedia;
         }
     }
 }

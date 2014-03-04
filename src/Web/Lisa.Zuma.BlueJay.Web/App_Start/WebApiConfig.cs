@@ -33,6 +33,12 @@ namespace Lisa.Zuma.BlueJay.Web
                 defaults: new { controller = "note", id = RouteParameter.Optional }
             );
 
+            config.Routes.MapHttpRoute(
+                name: "NoteMediaApi",
+                routeTemplate: "api/dossier/{dossierId}/notes/{noteId}/media/{id}",
+                defaults: new { controller = "media", id = RouteParameter.Optional }
+            );
+
             RegisterSerialization(config);
         }
 

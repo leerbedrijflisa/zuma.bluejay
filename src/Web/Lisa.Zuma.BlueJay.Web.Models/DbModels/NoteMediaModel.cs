@@ -11,5 +11,6 @@ namespace Lisa.Zuma.BlueJay.Web.Models.DbModels
         public int Id { get; set; }
         public string Name { get; set; }
         public string EncodedData { get; set; }
+        public string Location { get; set; }
     }
 }
