@@ -8,7 +8,7 @@
             <connections>
                 <outlet property="btnAddProfileItem" destination="wl9-7K-gQR" id="Ezi-UZ-xUO"/>
                 <outlet property="txtContent" destination="ieb-2g-yM2" id="Av5-Ze-Asb"/>
-                <outlet property="txtTitle" destination="NZw-Hx-83j" id="n9f-SK-8te"/>
+                <outlet property="txtTitle" destination="DjP-eU-S7A" id="fWm-Gd-iAh"/>
                 <outlet property="view" destination="2" id="3"/>
             </connections>
         </placeholder>
@@ -32,8 +32,8 @@
                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                     <textInputTraits key="textInputTraits"/>
                 </textField>
-                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" id="NZw-Hx-83j">
-                    <rect key="frame" x="285" y="318" width="199" height="30"/>
+                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" id="DjP-eU-S7A">
+                    <rect key="frame" x="285" y="343" width="199" height="30"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                     <textInputTraits key="textInputTraits"/>
