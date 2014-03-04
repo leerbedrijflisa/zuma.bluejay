@@ -8,7 +8,7 @@
             <connections>
                 <outlet property="btnAddProfileItem" destination="wl9-7K-gQR" id="Ezi-UZ-xUO"/>
                 <outlet property="txtContent" destination="ieb-2g-yM2" id="Av5-Ze-Asb"/>
-                <outlet property="txtTitle" destination="vFh-qw-dOZ" id="hd9-VM-MU3"/>
+                <outlet property="txtTitle" destination="DjP-eU-S7A" id="fWm-Gd-iAh"/>
                 <outlet property="view" destination="2" id="3"/>
             </connections>
         </placeholder>
@@ -18,7 +18,7 @@
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="wl9-7K-gQR">
-                    <rect key="frame" x="268" y="477" width="199" height="48"/>
+                    <rect key="frame" x="285" y="472" width="199" height="48"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <color key="backgroundColor" red="0.094117656349999995" green="0.61960786580000005" blue="0.62745100259999997" alpha="1" colorSpace="deviceRGB"/>
                     <state key="normal" title="Post">
@@ -26,14 +26,14 @@
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
                 </button>
-                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" id="vFh-qw-dOZ">
-                    <rect key="frame" x="268" y="238" width="199" height="30"/>
+                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" id="ieb-2g-yM2">
+                    <rect key="frame" x="285" y="381" width="199" height="30"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                     <textInputTraits key="textInputTraits"/>
                 </textField>
-                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" id="ieb-2g-yM2">
-                    <rect key="frame" x="268" y="288" width="199" height="30"/>
+                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" id="DjP-eU-S7A">
+                    <rect key="frame" x="285" y="343" width="199" height="30"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                     <textInputTraits key="textInputTraits"/>

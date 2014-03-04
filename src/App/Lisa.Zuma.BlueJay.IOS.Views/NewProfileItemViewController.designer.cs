@@ -16,16 +16,35 @@ namespace Lisa.Zuma.BlueJay.IOS
 		MonoTouch.UIKit.UIButton btnAddProfileItem { get; set; }
 
 		[Outlet]
+		MonoTouch.UIKit.UILabel lblTitle { get; set; }
+
+		[Outlet]
+		MonoTouch.UIKit.UIPickerView pckPicker { get; set; }
+
+		[Outlet]
 		MonoTouch.UIKit.UITextField txtContent { get; set; }
 
 		[Outlet]
 		MonoTouch.UIKit.UITextField txtTitle { get; set; }
+
+		[Outlet]
+		MonoTouch.UIKit.UITextView txtTitle2 { get; set; }
 		
 		void ReleaseDesignerOutlets ()
 		{
-			if (txtTitle != null) {
-				txtTitle.Dispose ();
-				txtTitle = null;
+			if (btnAddProfileItem != null) {
+				btnAddProfileItem.Dispose ();
+				btnAddProfileItem = null;
+			}
+
+			if (lblTitle != null) {
+				lblTitle.Dispose ();
+				lblTitle = null;
+			}
+
+			if (pckPicker != null) {
+				pckPicker.Dispose ();
+				pckPicker = null;
 			}
 
 			if (txtContent != null) {
@@ -33,9 +52,14 @@ namespace Lisa.Zuma.BlueJay.IOS
 				txtContent = null;
 			}
 
-			if (btnAddProfileItem != null) {
-				btnAddProfileItem.Dispose ();
-				btnAddProfileItem = null;
+			if (txtTitle != null) {
+				txtTitle.Dispose ();
+				txtTitle = null;
+			}
+
+			if (txtTitle2 != null) {
+				txtTitle2.Dispose ();
+				txtTitle2 = null;
 			}
 		}
 	}
