@@ -1,4 +1,5 @@
 ﻿using Lisa.Zuma.BlueJay.Web.Data.Entities;
+using Lisa.Zuma.BlueJay.Web.Helpers;
 using Lisa.Zuma.BlueJay.Web.Models;
 using Lisa.Zuma.BlueJay.Web.Models.DbModels;
 using Microsoft.WindowsAzure;
@@ -115,47 +116,10 @@ namespace Lisa.Zuma.BlueJay.Web.Controllers
             Db.NoteMedia.Remove(media);
             Db.SaveChanges();
 
-            RemoveMediaFromStorage(location);
+            var storageHelper = new StorageHelper("ZumaBlueJayStorageConnectionString", "bluejay");
+            storageHelper.RemoveFromStorageByUri(location);
 
             return Ok();
-        }
-
-        private void RemoveMediaFromStorage(string location)
-        {
-            var setting = CloudConfigurationManager.GetSetting("ZumaBlueJayStorageConnectionString");
-            var account = CloudStorageAccount.Parse(setting);
-
-            var blobClient = account.CreateCloudBlobClient();
-            var container = blobClient.GetContainerReference("bluejay");
-
-            var uri = new Uri(location);
-            var blobName = uri.Segments.Last();
-            var blockBlob = container.GetBlockBlobReference(blobName);
-            blockBlob.DeleteIfExists();
-        }
-
-        private NoteMediaModel ChangeSharedAccessSignature(NoteMediaModel noteMediaModel)
-        {
-            var setting = CloudConfigurationManager.GetSetting("ZumaBlueJayStorageConnectionString");
-            var account = CloudStorageAccount.Parse(setting);
-
-            var blobClient = account.CreateCloudBlobClient();
-            var container = blobClient.GetContainerReference("bluejay");
-
-            var uri = new Uri(noteMediaModel.Location);
-            var blockName = uri.Segments.Last();
-            var blockBlob = container.GetBlockBlobReference(blockName);
-            var policy = new SharedAccessBlobPolicy
-            {
-                Permissions = SharedAccessBlobPermissions.Read,
-                SharedAccessStartTime = DateTime.UtcNow.AddMinutes(-5),
-                SharedAccessExpiryTime = DateTime.UtcNow.AddMinutes(2)
-            };
-
-            var location = blockBlob.Uri.AbsoluteUri + blockBlob.GetSharedAccessSignature(policy);
-            noteMediaModel.Location = location;
-
-            return noteMediaModel;
         }
     }
 }
