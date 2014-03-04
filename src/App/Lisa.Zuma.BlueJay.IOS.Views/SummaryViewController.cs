@@ -10,6 +10,7 @@ namespace Lisa.Zuma.BlueJay.IOS
 	{
 		private TableHelper tableHelper;
 		private TableSource tableSource;
+		private Reachability reachability;
 
 		public SummaryViewController () : base ("SummaryViewController", null)
 		{
@@ -31,10 +32,16 @@ namespace Lisa.Zuma.BlueJay.IOS
 			base.ViewDidLoad ();
 			this.NavigationItem.SetHidesBackButton (true, false);
 
+
+
 			var sourceFromTablehelper = tableHelper.DataForList();
 
 			sourceFromTablehelper.RowClicked += RowClicked_handler;
 			tblCell.Source = sourceFromTablehelper;
+
+			if(!Reachability.IsHostReachable("http://google.com")) {
+				new UIAlertView("Offline modus", "De iPad heeft geen verbinding met een WIFI netwerk, video en plaatjes zijn niet beschikbaar.", null, "ok", null).Show(); 
+			}
 		}
 
 

@@ -102,6 +102,7 @@
     <Compile Include="Camera.cs" />
     <Compile Include="PickerModel.cs" />
     <Compile Include="PickerChangedEventArgs.cs" />
+    <Compile Include="Reachability.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Lisa.Zuma.BlueJay.IOS.Data\Lisa.Zuma.BlueJay.IOS.Data.csproj">
