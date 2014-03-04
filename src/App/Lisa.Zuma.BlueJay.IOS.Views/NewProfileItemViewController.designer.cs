@@ -31,6 +31,11 @@ namespace Lisa.Zuma.BlueJay.IOS
 				btnAddProfileItem = null;
 			}
 
+			if (pckPicker != null) {
+				pckPicker.Dispose ();
+				pckPicker = null;
+			}
+
 			if (txtContent != null) {
 				txtContent.Dispose ();
 				txtContent = null;
@@ -39,11 +44,6 @@ namespace Lisa.Zuma.BlueJay.IOS
 			if (txtTitle != null) {
 				txtTitle.Dispose ();
 				txtTitle = null;
-			}
-
-			if (pckPicker != null) {
-				pckPicker.Dispose ();
-				pckPicker = null;
 			}
 		}
 	}

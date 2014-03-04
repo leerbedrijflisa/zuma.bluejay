@@ -62,7 +62,7 @@ namespace Lisa.Zuma.BlueJay.IOS
 		{
 			NewNoteViewController newNoteViewController = new NewNoteViewController(this);
 
-			label = new UIView ();
+			label = new UIButton ();
 			label.Frame = new RectangleF (0, 0, this.View.Frame.Width, this.View.Frame.Height);
 			label.BackgroundColor = UIColor.Black;
 			label.Alpha = 0.5f;

@@ -125,7 +125,17 @@ namespace Lisa.Zuma.BlueJay.IOS.Data
 			return Result;
 		}
 
-		public List<string> GetPickerItems = new List<string>{"Algemeen", "Medicijngebruik", "Allergieën", "Contactgegevens", "Hulpmiddelen", "Verzorging"};
+		public readonly IList<string> colors = new List<string>
+		{
+			"Algemeen",
+			"Medicijngebruik",
+			"Allergieën",
+			"Contactgegevens",
+			"Hulpmiddelen",
+			"Verzorging"
+		};
+
+		public IList<string> GetPickerItems = new List<string>{"Algemeen", "Medicijngebruik", "Allergieën", "Contactgegevens", "Hulpmiddelen", "Verzorging"};
 
 	}
 }
