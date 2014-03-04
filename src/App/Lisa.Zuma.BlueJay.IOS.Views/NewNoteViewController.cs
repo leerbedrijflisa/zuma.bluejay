@@ -48,7 +48,7 @@ namespace Lisa.Zuma.BlueJay.IOS
 				camera.Capture(DateTime.Today.ToString());
 			};
 
-			if(Reachability.InternetConnectionStatus == NetworkStatus.ReachableViaCarrierDataNetwork) {
+			if(Reachability.InternetConnectionStatus() == NetworkStatus.ReachableViaCarrierDataNetwork) {
 				new UIAlertView("Offline modus", "De iPad is verbonden met een mobiel netwerk, hierdoor is filmpjes plaatsen niet aangeraden!", null, "ok", null).Show(); 
 			}
 

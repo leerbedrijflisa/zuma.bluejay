@@ -10,7 +10,6 @@ namespace Lisa.Zuma.BlueJay.IOS
 	{
 		private TableHelper tableHelper;
 		private TableSource tableSource;
-		private Reachability reachability;
 
 		public SummaryViewController () : base ("SummaryViewController", null)
 		{
