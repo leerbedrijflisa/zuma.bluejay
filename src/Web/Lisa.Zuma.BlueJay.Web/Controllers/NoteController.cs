@@ -1,4 +1,5 @@
 ﻿using Lisa.Zuma.BlueJay.Web.Data.Entities;
+using Lisa.Zuma.BlueJay.Web.Helpers;
 using Lisa.Zuma.BlueJay.Web.Models;
 using Lisa.Zuma.BlueJay.Web.Models.DbModels;
 using Microsoft.WindowsAzure;
@@ -153,25 +154,10 @@ namespace Lisa.Zuma.BlueJay.Web.Controllers
                 Name = media.Name
             };
 
-            var setting = CloudConfigurationManager.GetSetting("ZumaBlueJayStorageConnectionString");
-            var account = CloudStorageAccount.Parse(setting);
+            var fileName = Guid.NewGuid().ToString() + Path.GetExtension(media.Name);
+            var storageHelper = new StorageHelper("ZumaBlueJayStorageConnectionString", "bluejay");
 
-            var blobClient = account.CreateCloudBlobClient();
-
-
-            var container = blobClient.GetContainerReference("bluejay");
-            container.CreateIfNotExists();
-
-            var blockBlob = container.GetBlockBlobReference(Guid.NewGuid().ToString() + Path.GetExtension(media.Name));
-            var policy = new SharedAccessBlobPolicy
-            {
-                Permissions = SharedAccessBlobPermissions.Write,
-                SharedAccessStartTime = DateTime.UtcNow.AddMinutes(-5),
-                SharedAccessExpiryTime = DateTime.UtcNow.AddMinutes(20)
-            };
-            blockBlob.Metadata.Add("Created", DateTime.Now.ToShortDateString());
-            var location = blockBlob.Uri.AbsoluteUri + blockBlob.GetSharedAccessSignature(policy);
-            noteMedia.MediaLocation = location;
+            noteMedia.MediaLocation = storageHelper.GetWriteableSasUri(fileName, new TimeSpan(0, 2, 0)).AbsoluteUri;
 
             return noteMedia;
         }
