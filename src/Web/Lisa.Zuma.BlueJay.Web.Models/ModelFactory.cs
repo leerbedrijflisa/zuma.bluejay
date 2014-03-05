@@ -66,16 +66,5 @@ namespace Lisa.Zuma.BlueJay.Web.Models
 
             return profileModel;
         }
-
-        private static string LoadMediaAndEncode(NoteMedia media) 
-        {
-#if DEBUG
-            var bytes = System.IO.File.ReadAllBytes(media.MediaLocation);
-#else
-            // TODO: Add support for the cloud
-#endif
-
-            return Convert.ToBase64String(bytes);
-        }
     }
 }
