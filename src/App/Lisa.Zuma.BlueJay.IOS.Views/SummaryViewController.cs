@@ -10,10 +10,12 @@ namespace Lisa.Zuma.BlueJay.IOS
 	{
 		private TableHelper tableHelper;
 		private TableSource tableSource;
+		private DataHelper dataHelper;
 
 		public SummaryViewController () : base ("SummaryViewController", null)
 		{
 			tableHelper = new TableHelper ();
+			dataHelper = new DataHelper ();
 		}
 
 		public override void DidReceiveMemoryWarning ()
@@ -24,6 +26,7 @@ namespace Lisa.Zuma.BlueJay.IOS
 		public void RowClicked_handler (object sender, RowClickedEventArgs e){
 			TimelineViewController timeLineViewController = new TimelineViewController ();
 			this.NavigationController.PushViewController (timeLineViewController, true);
+
 		}
 
 		public override void ViewDidLoad ()
@@ -38,9 +41,6 @@ namespace Lisa.Zuma.BlueJay.IOS
 			sourceFromTablehelper.RowClicked += RowClicked_handler;
 			tblCell.Source = sourceFromTablehelper;
 
-			if(!Reachability.IsHostReachable("http://google.com")) {
-				new UIAlertView("Offline modus", "De iPad heeft geen verbinding met een WIFI netwerk, video en plaatjes zijn niet beschikbaar.", null, "ok", null).Show(); 
-			}
 		}
 
 

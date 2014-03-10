@@ -12,10 +12,12 @@ namespace Lisa.Zuma.BlueJay.IOS
 		private HTMLTemplates templateParser;
 		private UIView label;
 		UIView OverlayView;
+		private DataHelper dataHelper; 
 
 		public TimelineViewController () : base ("TimelineViewController", null)
 		{
 			templateParser = new HTMLTemplates ();
+			dataHelper = new DataHelper ();
 		}
 
 		public override void DidReceiveMemoryWarning ()
@@ -31,7 +33,7 @@ namespace Lisa.Zuma.BlueJay.IOS
 			base.ViewDidLoad ();
 
 //			Console.WriteLine (ParsedHTML);
-			updateList ();
+
 
 			btnNewNote.TouchUpInside += (sender, e) => {
 				NewNote();
@@ -44,6 +46,10 @@ namespace Lisa.Zuma.BlueJay.IOS
 
 			};
 
+			dataHelper.SyncNotesByID (1, () => {
+				updateList ();
+			});
+
 			// Perform any additional setup after loading the view, typically from a nib.
 		}
 
@@ -52,10 +58,14 @@ namespace Lisa.Zuma.BlueJay.IOS
 			var ParsedHTML = templateParser.ParseTimeLine(1);
 
 			string contentDirectoryPath = Path.Combine (NSBundle.MainBundle.BundlePath, "HTML/");
+			InvokeOnMainThread (() => {
 
-			wvTimeline.LoadHtmlString(ParsedHTML, new NSUrl(contentDirectoryPath, true));
+				wvTimeline.LoadHtmlString(ParsedHTML, new NSUrl(contentDirectoryPath, true));
 
-			wvTimeline.ScalesPageToFit = true;
+				wvTimeline.ScalesPageToFit = true;
+
+			});
+
 		}
 
 		public void NewNote()

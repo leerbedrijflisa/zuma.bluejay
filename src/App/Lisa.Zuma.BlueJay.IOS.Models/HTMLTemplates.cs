@@ -92,7 +92,7 @@ namespace Lisa.Zuma.BlueJay.IOS.Models
 
 				var ItemOwner = db.GetUserById (note.OwnerID);
 
-				TemporaryMedia = this.NoteMediaHTML (note.Text, note.Media);
+				TemporaryMedia = this.NoteMediaHTML(note.Text, note.ParsedMedia);
 
 				if (ItemOwner.Role == 1) {
 					direction = "left";

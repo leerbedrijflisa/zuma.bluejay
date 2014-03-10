@@ -7,10 +7,12 @@ namespace Lisa.Zuma.BlueJay.IOS.Models
 	public class DataHelper
 	{
 		private Database database;
+		private HTMLTemplates templateParser;
 
 		public DataHelper ()
 		{
 			database = new Database ();
+			templateParser = new HTMLTemplates ();
 		}
 
 		public void SignIn(int id)
@@ -20,12 +22,21 @@ namespace Lisa.Zuma.BlueJay.IOS.Models
 
 		public void SetNewNote (string text, string media)
 		{
-			database.InsertNote (new Notes{DosierID = 1, Text = text, Media = "https://zumabluejay.blob.core.windows.net/publicfiles/e7fb2c96-e605-4fbb-bd3e-ba334e87cb4f.mp4"});
+			database.InsertNote (new Notes{DosierID = 1, Text = text});
 		}
 
 		public IList<string> picker()
 		{
 			return database.colors;
+		}
+
+		public void SyncNotesByID(int id, Action DoSomething)
+		{
+			database.SyncAllNotesFromDosier(id, ()=>{
+
+				DoSomething();
+
+			});
 		}
 	}
 }
