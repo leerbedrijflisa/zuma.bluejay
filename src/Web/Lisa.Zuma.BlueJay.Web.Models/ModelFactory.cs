@@ -13,10 +13,11 @@ namespace Lisa.Zuma.BlueJay.Web.Models
             var model = new DossierModel
             {
                 Id = dossier.Id,
-                Notes = new List<NoteModel>()
+                Notes = new List<NoteModel>(),
+                Details = new List<DossierDetailModel>()
             };
 
-            model.Profile = ModelFactory.Create(dossier.Profile);
+            
 
             foreach (var note in dossier.Notes)
             {
@@ -57,14 +58,27 @@ namespace Lisa.Zuma.BlueJay.Web.Models
             return noteMediaModel;
         }
 
-        public static ProfileModel Create(Profile profile)
+        public static DossierDetailModel Create(DossierDetail dossierDetail)
         {
-            var profileModel = new ProfileModel
+            return new DossierDetailModel
             {
-                Id = profile.Id
+                Id = dossierDetail.Id,
+                Category = dossierDetail.Category,
+                Contents = dossierDetail.Contents
             };
+        }
 
-            return profileModel;
+        public static IEnumerable<DossierDetailModel> Create(IEnumerable<DossierDetail> dossierDetails)
+        {
+            foreach (var detail in dossierDetails)
+            {
+                yield return new DossierDetailModel
+                {
+                    Id = detail.Id,
+                    Category = detail.Category,
+                    Contents = detail.Contents
+                };
+            }
         }
     }
 }

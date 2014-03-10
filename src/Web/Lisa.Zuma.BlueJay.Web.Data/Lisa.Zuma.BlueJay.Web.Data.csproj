@@ -60,7 +60,6 @@
     <Compile Include="Entities\DossierDetail.cs" />
     <Compile Include="Entities\Note.cs" />
     <Compile Include="Entities\NoteMedia.cs" />
-    <Compile Include="Entities\Profile.cs" />
     <Compile Include="Entities\User.cs" />
     <Compile Include="Migrations\201402251327093_InitialMigration.cs" />
     <Compile Include="Migrations\201402251327093_InitialMigration.Designer.cs">
