@@ -6,7 +6,7 @@ namespace Lisa.Zuma.BlueJay.Web.Models.DbModels
     public class DossierModel
     {
         public int Id { get; set; }
-        public ProfileModel Profile { get; set; }
+        public List<DossierDetailModel> Details { get; set; }
         public List<NoteModel> Notes { get; set; }
     }
 }

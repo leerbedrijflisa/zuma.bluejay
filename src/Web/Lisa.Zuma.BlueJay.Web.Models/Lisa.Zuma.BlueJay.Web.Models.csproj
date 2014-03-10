@@ -52,7 +52,6 @@
     <Compile Include="DbModels\DossierModel.cs" />
     <Compile Include="DbModels\NoteMediaModel.cs" />
     <Compile Include="DbModels\NoteModel.cs" />
-    <Compile Include="DbModels\ProfileModel.cs" />
     <Compile Include="ModelFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
