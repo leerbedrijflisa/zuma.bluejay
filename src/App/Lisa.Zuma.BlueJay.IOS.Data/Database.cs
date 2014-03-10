@@ -2,6 +2,9 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Collections.Generic;
+using RestSharp;
+using Newtonsoft.Json.Linq;
+using Newtonsoft.Json;
 
 namespace Lisa.Zuma.BlueJay.IOS.Data
 {
@@ -12,6 +15,7 @@ namespace Lisa.Zuma.BlueJay.IOS.Data
 		private User ReturnUser;
 		private Notes ReturnNote;
 		private User ReturnUserLoggedIn;
+		private RestClient client;
 
 		public Database ()
 		{
@@ -27,7 +31,32 @@ namespace Lisa.Zuma.BlueJay.IOS.Data
 			db.CreateTable<ProfileItems>();
 			db.CreateTable<User>();
 
+
 			CreateDummyInfo ();
+
+			client = new RestClient ("http://zumabluejay-test.azurewebsites.net");
+		}
+
+		public void SyncAllNotesFromDosier(int dosier, Action AsyncFunc){
+
+			db.DropTable<Notes> ();
+
+			var request = new RestRequest (string.Format("api/dossier/{0}/notes/", dosier), Method.GET);
+
+			client.ExecuteAsync (request, response => {
+				//Product RequestedJson = JsonConvert.DeserializeObject<Product>();
+
+				var callback = JsonConvert.DeserializeObject<List<Notes>>(response.Content);
+
+				foreach(var Result in callback){
+					Result.DosierID = dosier;
+					Result.OwnerID = 1;
+					db.Insert(Result);
+				}
+
+				AsyncFunc();
+
+			});
 		}
 
 		public void CreateDummyInfo()
@@ -35,7 +64,7 @@ namespace Lisa.Zuma.BlueJay.IOS.Data
 			var count = db.Query<Dosier>("SELECT * FROM Dosier");
 
 			if (count.Count == 0) {
-				db.Insert (new Dosier{Name = "Martijn"});
+				db.Insert(new Dosier{Name = "Martijn"});
 			}
 
  			var count2 = db.Query<User>("SELECT * FROM User");
@@ -109,7 +138,19 @@ namespace Lisa.Zuma.BlueJay.IOS.Data
 
 			note.OwnerID = user.ID;
 
-			db.Insert (note);
+			var request = new RestRequest (string.Format("api/dossier/{0}/notes/", 1), Method.POST);
+
+			request.RequestFormat = DataFormat.Json;
+			request.AddBody (new {text=note.Text, media=new object[0]});
+
+			client.ExecuteAsync(request, response => {
+				Console.WriteLine("klaar :"+ response.Content);
+				var callback = JObject.Parse(response.Content);
+				db.Insert(new Notes{Text = callback["text"].ToString()});
+			});
+
+
+
 		}
 
 		public void InsertProfileItem(ProfileItems newItem)

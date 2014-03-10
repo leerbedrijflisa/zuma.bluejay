@@ -8,11 +8,14 @@ using MonoTouch.UIKit;
 using Xamarin.Media;
 using MonoTouch.AssetsLibrary;
 using System.IO;
+using Lisa.Zuma.BlueJay.IOS.Data;
 
 namespace Lisa.Zuma.BlueJay.IOS.Models
 {
 	public class Camera
 	{
+
+		private UploadVideo uploadVideo;
 
 		public void Capture(string date){
 
@@ -34,6 +37,9 @@ namespace Lisa.Zuma.BlueJay.IOS.Models
 
 					ALAssetsLibrary library = new ALAssetsLibrary();                   
 					library.WriteVideoToSavedPhotosAlbum(new NSUrl(message.Result.Path), (assetURL, error) => {
+						uploadVideo = new UploadVideo();
+						uploadVideo.Store(new NoteMediaModel{Id = 1, Location = message.Result.Path}, message.Result.Path, 1);
+				
 						File.Delete(message.Result.Path);
 					});
 

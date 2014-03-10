@@ -73,7 +73,7 @@ namespace Lisa.Zuma.BlueJay.IOS.Models
 			var MediaTags = MediaHTML.Split('$');
 
 			ReturnHTML += MediaTags[1].Replace ("###ITEM_CONTENT###", MediaString.Text);	
-			ReturnHTML += MediaTags [2].Replace ("###ITEM_CONTENT###", MediaString.Media);	
+//			ReturnHTML += MediaTags [2].Replace ("###ITEM_CONTENT###", MediaString.Media);	
 
 			return ReturnHTML;
 		}
