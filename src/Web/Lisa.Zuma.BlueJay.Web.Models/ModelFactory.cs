@@ -13,18 +13,25 @@ namespace Lisa.Zuma.BlueJay.Web.Models
             var model = new DossierModel
             {
                 Id = dossier.Id,
-                Notes = new List<NoteModel>()
+                Notes = new List<NoteModel>(),
+                Details = new List<DossierDetailModel>()
             };
 
-            model.Profile = ModelFactory.Create(dossier.Profile);
+            model.Details = ModelFactory.Create(dossier.Details)
+                                        .ToList();
 
-            foreach (var note in dossier.Notes)
-            {
-                var noteModel = ModelFactory.Create(note);
-                model.Notes.Add(noteModel);
-            }
+            model.Notes = ModelFactory.Create(dossier.Notes)
+                                        .ToList();
 
             return model;
+        }
+
+        public static IEnumerable<DossierModel> Create(IEnumerable<Dossier> dossiers)
+        {
+            foreach (var dossier in dossiers)
+            {
+                yield return ModelFactory.Create(dossier);
+            }
         }
 
         public static NoteModel Create(Note note)
@@ -36,13 +43,18 @@ namespace Lisa.Zuma.BlueJay.Web.Models
                 Media = new List<NoteMediaModel>()
             };
 
-            foreach (var media in note.Media)
-            {
-                var noteMediaModel = ModelFactory.Create(media);
-                model.Media.Add(noteMediaModel);
-            }
+            model.Media = ModelFactory.Create(note.Media)
+                                        .ToList();
 
             return model;
+        }
+
+        public static IEnumerable<NoteModel> Create(IEnumerable<Note> notes)
+        {
+            foreach (var note in notes)
+            {
+                yield return ModelFactory.Create(note);
+            }
         }
 
         public static NoteMediaModel Create(NoteMedia noteMedia)
@@ -57,14 +69,30 @@ namespace Lisa.Zuma.BlueJay.Web.Models
             return noteMediaModel;
         }
 
-        public static ProfileModel Create(Profile profile)
+        public static IEnumerable<NoteMediaModel> Create(IEnumerable<NoteMedia> noteMedias)
         {
-            var profileModel = new ProfileModel
+            foreach (var media in noteMedias)
             {
-                Id = profile.Id
-            };
+                yield return ModelFactory.Create(media);
+            }
+        }
 
-            return profileModel;
+        public static DossierDetailModel Create(DossierDetail dossierDetail)
+        {
+            return new DossierDetailModel
+            {
+                Id = dossierDetail.Id,
+                Category = dossierDetail.Category,
+                Contents = dossierDetail.Contents
+            };
+        }
+
+        public static IEnumerable<DossierDetailModel> Create(IEnumerable<DossierDetail> dossierDetails)
+        {
+            foreach (var detail in dossierDetails)
+            {
+                yield return ModelFactory.Create(detail);
+            }
         }
     }
 }

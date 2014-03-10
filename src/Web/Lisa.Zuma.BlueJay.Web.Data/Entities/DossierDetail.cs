@@ -1,15 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Lisa.Zuma.BlueJay.Web.Data.Entities
 {
-    public class Profile
+    public class DossierDetail
     {
-        [Key, ForeignKey("Dossier")]
+        [Key]
         public int Id { get; set; }
 
+        [Required]
+        public string Category { get; set; }
+
+        [Required]
+        public string Contents { get; set; }
+
+        [Required]
+        public int DossierId { get; set; }
         public virtual Dossier Dossier { get; set; }
     }
 }

@@ -24,6 +24,6 @@ namespace Lisa.Zuma.BlueJay.Web.Data
         public DbSet<User> Users { get; set; }
         public DbSet<NoteMedia> NoteMedia { get; set; }
         public DbSet<Dossier> Dossiers { get; set; }
-        public DbSet<Profile> Profiles { get; set; }
+        public DbSet<DossierDetail> DossierDetails { get; set; }
     }
 }

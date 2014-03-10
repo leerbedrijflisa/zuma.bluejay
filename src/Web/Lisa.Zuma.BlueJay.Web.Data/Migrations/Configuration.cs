@@ -20,7 +20,7 @@ namespace Lisa.Zuma.BlueJay.Web.Data.Migrations
             //  This method will be called after migrating to the latest version.
             var dossier = new Dossier
             {
-                Profile = new Profile()
+                Details = new List<DossierDetail>()
             };
 
             var parent = new User
