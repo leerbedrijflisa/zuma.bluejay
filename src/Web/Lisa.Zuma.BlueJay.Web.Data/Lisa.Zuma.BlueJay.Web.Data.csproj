@@ -57,6 +57,7 @@
   <ItemGroup>
     <Compile Include="BlueJayContext.cs" />
     <Compile Include="Entities\Dossier.cs" />
+    <Compile Include="Entities\DossierDetail.cs" />
     <Compile Include="Entities\Note.cs" />
     <Compile Include="Entities\NoteMedia.cs" />
     <Compile Include="Entities\Profile.cs" />
