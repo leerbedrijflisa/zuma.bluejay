@@ -17,15 +17,21 @@ namespace Lisa.Zuma.BlueJay.Web.Models
                 Details = new List<DossierDetailModel>()
             };
 
-            
+            model.Details = ModelFactory.Create(dossier.Details)
+                                        .ToList();
 
-            foreach (var note in dossier.Notes)
-            {
-                var noteModel = ModelFactory.Create(note);
-                model.Notes.Add(noteModel);
-            }
+            model.Notes = ModelFactory.Create(dossier.Notes)
+                                        .ToList();
 
             return model;
+        }
+
+        public static IEnumerable<DossierModel> Create(IEnumerable<Dossier> dossiers)
+        {
+            foreach (var dossier in dossiers)
+            {
+                yield return ModelFactory.Create(dossier);
+            }
         }
 
         public static NoteModel Create(Note note)
@@ -37,13 +43,18 @@ namespace Lisa.Zuma.BlueJay.Web.Models
                 Media = new List<NoteMediaModel>()
             };
 
-            foreach (var media in note.Media)
-            {
-                var noteMediaModel = ModelFactory.Create(media);
-                model.Media.Add(noteMediaModel);
-            }
+            model.Media = ModelFactory.Create(note.Media)
+                                        .ToList();
 
             return model;
+        }
+
+        public static IEnumerable<NoteModel> Create(IEnumerable<Note> notes)
+        {
+            foreach (var note in notes)
+            {
+                yield return ModelFactory.Create(note);
+            }
         }
 
         public static NoteMediaModel Create(NoteMedia noteMedia)
@@ -56,6 +67,14 @@ namespace Lisa.Zuma.BlueJay.Web.Models
             };
 
             return noteMediaModel;
+        }
+
+        public static IEnumerable<NoteMediaModel> Create(IEnumerable<NoteMedia> noteMedias)
+        {
+            foreach (var media in noteMedias)
+            {
+                yield return ModelFactory.Create(media);
+            }
         }
 
         public static DossierDetailModel Create(DossierDetail dossierDetail)
@@ -72,12 +91,7 @@ namespace Lisa.Zuma.BlueJay.Web.Models
         {
             foreach (var detail in dossierDetails)
             {
-                yield return new DossierDetailModel
-                {
-                    Id = detail.Id,
-                    Category = detail.Category,
-                    Contents = detail.Contents
-                };
+                yield return ModelFactory.Create(detail);
             }
         }
     }
