@@ -48,14 +48,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DbModels\DossierDetailModel.cs" />
-    <Compile Include="DbModels\DossierModel.cs" />
-    <Compile Include="DbModels\NoteMediaModel.cs" />
-    <Compile Include="DbModels\NoteModel.cs" />
-    <Compile Include="ModelFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="DbModels\" />
     <Folder Include="ViewModels\" />
   </ItemGroup>
   <ItemGroup>

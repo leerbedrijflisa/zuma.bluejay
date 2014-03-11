@@ -1,7 +1,7 @@
-﻿using Lisa.Zuma.BlueJay.Web.Data.Entities;
+﻿using Lisa.Zuma.BlueJay.Models;
+using Lisa.Zuma.BlueJay.Web.Data.Entities;
 using Lisa.Zuma.BlueJay.Web.Helpers;
 using Lisa.Zuma.BlueJay.Web.Models;
-using Lisa.Zuma.BlueJay.Web.Models.DbModels;
 using Microsoft.WindowsAzure;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Blob;
@@ -30,7 +30,7 @@ namespace Lisa.Zuma.BlueJay.Web.Controllers
                 return NotFound();
             }
 
-            var result = new List<NoteMediaModel>();
+            var result = new List<NoteMedia>();
             foreach (var media in note.Media)
             {
                 var noteMediaModel = ModelFactory.Create(media);
@@ -64,7 +64,7 @@ namespace Lisa.Zuma.BlueJay.Web.Controllers
             return Ok(model);
         }
 
-        public IHttpActionResult Put(int dossierId, int noteId, int id, [FromBody] NoteMediaModel noteMediaModel)
+        public IHttpActionResult Put(int dossierId, int noteId, int id, [FromBody] NoteMedia noteMediaModel)
         {
             var dossier = Db.Dossiers.FirstOrDefault(d => d.Id == dossierId);
             if (dossier == null)

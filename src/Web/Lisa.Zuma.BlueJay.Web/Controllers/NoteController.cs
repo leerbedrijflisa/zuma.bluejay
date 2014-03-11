@@ -1,7 +1,7 @@
-﻿using Lisa.Zuma.BlueJay.Web.Data.Entities;
+﻿using Lisa.Zuma.BlueJay.Models;
+using Lisa.Zuma.BlueJay.Web.Data.Entities;
 using Lisa.Zuma.BlueJay.Web.Helpers;
 using Lisa.Zuma.BlueJay.Web.Models;
-using Lisa.Zuma.BlueJay.Web.Models.DbModels;
 using Microsoft.WindowsAzure;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Blob;
@@ -29,7 +29,7 @@ namespace Lisa.Zuma.BlueJay.Web.Controllers
                 return NotFound();
             }
 
-            var result = new List<NoteModel>();
+            var result = new List<Note>();
 
             foreach (var note in dossier.Notes)
             {
@@ -70,7 +70,7 @@ namespace Lisa.Zuma.BlueJay.Web.Controllers
         /// <param name="dossierId">The id of the dossier to which this note belongs.</param>
         /// <param name="noteModel">The model used to create the note.</param>
         /// <returns></returns>
-        public IHttpActionResult Post(int dossierId, [FromBody] NoteModel noteModel)
+        public IHttpActionResult Post(int dossierId, [FromBody] Note noteModel)
         {
             var dossier = Db.Dossiers.FirstOrDefault(d => d.Id == dossierId);
             if (dossier == null)
@@ -78,10 +78,10 @@ namespace Lisa.Zuma.BlueJay.Web.Controllers
                 return NotFound();
             }
 
-            var note = new Note
+            var note = new NoteData
             {
                 Text = noteModel.Text,
-                Media = new List<NoteMedia>()
+                Media = new List<NoteMediaData>()
             };
 
             foreach (var media in noteModel.Media)
@@ -104,7 +104,7 @@ namespace Lisa.Zuma.BlueJay.Web.Controllers
         /// <param name="dossierId">The id of the dossier to which this note belongs.</param>
         /// <param name="noteModel">The model describing the contents of the note.</param>
         /// <returns></returns>
-        public IHttpActionResult Put(int dossierId, [FromBody] NoteModel noteModel)
+        public IHttpActionResult Put(int dossierId, [FromBody] Note noteModel)
         {
             var dossier = Db.Dossiers.FirstOrDefault(d => d.Id == dossierId);
             if (dossier == null)
@@ -147,9 +147,9 @@ namespace Lisa.Zuma.BlueJay.Web.Controllers
             return Ok();
         }
 
-        public NoteMedia StoreMedia(NoteMediaModel media)
+        public NoteMediaData StoreMedia(NoteMedia media)
         {
-            var noteMedia = new NoteMedia
+            var noteMedia = new NoteMediaData
             {
                 Name = media.Name
             };

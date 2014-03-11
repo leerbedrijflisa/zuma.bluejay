@@ -93,9 +93,9 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Lisa.Zuma.BlueJay.Web.Models\Lisa.Zuma.BlueJay.Web.Models.csproj">
-      <Project>{00faf692-00d2-4d06-865b-b223395f490f}</Project>
-      <Name>Lisa.Zuma.BlueJay.Web.Models</Name>
+    <ProjectReference Include="..\Lisa.Zuma.BlueJay.Models\Lisa.Zuma.BlueJay.Models.csproj">
+      <Project>{b0a0d8c1-6b80-4fbb-bcaa-aeab19337b81}</Project>
+      <Name>Lisa.Zuma.BlueJay.Models</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -56,11 +56,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BlueJayContext.cs" />
-    <Compile Include="Entities\Dossier.cs" />
-    <Compile Include="Entities\DossierDetail.cs" />
-    <Compile Include="Entities\Note.cs" />
-    <Compile Include="Entities\NoteMedia.cs" />
-    <Compile Include="Entities\User.cs" />
+    <Compile Include="Entities\DossierData.cs" />
+    <Compile Include="Entities\DossierDetailData.cs" />
+    <Compile Include="Entities\NoteData.cs" />
+    <Compile Include="Entities\NoteMediaData.cs" />
+    <Compile Include="Entities\UserData.cs" />
     <Compile Include="Migrations\201402251327093_InitialMigration.cs" />
     <Compile Include="Migrations\201402251327093_InitialMigration.Designer.cs">
       <DependentUpon>201402251327093_InitialMigration.cs</DependentUpon>
@@ -68,6 +68,10 @@
     <Compile Include="Migrations\201403101116175_DossierDetails.cs" />
     <Compile Include="Migrations\201403101116175_DossierDetails.Designer.cs">
       <DependentUpon>201403101116175_DossierDetails.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201403111106403_EntityRefactorMigration.cs" />
+    <Compile Include="Migrations\201403111106403_EntityRefactorMigration.Designer.cs">
+      <DependentUpon>201403111106403_EntityRefactorMigration.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -82,6 +86,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201403101116175_DossierDetails.resx">
       <DependentUpon>201403101116175_DossierDetails.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201403111106403_EntityRefactorMigration.resx">
+      <DependentUpon>201403111106403_EntityRefactorMigration.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

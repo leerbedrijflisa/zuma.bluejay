@@ -1,4 +1,4 @@
-﻿using Lisa.Zuma.BlueJay.Web.Models.DbModels;
+﻿using Lisa.Zuma.BlueJay.Models;
 using RestSharp;
 using System;
 using System.Collections.Generic;
@@ -936,10 +936,10 @@ namespace Lisa.Zuma.BlueJay.Web.Test
                 return;
             }
 
-            var model = new NoteModel
+            var model = new Note
             {
                 Text = txtMessage.Text,
-                Media = new List<NoteMediaModel>()
+                Media = new List<NoteMedia>()
             };
 
             foreach (var item in lbMedia.Items)
@@ -948,7 +948,7 @@ namespace Lisa.Zuma.BlueJay.Web.Test
                 if (item != null) {
                     var name = Path.GetFileName(path);
 
-                    var noteMediaModel = new NoteMediaModel
+                    var noteMediaModel = new NoteMedia
                     {
                         Name = Path.GetFileName((string)item)
                     };
@@ -972,7 +972,7 @@ namespace Lisa.Zuma.BlueJay.Web.Test
             request.RequestFormat = DataFormat.Json;
             request.AddBody(model);
 
-            var response = restClient.Execute<NoteModel>(request);
+            var response = restClient.Execute<Note>(request);
 
             var boxItems = lbMedia.Items.Cast<string>();
             foreach (var media in response.Data.Media)
@@ -987,7 +987,7 @@ namespace Lisa.Zuma.BlueJay.Web.Test
             }
         }
 
-        private async void Store(NoteMediaModel media, string path, int noteId)
+        private async void Store(NoteMedia media, string path, int noteId)
         {
             var extension = Path.GetExtension(path);
             if (extension.StartsWith("."))
@@ -1021,7 +1021,7 @@ namespace Lisa.Zuma.BlueJay.Web.Test
                         request.AddUrlSegment("id", media.Id.ToString());
                         request.AddBody(media);
 
-                        restClient.Execute<NoteMediaModel>(request);
+                        restClient.Execute<NoteMedia>(request);
                     }
                 }
             }

@@ -1,20 +1,20 @@
-﻿using Lisa.Zuma.BlueJay.Web.Data.Entities;
-using Lisa.Zuma.BlueJay.Web.Models.DbModels;
+﻿using Lisa.Zuma.BlueJay.Models;
+using Lisa.Zuma.BlueJay.Web.Data.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Lisa.Zuma.BlueJay.Web.Models
+namespace Lisa.Zuma.BlueJay.Web.Helpers
 {
     public static class ModelFactory
     {
-        public static DossierModel Create(Dossier dossier)
+        public static Dossier Create(DossierData dossier)
         {
-            var model = new DossierModel
+            var model = new Dossier
             {
                 Id = dossier.Id,
-                Notes = new List<NoteModel>(),
-                Details = new List<DossierDetailModel>()
+                Notes = new List<Note>(),
+                Details = new List<DossierDetail>()
             };
 
             model.Details = ModelFactory.Create(dossier.Details)
@@ -26,7 +26,7 @@ namespace Lisa.Zuma.BlueJay.Web.Models
             return model;
         }
 
-        public static IEnumerable<DossierModel> Create(IEnumerable<Dossier> dossiers)
+        public static IEnumerable<Dossier> Create(IEnumerable<DossierData> dossiers)
         {
             foreach (var dossier in dossiers)
             {
@@ -34,13 +34,13 @@ namespace Lisa.Zuma.BlueJay.Web.Models
             }
         }
 
-        public static NoteModel Create(Note note)
+        public static Note Create(NoteData note)
         {
-            var model = new NoteModel
+            var model = new Note
             {
                 Id = note.Id,
                 Text = note.Text,
-                Media = new List<NoteMediaModel>()
+                Media = new List<NoteMedia>()
             };
 
             model.Media = ModelFactory.Create(note.Media)
@@ -49,7 +49,7 @@ namespace Lisa.Zuma.BlueJay.Web.Models
             return model;
         }
 
-        public static IEnumerable<NoteModel> Create(IEnumerable<Note> notes)
+        public static IEnumerable<Note> Create(IEnumerable<NoteData> notes)
         {
             foreach (var note in notes)
             {
@@ -57,9 +57,9 @@ namespace Lisa.Zuma.BlueJay.Web.Models
             }
         }
 
-        public static NoteMediaModel Create(NoteMedia noteMedia)
+        public static NoteMedia Create(NoteMediaData noteMedia)
         {
-            var noteMediaModel = new NoteMediaModel
+            var noteMediaModel = new NoteMedia
             {
                 Id = noteMedia.Id,
                 Name = noteMedia.Name,
@@ -69,7 +69,7 @@ namespace Lisa.Zuma.BlueJay.Web.Models
             return noteMediaModel;
         }
 
-        public static IEnumerable<NoteMediaModel> Create(IEnumerable<NoteMedia> noteMedias)
+        public static IEnumerable<NoteMedia> Create(IEnumerable<NoteMediaData> noteMedias)
         {
             foreach (var media in noteMedias)
             {
@@ -77,9 +77,9 @@ namespace Lisa.Zuma.BlueJay.Web.Models
             }
         }
 
-        public static DossierDetailModel Create(DossierDetail dossierDetail)
+        public static DossierDetail Create(DossierDetailData dossierDetail)
         {
-            return new DossierDetailModel
+            return new DossierDetail
             {
                 Id = dossierDetail.Id,
                 Category = dossierDetail.Category,
@@ -87,7 +87,7 @@ namespace Lisa.Zuma.BlueJay.Web.Models
             };
         }
 
-        public static IEnumerable<DossierDetailModel> Create(IEnumerable<DossierDetail> dossierDetails)
+        public static IEnumerable<DossierDetail> Create(IEnumerable<DossierDetailData> dossierDetails)
         {
             foreach (var detail in dossierDetails)
             {
