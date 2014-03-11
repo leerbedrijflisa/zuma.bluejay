@@ -78,10 +78,10 @@ namespace Lisa.Zuma.BlueJay.Web.Controllers
                 return NotFound();
             }
 
-            var note = new Note
+            var note = new NoteData
             {
                 Text = noteModel.Text,
-                Media = new List<NoteMedia>()
+                Media = new List<NoteMediaData>()
             };
 
             foreach (var media in noteModel.Media)
@@ -147,9 +147,9 @@ namespace Lisa.Zuma.BlueJay.Web.Controllers
             return Ok();
         }
 
-        public NoteMedia StoreMedia(NoteMediaModel media)
+        public NoteMediaData StoreMedia(NoteMediaModel media)
         {
-            var noteMedia = new NoteMedia
+            var noteMedia = new NoteMediaData
             {
                 Name = media.Name
             };

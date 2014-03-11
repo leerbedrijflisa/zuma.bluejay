@@ -50,7 +50,7 @@ namespace Lisa.Zuma.BlueJay.Web.Controllers
                 return NotFound();
             }
 
-            var detail = new DossierDetail
+            var detail = new DossierDetailData
             {
                 Category = dossierDetailModel.Category,
                 Contents = dossierDetailModel.Contents
