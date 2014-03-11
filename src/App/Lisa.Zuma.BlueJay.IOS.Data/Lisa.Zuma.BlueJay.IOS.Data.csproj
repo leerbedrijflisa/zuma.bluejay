@@ -104,6 +104,8 @@
     <Compile Include="Entities\ProfileItems.cs" />
     <Compile Include="UploadVideo.cs" />
     <Compile Include="NoteMediaModel.cs" />
+    <Compile Include="Entities\TemporaryItemMedia.cs" />
+    <Compile Include="Entities\Media.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

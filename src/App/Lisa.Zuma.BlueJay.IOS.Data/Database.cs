@@ -30,6 +30,7 @@ namespace Lisa.Zuma.BlueJay.IOS.Data
 			db.CreateTable<Profile>();
 			db.CreateTable<ProfileItems>();
 			db.CreateTable<User>();
+			db.CreateTable<TemporaryItemMedia> ();
 
 
 			CreateDummyInfo ();
@@ -141,7 +142,7 @@ namespace Lisa.Zuma.BlueJay.IOS.Data
 			var request = new RestRequest (string.Format("api/dossier/{0}/notes/", 1), Method.POST);
 
 			request.RequestFormat = DataFormat.Json;
-			request.AddBody (new {text=note.Text, media=new object[0]});
+			request.AddBody (note);
 
 			client.ExecuteAsync(request, response => {
 				Console.WriteLine("klaar :"+ response.Content);
@@ -161,7 +162,25 @@ namespace Lisa.Zuma.BlueJay.IOS.Data
 
 		public List<ProfileItems> GetProfileItemsByProfileID(int profileId)
 		{
-			var Result = db.Query<ProfileItems> ("SELECT * FROM ProfileItems WHERE ProfileID='"+ profileId +"'");
+			var Result = db.Query<ProfileItems> ("SELECT * FROM ProfileItems WHERE ProfileID='" + profileId + "'");
+
+			return Result;
+	
+		}
+
+		public void InsertNewTemporaryMediaItem(TemporaryItemMedia item)
+		{
+			db.Insert(item);
+		}
+
+		public void DeleteAllTemporaryMediaItems()
+		{
+			db.Query<TemporaryItemMedia> ("DELETE * FROM TemporaryItemMedia");
+		}
+
+		public List<TemporaryItemMedia> ReturnAllTemporaryMediaItems()
+		{
+			var Result = db.Query<TemporaryItemMedia> ("SELECT * FROM TemporaryItemMedia");
 
 			return Result;
 		}

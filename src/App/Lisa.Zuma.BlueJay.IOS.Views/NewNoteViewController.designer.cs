@@ -16,6 +16,9 @@ namespace Lisa.Zuma.BlueJay.IOS
 		MonoTouch.UIKit.UIButton btnCamera { get; set; }
 
 		[Outlet]
+		MonoTouch.UIKit.UIButton btnPickVideo { get; set; }
+
+		[Outlet]
 		MonoTouch.UIKit.UIButton btnSave { get; set; }
 		
 		void ReleaseDesignerOutlets ()
@@ -28,6 +31,11 @@ namespace Lisa.Zuma.BlueJay.IOS
 			if (btnSave != null) {
 				btnSave.Dispose ();
 				btnSave = null;
+			}
+
+			if (btnPickVideo != null) {
+				btnPickVideo.Dispose ();
+				btnPickVideo = null;
 			}
 		}
 	}

@@ -20,9 +20,15 @@ namespace Lisa.Zuma.BlueJay.IOS.Models
 			database.DummyLoggedIn (id);
 		}
 
-		public void SetNewNote (string text, string media)
+		public void SetNewNote (string text)
 		{
-			database.InsertNote (new Notes{DosierID = 1, Text = text});
+			var Note = new Notes{DosierID = 1, Text = text, Media = new List<Media>()};
+
+			foreach (var x in this.GetAllDataElements()) {
+				Note.Media.Add (new Media{Location = x.Path});
+			}
+
+			database.InsertNote (Note);
 		}
 
 		public IList<string> picker()
@@ -38,6 +44,22 @@ namespace Lisa.Zuma.BlueJay.IOS.Models
 
 			});
 		}
+
+		public void InsertNewDataElement(int type, string path)
+		{
+			database.InsertNewTemporaryMediaItem (new TemporaryItemMedia{Type = type, Path = path});
+		}
+
+		public void DeleteAllDataElements()
+		{
+			database.DeleteAllTemporaryMediaItems ();
+		}
+
+		private List<TemporaryItemMedia> GetAllDataElements()
+		{
+			return database.ReturnAllTemporaryMediaItems (); 
+		}
+
 	}
 }
 

@@ -68,6 +68,7 @@ namespace Lisa.Zuma.BlueJay.IOS
 
 		}
 
+
 		public void NewNote()
 		{
 			NewNoteViewController newNoteViewController = new NewNoteViewController(this);

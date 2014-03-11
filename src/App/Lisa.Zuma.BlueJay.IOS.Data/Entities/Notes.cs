@@ -7,7 +7,7 @@ namespace Lisa.Zuma.BlueJay.IOS.Data
 	public class Notes
 	{
 		public Notes(){
-			Media = new List<string> ();
+			Media = new List<Media> ();
 		}
 
 		[PrimaryKey, AutoIncrement]
@@ -16,7 +16,7 @@ namespace Lisa.Zuma.BlueJay.IOS.Data
 		public int DosierID { get; set; }
 		public string Text { get; set; }	
 		[Ignore]
-		public List<string> Media { get; set; }
+		public List<Media> Media { get; set; }
 
 		public string ParsedMedia 
 		{
@@ -25,7 +25,7 @@ namespace Lisa.Zuma.BlueJay.IOS.Data
 				string Result = "";
 
 				foreach (var Results in Media) {
-					Result += Results + "@";
+					Result += Results.Location + "@";
 				}
 
 				return Result;
@@ -35,7 +35,10 @@ namespace Lisa.Zuma.BlueJay.IOS.Data
 			{
 				var SplitValue = value.Split (new char[]{'@'});
 
-				Media.AddRange (SplitValue);
+				foreach (var x in SplitValue) {
+					var model = new Media {Location = x};
+					Media.Add (model);
+				}
 			}
 		}
 

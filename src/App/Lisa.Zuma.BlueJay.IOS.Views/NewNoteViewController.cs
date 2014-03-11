@@ -3,6 +3,9 @@ using System.Drawing;
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
 using  Lisa.Zuma.BlueJay.IOS.Models;
+using System.IO;
+using Xamarin.Media;
+using System.Threading.Tasks;
 
 namespace Lisa.Zuma.BlueJay.IOS
 {
@@ -11,6 +14,7 @@ namespace Lisa.Zuma.BlueJay.IOS
 		private TimelineViewController timeLineViewController;
 		private TimelineViewController parentview;
 		private DataHelper dataHelper;
+		private UIImagePickerController imagePicker;
 
 		public NewNoteViewController (TimelineViewController thisview) : base ("NewNoteViewController", null)
 		{
@@ -36,9 +40,11 @@ namespace Lisa.Zuma.BlueJay.IOS
 			inputText.BackgroundColor = UIColor.FromRGB (242,242,242);
 			View.Add (inputText);
 
+			imagePicker = new UIImagePickerController ();
+
 			btnSave.TouchUpInside += (sender, e) => {
 				parentview.NavigationController.PushViewController(timeLineViewController, false);
-				dataHelper.SetNewNote(inputText.Text, "");
+				dataHelper.SetNewNote(inputText.Text);
 			};
 
 
@@ -48,7 +54,26 @@ namespace Lisa.Zuma.BlueJay.IOS
 				camera.Capture(DateTime.Today.ToString());
 			};
 
+			btnPickVideo.TouchUpInside += (sender, e) => {
+
+				string DateTimeForFile = String.Format("{0:d-M-yyyy-HH-mm-ss}", DateTime.Now);
+				string excualPath = "../Documents/"+DateTimeForFile+".mp4";
+				var picker = new MediaPicker();
+				picker.PickVideoAsync().ContinueWith (t => {
+					MediaFile file = t.Result;
+					using (var f = file.GetStream() ){
+						using(var dest = File.Create(excualPath)){
+							f.CopyTo(dest);
+							var kaas = File.Exists(excualPath);
+							System.Diagnostics.Debug.WriteLine("kaas? " + kaas.ToString());
+							dataHelper.InsertNewDataElement(1, excualPath);
+						}
+					}
+				}, TaskScheduler.FromCurrentSynchronizationContext());
+			};
+
 		}
+
 	}
 }
 

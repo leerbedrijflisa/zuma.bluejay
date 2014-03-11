@@ -1,12 +1,13 @@
 using System;
+using SQLite;
 
 namespace Lisa.Zuma.BlueJay.IOS.Data
 {
 	public class TemporaryItemMedia
 	{
-		public TemporaryItemMedia ()
-		{
-		}
+		public int ID {get;set;}
+		public int Type {get;set;}
+		public string Path {get;set;}
 	}
 }
 
