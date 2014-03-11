@@ -86,7 +86,8 @@ namespace Lisa.Zuma.BlueJay.Web.Controllers
 
             var storageHelper = new StorageHelper("ZumaBlueJayStorageConnectionString", "bluejay");
             var filename = storageHelper.GetFileNameFromSasUri(media.MediaLocation);
-            media.MediaLocation = storageHelper.GetReadableSasUri(filename, new TimeSpan(0, 2, 0)).AbsoluteUri;
+            //media.MediaLocation = storageHelper.GetReadableSasUri(filename, new TimeSpan(0, 2, 0)).AbsoluteUri;
+            media.MediaLocation = storageHelper.GetReadableSasUri(filename, new TimeSpan(1, 0, 0)).AbsoluteUri;
 
             Db.SaveChanges();
 
