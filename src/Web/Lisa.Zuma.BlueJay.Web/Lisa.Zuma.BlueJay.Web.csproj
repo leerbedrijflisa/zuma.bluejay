@@ -286,6 +286,10 @@
     <None Include="Project_Readme.html" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Lisa.Zuma.BlueJay.Models\Lisa.Zuma.BlueJay.Models.csproj">
+      <Project>{b0a0d8c1-6b80-4fbb-bcaa-aeab19337b81}</Project>
+      <Name>Lisa.Zuma.BlueJay.Models</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Lisa.Zuma.BlueJay.Web.Data\Lisa.Zuma.BlueJay.Web.Data.csproj">
       <Project>{ef24823e-06fb-4ae8-8326-e76c629b93f9}</Project>
       <Name>Lisa.Zuma.BlueJay.Web.Data</Name>
