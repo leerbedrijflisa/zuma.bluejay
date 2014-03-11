@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Lisa.Zuma.BlueJay.Web.Data.Entities
 {
-    public class DossierDetail
+    [Table("DossierDetails")]
+    public class DossierDetailData
     {
         [Key]
         public int Id { get; set; }
@@ -17,6 +19,6 @@ namespace Lisa.Zuma.BlueJay.Web.Data.Entities
 
         [Required]
         public int DossierId { get; set; }
-        public virtual Dossier Dossier { get; set; }
+        public virtual DossierData Dossier { get; set; }
     }
 }
