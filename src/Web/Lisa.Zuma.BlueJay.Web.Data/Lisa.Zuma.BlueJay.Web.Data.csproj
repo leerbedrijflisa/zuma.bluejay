@@ -69,6 +69,10 @@
     <Compile Include="Migrations\201403101116175_DossierDetails.Designer.cs">
       <DependentUpon>201403101116175_DossierDetails.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201403111106403_EntityRefactorMigration.cs" />
+    <Compile Include="Migrations\201403111106403_EntityRefactorMigration.Designer.cs">
+      <DependentUpon>201403111106403_EntityRefactorMigration.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -82,6 +86,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201403101116175_DossierDetails.resx">
       <DependentUpon>201403101116175_DossierDetails.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201403111106403_EntityRefactorMigration.resx">
+      <DependentUpon>201403111106403_EntityRefactorMigration.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
