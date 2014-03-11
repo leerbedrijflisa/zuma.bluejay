@@ -81,6 +81,7 @@ namespace Lisa.Zuma.BlueJay.Web.Helpers
                 if (blobContainer == null)
                 {
                     blobContainer = BlobClient.GetContainerReference(containerName);
+                    blobContainer.CreateIfNotExists();
                 }
 
                 return blobContainer;
