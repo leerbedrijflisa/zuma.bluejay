@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Lisa.Zuma.BlueJay.Web.Models.DbModels
+namespace Lisa.Zuma.BlueJay.Models
 {
     public class NoteMedia
     {
