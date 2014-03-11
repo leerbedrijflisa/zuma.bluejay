@@ -1,6 +1,7 @@
-﻿using Lisa.Zuma.BlueJay.Web.Data.Entities;
+﻿using Lisa.Zuma.BlueJay.Models;
+using Lisa.Zuma.BlueJay.Web.Data.Entities;
+using Lisa.Zuma.BlueJay.Web.Helpers;
 using Lisa.Zuma.BlueJay.Web.Models;
-using Lisa.Zuma.BlueJay.Web.Models.DbModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -42,7 +43,7 @@ namespace Lisa.Zuma.BlueJay.Web.Controllers
             return Ok(result);
         }
 
-        public IHttpActionResult Post(int dossierId, [FromBody] DossierDetailModel dossierDetailModel)
+        public IHttpActionResult Post(int dossierId, [FromBody] DossierDetail dossierDetailModel)
         {
             var dossier = Db.Dossiers.FirstOrDefault(d => d.Id == dossierId);
             if (dossier == null)
@@ -63,7 +64,7 @@ namespace Lisa.Zuma.BlueJay.Web.Controllers
             return CreatedAtRoute("DossierDetailApi", new { dossierId = dossierId, id = detail.Id }, model);
         }
 
-        public IHttpActionResult Put(int dossierId, int id, [FromBody] DossierDetailModel dossierDetailModel)
+        public IHttpActionResult Put(int dossierId, int id, [FromBody] DossierDetail dossierDetailModel)
         {
             var dossier = Db.Dossiers.FirstOrDefault(d => d.Id == dossierId);
             if (dossier == null) 
