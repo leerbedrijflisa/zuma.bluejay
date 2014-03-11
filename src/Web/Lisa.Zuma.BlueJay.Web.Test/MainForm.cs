@@ -957,7 +957,17 @@ namespace Lisa.Zuma.BlueJay.Web.Test
                 }                
             }
 
-            var restClient = new RestClient("http://localhost:14689/");
+            RestClient restClient = null;
+            
+#if DEBUG
+            restClient = new RestClient(debugUrl);
+#elif TEST
+            restClient = new RestClient(betaUrl);
+#elif TRACE
+            restClient = new RestClient(productionUrl);
+#endif
+
+
             var request = new RestRequest("api/dossier/1/notes/", Method.POST);
             request.RequestFormat = DataFormat.Json;
             request.AddBody(model);
@@ -995,17 +1005,30 @@ namespace Lisa.Zuma.BlueJay.Web.Test
 
                     using (var uploadResponse = await httpClient.PutAsync(media.Location, content))
                     {
-                        var restClient = new RestClient("http://localhost:14689/");
+                        RestClient restClient = null;
+
+#if DEBUG
+                        restClient = new RestClient(debugUrl);
+#elif TEST
+                        restClient = new RestClient(betaUrl);
+#elif TRACE
+                        restClient = new RestClient(productionUrl);
+#endif
+
                         var request = new RestRequest("api/dossier/1/notes/{noteId}/media/{id}", Method.PUT);
                         request.RequestFormat = DataFormat.Json;
                         request.AddUrlSegment("noteId", noteId.ToString());
                         request.AddUrlSegment("id", media.Id.ToString());
                         request.AddBody(media);
 
-                        var resp = restClient.Execute<NoteMediaModel>(request);
+                        restClient.Execute<NoteMediaModel>(request);
                     }
                 }
             }
         }
+
+        private const string debugUrl = "http://localhost:14689/";
+        private const string betaUrl = "http://zumabluejay-test.azurewebsites.net/";
+        private const string productionUrl = "http://zumabluejay.azurewebsites.net/";
     }
 }
