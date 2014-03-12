@@ -38,7 +38,7 @@ namespace Lisa.Zuma.BlueJay.IOS.Data
 
 			CreateDummyInfo ();
 
-			client = new RestClient ("http://zumabluejay-test.azurewebsites.net");
+			client = new RestClient ("http://zumabluejay.azurewebsites.net");
 		}
 
 		public void SyncAllNotesFromDosier(int dosier, Action AsyncFunc){
@@ -138,7 +138,6 @@ namespace Lisa.Zuma.BlueJay.IOS.Data
 		{
 			var user = this.GetCurrentUser ();
 
-			RestClient cl = new RestClient ("http://zumabluejay-test.azurewebsites.net");
 
 			var request = new RestRequest (string.Format("api/dossier/{0}/notes/", 1), Method.POST);
 
@@ -148,7 +147,7 @@ namespace Lisa.Zuma.BlueJay.IOS.Data
 
 			Console.WriteLine (request);
 
-			cl.ExecuteAsync(request, response => {
+			client.ExecuteAsync(request, response => {
 
 				Console.WriteLine("klaar :"+ response.Content);
 				var callback = JsonConvert.DeserializeObject<NoteModel>(response.Content);
