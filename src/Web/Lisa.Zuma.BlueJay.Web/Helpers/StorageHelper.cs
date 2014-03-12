@@ -81,6 +81,7 @@ namespace Lisa.Zuma.BlueJay.Web.Helpers
                 if (blobContainer == null)
                 {
                     blobContainer = BlobClient.GetContainerReference(containerName);
+                    blobContainer.CreateIfNotExists();
                 }
 
                 return blobContainer;
@@ -109,6 +110,7 @@ namespace Lisa.Zuma.BlueJay.Web.Helpers
             var policy = new SharedAccessBlobPolicy
             {
                 Permissions = permissions,
+                SharedAccessStartTime = DateTime.UtcNow,
                 SharedAccessExpiryTime = DateTime.UtcNow.Add(expire)
             };
 

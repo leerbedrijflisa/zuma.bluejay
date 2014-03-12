@@ -1,4 +1,4 @@
-﻿using Lisa.Zuma.BlueJay.Web.Models.DbModels;
+﻿using Lisa.Zuma.BlueJay.Models;
 using RestSharp;
 using System;
 using System.Collections.Generic;
@@ -936,10 +936,10 @@ namespace Lisa.Zuma.BlueJay.Web.Test
                 return;
             }
 
-            var model = new NoteModel
+            var model = new Note
             {
                 Text = txtMessage.Text,
-                Media = new List<NoteMediaModel>()
+                Media = new List<NoteMedia>()
             };
 
             foreach (var item in lbMedia.Items)
@@ -948,7 +948,7 @@ namespace Lisa.Zuma.BlueJay.Web.Test
                 if (item != null) {
                     var name = Path.GetFileName(path);
 
-                    var noteMediaModel = new NoteMediaModel
+                    var noteMediaModel = new NoteMedia
                     {
                         Name = Path.GetFileName((string)item)
                     };
@@ -957,12 +957,22 @@ namespace Lisa.Zuma.BlueJay.Web.Test
                 }                
             }
 
-            var restClient = new RestClient("http://localhost:14689/");
+            RestClient restClient = null;
+            
+#if DEBUG
+            restClient = new RestClient(debugUrl);
+#elif TEST
+            restClient = new RestClient(betaUrl);
+#elif TRACE
+            restClient = new RestClient(productionUrl);
+#endif
+
+
             var request = new RestRequest("api/dossier/1/notes/", Method.POST);
             request.RequestFormat = DataFormat.Json;
             request.AddBody(model);
 
-            var response = restClient.Execute<NoteModel>(request);
+            var response = restClient.Execute<Note>(request);
 
             var boxItems = lbMedia.Items.Cast<string>();
             foreach (var media in response.Data.Media)
@@ -977,7 +987,7 @@ namespace Lisa.Zuma.BlueJay.Web.Test
             }
         }
 
-        private async void Store(NoteMediaModel media, string path, int noteId)
+        private async void Store(NoteMedia media, string path, int noteId)
         {
             var extension = Path.GetExtension(path);
             if (extension.StartsWith("."))
@@ -995,17 +1005,30 @@ namespace Lisa.Zuma.BlueJay.Web.Test
 
                     using (var uploadResponse = await httpClient.PutAsync(media.Location, content))
                     {
-                        var restClient = new RestClient("http://localhost:14689/");
+                        RestClient restClient = null;
+
+#if DEBUG
+                        restClient = new RestClient(debugUrl);
+#elif TEST
+                        restClient = new RestClient(betaUrl);
+#elif TRACE
+                        restClient = new RestClient(productionUrl);
+#endif
+
                         var request = new RestRequest("api/dossier/1/notes/{noteId}/media/{id}", Method.PUT);
                         request.RequestFormat = DataFormat.Json;
                         request.AddUrlSegment("noteId", noteId.ToString());
                         request.AddUrlSegment("id", media.Id.ToString());
                         request.AddBody(media);
 
-                        var resp = restClient.Execute<NoteMediaModel>(request);
+                        restClient.Execute<NoteMedia>(request);
                     }
                 }
             }
         }
+
+        private const string debugUrl = "http://localhost:14689/";
+        private const string betaUrl = "http://zumabluejay-test.azurewebsites.net/";
+        private const string productionUrl = "http://zumabluejay.azurewebsites.net/";
     }
 }

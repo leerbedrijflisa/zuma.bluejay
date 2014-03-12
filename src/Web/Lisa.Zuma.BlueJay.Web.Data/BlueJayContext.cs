@@ -20,10 +20,26 @@ namespace Lisa.Zuma.BlueJay.Web.Data
         {
         }
 
-        public DbSet<Note> Notes { get; set; }
-        public DbSet<User> Users { get; set; }
-        public DbSet<NoteMedia> NoteMedia { get; set; }
-        public DbSet<Dossier> Dossiers { get; set; }
-        public DbSet<Profile> Profiles { get; set; }
+        public DbSet<NoteData> Notes { get; set; }
+        public DbSet<UserData> Users { get; set; }
+        public DbSet<NoteMediaData> NoteMedia { get; set; }
+        public DbSet<DossierData> Dossiers { get; set; }
+        public DbSet<DossierDetailData> DossierDetails { get; set; }
+
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+
+            modelBuilder
+                .Entity<UserData>()
+                .HasMany<DossierData>(u => u.Dossiers)
+                .WithMany(d => d.Watchers)
+                .Map(p =>
+                {
+                    p.MapLeftKey("UserId");
+                    p.MapRightKey("DossierId");
+                    p.ToTable("UserDossiers");
+                });
+        }
     }
 }

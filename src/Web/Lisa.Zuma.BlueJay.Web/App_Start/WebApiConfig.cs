@@ -39,6 +39,12 @@ namespace Lisa.Zuma.BlueJay.Web
                 defaults: new { controller = "media", id = RouteParameter.Optional }
             );
 
+            config.Routes.MapHttpRoute(
+                name: "DossierDetailApi",
+                routeTemplate: "api/dossier/{dossierId}/detail/{id}",
+                defaults: new { controller = "dossierDetail", id = RouteParameter.Optional }
+            );
+
             RegisterSerialization(config);
         }
 

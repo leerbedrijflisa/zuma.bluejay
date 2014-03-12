@@ -18,24 +18,24 @@ namespace Lisa.Zuma.BlueJay.Web.Data.Migrations
         protected override void Seed(Lisa.Zuma.BlueJay.Web.Data.BlueJayContext context)
         {
             //  This method will be called after migrating to the latest version.
-            var dossier = new Dossier
+            var dossier = new DossierData
             {
-                Profile = new Profile()
+                Details = new List<DossierDetailData>()
             };
 
-            var parent = new User
+            var parent = new UserData
             {
                 Type = "PARENT",
-                Dossiers = new List<Dossier>
+                Dossiers = new List<DossierData>
                 {
                     dossier
                 }
             };
 
-            var mentor = new User
+            var mentor = new UserData
             {
                 Type = "MENTOR",
-                Dossiers = new List<Dossier>
+                Dossiers = new List<DossierData>
                 {
                     dossier
                 }

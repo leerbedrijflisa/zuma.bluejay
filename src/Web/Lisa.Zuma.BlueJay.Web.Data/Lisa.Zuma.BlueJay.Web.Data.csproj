@@ -31,7 +31,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Test|AnyCPU'">
     <OutputPath>bin\Test\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
+    <DefineConstants>TEST</DefineConstants>
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -56,14 +56,22 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BlueJayContext.cs" />
-    <Compile Include="Entities\Dossier.cs" />
-    <Compile Include="Entities\Note.cs" />
-    <Compile Include="Entities\NoteMedia.cs" />
-    <Compile Include="Entities\Profile.cs" />
-    <Compile Include="Entities\User.cs" />
+    <Compile Include="Entities\DossierData.cs" />
+    <Compile Include="Entities\DossierDetailData.cs" />
+    <Compile Include="Entities\NoteData.cs" />
+    <Compile Include="Entities\NoteMediaData.cs" />
+    <Compile Include="Entities\UserData.cs" />
     <Compile Include="Migrations\201402251327093_InitialMigration.cs" />
     <Compile Include="Migrations\201402251327093_InitialMigration.Designer.cs">
       <DependentUpon>201402251327093_InitialMigration.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201403101116175_DossierDetails.cs" />
+    <Compile Include="Migrations\201403101116175_DossierDetails.Designer.cs">
+      <DependentUpon>201403101116175_DossierDetails.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201403111106403_EntityRefactorMigration.cs" />
+    <Compile Include="Migrations\201403111106403_EntityRefactorMigration.Designer.cs">
+      <DependentUpon>201403111106403_EntityRefactorMigration.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -75,6 +83,12 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201402251327093_InitialMigration.resx">
       <DependentUpon>201402251327093_InitialMigration.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201403101116175_DossierDetails.resx">
+      <DependentUpon>201403101116175_DossierDetails.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201403111106403_EntityRefactorMigration.resx">
+      <DependentUpon>201403111106403_EntityRefactorMigration.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
