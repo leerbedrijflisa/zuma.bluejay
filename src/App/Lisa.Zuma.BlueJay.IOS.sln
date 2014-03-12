@@ -1,0 +1,60 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lisa.Zuma.BlueJay.IOS.Views", "Lisa.Zuma.BlueJay.IOS.Views\Lisa.Zuma.BlueJay.IOS.Views.csproj", "{EC12A1E5-641A-407E-9669-25D16E30B36A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lisa.Zuma.BlueJay.IOS.Models", "Lisa.Zuma.BlueJay.IOS.Models\Lisa.Zuma.BlueJay.IOS.Models.csproj", "{6F9D4C63-C542-4D87-8DBA-22A82498E3BA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lisa.Zuma.BlueJay.IOS.Data", "Lisa.Zuma.BlueJay.IOS.Data\Lisa.Zuma.BlueJay.IOS.Data.csproj", "{87827FCE-C3EF-447D-8058-255C67F4E346}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|iPhoneSimulator = Debug|iPhoneSimulator
+		Release|iPhoneSimulator = Release|iPhoneSimulator
+		Debug|iPhone = Debug|iPhone
+		Release|iPhone = Release|iPhone
+		Ad-Hoc|iPhone = Ad-Hoc|iPhone
+		AppStore|iPhone = AppStore|iPhone
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6F9D4C63-C542-4D87-8DBA-22A82498E3BA}.Ad-Hoc|iPhone.ActiveCfg = Ad-Hoc|iPhone
+		{6F9D4C63-C542-4D87-8DBA-22A82498E3BA}.Ad-Hoc|iPhone.Build.0 = Ad-Hoc|iPhone
+		{6F9D4C63-C542-4D87-8DBA-22A82498E3BA}.AppStore|iPhone.ActiveCfg = AppStore|iPhone
+		{6F9D4C63-C542-4D87-8DBA-22A82498E3BA}.AppStore|iPhone.Build.0 = AppStore|iPhone
+		{6F9D4C63-C542-4D87-8DBA-22A82498E3BA}.Debug|iPhone.ActiveCfg = Debug|iPhone
+		{6F9D4C63-C542-4D87-8DBA-22A82498E3BA}.Debug|iPhone.Build.0 = Debug|iPhone
+		{6F9D4C63-C542-4D87-8DBA-22A82498E3BA}.Debug|iPhoneSimulator.ActiveCfg = Debug|iPhoneSimulator
+		{6F9D4C63-C542-4D87-8DBA-22A82498E3BA}.Debug|iPhoneSimulator.Build.0 = Debug|iPhoneSimulator
+		{6F9D4C63-C542-4D87-8DBA-22A82498E3BA}.Release|iPhone.ActiveCfg = Release|iPhone
+		{6F9D4C63-C542-4D87-8DBA-22A82498E3BA}.Release|iPhone.Build.0 = Release|iPhone
+		{6F9D4C63-C542-4D87-8DBA-22A82498E3BA}.Release|iPhoneSimulator.ActiveCfg = Release|iPhoneSimulator
+		{6F9D4C63-C542-4D87-8DBA-22A82498E3BA}.Release|iPhoneSimulator.Build.0 = Release|iPhoneSimulator
+		{87827FCE-C3EF-447D-8058-255C67F4E346}.Ad-Hoc|iPhone.ActiveCfg = Ad-Hoc|iPhone
+		{87827FCE-C3EF-447D-8058-255C67F4E346}.Ad-Hoc|iPhone.Build.0 = Ad-Hoc|iPhone
+		{87827FCE-C3EF-447D-8058-255C67F4E346}.AppStore|iPhone.ActiveCfg = AppStore|iPhone
+		{87827FCE-C3EF-447D-8058-255C67F4E346}.AppStore|iPhone.Build.0 = AppStore|iPhone
+		{87827FCE-C3EF-447D-8058-255C67F4E346}.Debug|iPhone.ActiveCfg = Debug|iPhone
+		{87827FCE-C3EF-447D-8058-255C67F4E346}.Debug|iPhone.Build.0 = Debug|iPhone
+		{87827FCE-C3EF-447D-8058-255C67F4E346}.Debug|iPhoneSimulator.ActiveCfg = Debug|iPhoneSimulator
+		{87827FCE-C3EF-447D-8058-255C67F4E346}.Debug|iPhoneSimulator.Build.0 = Debug|iPhoneSimulator
+		{87827FCE-C3EF-447D-8058-255C67F4E346}.Release|iPhone.ActiveCfg = Release|iPhone
+		{87827FCE-C3EF-447D-8058-255C67F4E346}.Release|iPhone.Build.0 = Release|iPhone
+		{87827FCE-C3EF-447D-8058-255C67F4E346}.Release|iPhoneSimulator.ActiveCfg = Release|iPhoneSimulator
+		{87827FCE-C3EF-447D-8058-255C67F4E346}.Release|iPhoneSimulator.Build.0 = Release|iPhoneSimulator
+		{EC12A1E5-641A-407E-9669-25D16E30B36A}.Ad-Hoc|iPhone.ActiveCfg = Ad-Hoc|iPhone
+		{EC12A1E5-641A-407E-9669-25D16E30B36A}.Ad-Hoc|iPhone.Build.0 = Ad-Hoc|iPhone
+		{EC12A1E5-641A-407E-9669-25D16E30B36A}.AppStore|iPhone.ActiveCfg = AppStore|iPhone
+		{EC12A1E5-641A-407E-9669-25D16E30B36A}.AppStore|iPhone.Build.0 = AppStore|iPhone
+		{EC12A1E5-641A-407E-9669-25D16E30B36A}.Debug|iPhone.ActiveCfg = Debug|iPhone
+		{EC12A1E5-641A-407E-9669-25D16E30B36A}.Debug|iPhone.Build.0 = Debug|iPhone
+		{EC12A1E5-641A-407E-9669-25D16E30B36A}.Debug|iPhoneSimulator.ActiveCfg = Debug|iPhoneSimulator
+		{EC12A1E5-641A-407E-9669-25D16E30B36A}.Debug|iPhoneSimulator.Build.0 = Debug|iPhoneSimulator
+		{EC12A1E5-641A-407E-9669-25D16E30B36A}.Release|iPhone.ActiveCfg = Release|iPhone
+		{EC12A1E5-641A-407E-9669-25D16E30B36A}.Release|iPhone.Build.0 = Release|iPhone
+		{EC12A1E5-641A-407E-9669-25D16E30B36A}.Release|iPhoneSimulator.ActiveCfg = Release|iPhoneSimulator
+		{EC12A1E5-641A-407E-9669-25D16E30B36A}.Release|iPhoneSimulator.Build.0 = Release|iPhoneSimulator
+	EndGlobalSection
+	GlobalSection(MonoDevelopProperties) = preSolution
+		StartupItem = Lisa.Zuma.BlueJay.IOS.Views\Lisa.Zuma.BlueJay.IOS.Views.csproj
+	EndGlobalSection
+EndGlobal
