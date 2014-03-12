@@ -8,6 +8,7 @@
             <connections>
                 <outlet property="btnEditProfile" destination="MKT-jS-oPa" id="n9r-AG-VaO"/>
                 <outlet property="btnNewNote" destination="coL-pu-rUE" id="RGH-eu-ow3"/>
+                <outlet property="btnRefresh" destination="KPS-Hj-g0n" id="unq-vE-n29"/>
                 <outlet property="view" destination="2" id="3"/>
                 <outlet property="wvTimeline" destination="knZ-ya-Z2F" id="hQc-LJ-qv8"/>
             </connections>
@@ -30,7 +31,7 @@
                     <nil key="highlightedColor"/>
                 </label>
                 <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MKT-jS-oPa">
-                    <rect key="frame" x="606" y="37" width="112" height="30"/>
+                    <rect key="frame" x="644" y="37" width="112" height="30"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <color key="backgroundColor" red="0.094117656349999995" green="0.61960786580000005" blue="0.62745100259999997" alpha="1" colorSpace="deviceRGB"/>
                     <state key="normal" title="Bewerk profiel">
@@ -39,12 +40,20 @@
                     </state>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="coL-pu-rUE">
-                    <rect key="frame" x="726" y="37" width="30" height="30"/>
+                    <rect key="frame" x="582" y="37" width="54" height="30"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <color key="backgroundColor" red="0.094117656349999995" green="0.61960786580000005" blue="0.62745100259999997" alpha="1" colorSpace="deviceRGB"/>
                     <fontDescription key="fontDescription" type="system" pointSize="28"/>
                     <inset key="contentEdgeInsets" minX="0.0" minY="-4" maxX="0.0" maxY="0.0"/>
                     <state key="normal" title="+"/>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KPS-Hj-g0n">
+                    <rect key="frame" x="492" y="37" width="82" height="30"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <color key="backgroundColor" red="0.094117656349999995" green="0.61960786580000005" blue="0.62745100259999997" alpha="1" colorSpace="deviceRGB"/>
+                    <state key="normal" title="Refresh">
+                        <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
                 </button>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>

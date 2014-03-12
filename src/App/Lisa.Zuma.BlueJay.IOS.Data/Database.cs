@@ -245,6 +245,8 @@ namespace Lisa.Zuma.BlueJay.IOS.Data
 							var resp = client.Execute<NoteMediaModel>(request);
 							dbNote.Media.Add (resp.Data);
 							db.Update (dbNote);
+
+
 						}
 					}
 				}

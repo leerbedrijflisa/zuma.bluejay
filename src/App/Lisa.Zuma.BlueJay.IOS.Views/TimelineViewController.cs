@@ -51,6 +51,10 @@ namespace Lisa.Zuma.BlueJay.IOS
 			});
 
 			// Perform any additional setup after loading the view, typically from a nib.
+
+			btnRefresh.TouchUpInside += (sender, e) => {
+				updateList ();
+			};
 		}
 
 		public void updateList()

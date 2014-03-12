@@ -107,7 +107,6 @@
     <Compile Include="Entities\TemporaryItemMedia.cs" />
     <Compile Include="Entities\Media.cs" />
     <Compile Include="NoteModel.cs" />
-    <Compile Include="MediaUploadFinishedEventArgs.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

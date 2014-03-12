@@ -51,7 +51,7 @@ namespace Lisa.Zuma.BlueJay.IOS
 			btnCamera.TouchUpInside += (sender, e) => {
 				Camera camera = new Camera();
 
-				camera.Capture(DateTime.Today.ToString());
+				camera.Capture(String.Format("{0:d-M-yyyy-HH-mm-ss}", DateTime.Now));
 			};
 
 			btnPickVideo.TouchUpInside += (sender, e) => {

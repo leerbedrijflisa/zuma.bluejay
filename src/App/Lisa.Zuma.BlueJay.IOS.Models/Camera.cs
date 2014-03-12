@@ -35,6 +35,14 @@ namespace Lisa.Zuma.BlueJay.IOS.Models
 						return;
 					}
 
+					Console.WriteLine(t.Result.Path);
+
+
+					ALAssetsLibrary library = new ALAssetsLibrary();                   
+					library.WriteVideoToSavedPhotosAlbum (new NSUrl(t.Result.Path), (assetUrl, error) =>{
+						Console.WriteLine ("assetUrl:"+assetUrl);
+					});
+
 
 				}, TaskScheduler.FromCurrentSynchronizationContext());
 
