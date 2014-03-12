@@ -25,7 +25,7 @@ namespace Lisa.Zuma.BlueJay.IOS.Models
 				Console.WriteLine("No camera!");
 			else {
 				picker.TakeVideoAsync (new StoreVideoOptions {
-					Name = date+".m4v",
+					Name = date+".mp4",
 					Directory = "TemporaryFiles"
 				}).ContinueWith (t => {
 					var message = t;
@@ -35,13 +35,6 @@ namespace Lisa.Zuma.BlueJay.IOS.Models
 						return;
 					}
 
-					ALAssetsLibrary library = new ALAssetsLibrary();                   
-					library.WriteVideoToSavedPhotosAlbum(new NSUrl(message.Result.Path), (assetURL, error) => {
-						uploadVideo = new UploadVideo();
-						uploadVideo.Store(new NoteMediaModel{Id = 1, Location = message.Result.Path}, message.Result.Path, 1);
-				
-						File.Delete(message.Result.Path);
-					});
 
 				}, TaskScheduler.FromCurrentSynchronizationContext());
 

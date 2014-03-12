@@ -56,8 +56,9 @@ namespace Lisa.Zuma.BlueJay.IOS
 
 			btnPickVideo.TouchUpInside += (sender, e) => {
 
-				string DateTimeForFile = String.Format("{0:d-M-yyyy-HH-mm-ss}", DateTime.Now);
-				string excualPath = "../Documents/"+DateTimeForFile+".mp4";
+				string FileName = String.Format("{0:d-M-yyyy-HH-mm-ss}", DateTime.Now) +".mp4";
+				string excualPath = "../Documents/"+FileName;
+
 				var picker = new MediaPicker();
 				picker.PickVideoAsync().ContinueWith (t => {
 					MediaFile file = t.Result;

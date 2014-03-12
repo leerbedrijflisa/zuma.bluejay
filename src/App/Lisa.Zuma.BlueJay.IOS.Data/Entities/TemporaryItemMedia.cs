@@ -8,6 +8,7 @@ namespace Lisa.Zuma.BlueJay.IOS.Data
 		public int ID {get;set;}
 		public int Type {get;set;}
 		public string Path {get;set;}
+		public string fileName{ get; set;}
 	}
 }
 

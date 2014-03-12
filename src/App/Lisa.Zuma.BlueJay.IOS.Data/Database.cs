@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using RestSharp;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
+using System.Net.Http;
+using System.Threading.Tasks;
 
 namespace Lisa.Zuma.BlueJay.IOS.Data
 {
@@ -30,6 +32,7 @@ namespace Lisa.Zuma.BlueJay.IOS.Data
 			db.CreateTable<Profile>();
 			db.CreateTable<ProfileItems>();
 			db.CreateTable<User>();
+			db.DropTable<TemporaryItemMedia> ();
 			db.CreateTable<TemporaryItemMedia> ();
 
 
@@ -45,14 +48,12 @@ namespace Lisa.Zuma.BlueJay.IOS.Data
 			var request = new RestRequest (string.Format("api/dossier/{0}/notes/", dosier), Method.GET);
 
 			client.ExecuteAsync (request, response => {
-				//Product RequestedJson = JsonConvert.DeserializeObject<Product>();
 
-				var callback = JsonConvert.DeserializeObject<List<Notes>>(response.Content);
+				var callback = JsonConvert.DeserializeObject<List<NoteModel>>(response.Content);
 
 				foreach(var Result in callback){
-					Result.DosierID = dosier;
-					Result.OwnerID = 1;
-					db.Insert(Result);
+					var note = new Notes{DosierID = dosier, OwnerID = 1, Text = Result.Text, Media = Result.Media};
+					db.Insert(note);
 				}
 
 				AsyncFunc();
@@ -68,7 +69,7 @@ namespace Lisa.Zuma.BlueJay.IOS.Data
 				db.Insert(new Dosier{Name = "Martijn"});
 			}
 
- 			var count2 = db.Query<User>("SELECT * FROM User");
+			var count2 = db.Query<User>("SELECT * FROM User");
 
 			if (count2.Count == 0) {
 				db.Insert (new User{Role = 1, Name = "Marie-antoinette"});
@@ -92,12 +93,12 @@ namespace Lisa.Zuma.BlueJay.IOS.Data
 		public List<Notes> GetNotesFromDosier(int id)
 		{
 			var Result = db.Query<Notes>("SELECT * FROM Notes WHERE DosierID='"+id+"' ORDER BY ID DESC");
-//			db.Table<Notes> ().Where(t => t.ID == id).OrderByDescending(t => t.ID);
-//
-//			var result = from note in db.Table<Notes>()
-//				where note.DosierID == id
-//				orderby note.ID descending
-//				select new { Name = note.ID.ToString() };
+			//			db.Table<Notes> ().Where(t => t.ID == id).OrderByDescending(t => t.ID);
+			//
+			//			var result = from note in db.Table<Notes>()
+			//				where note.DosierID == id
+			//				orderby note.ID descending
+			//				select new { Name = note.ID.ToString() };
 
 			return Result;
 		}
@@ -120,7 +121,7 @@ namespace Lisa.Zuma.BlueJay.IOS.Data
 				ReturnUserLoggedIn = Query;
 			}
 			return ReturnUserLoggedIn;
-			
+
 		}
 
 		public Notes GetMediaFromNoteByID(int id)
@@ -133,69 +134,123 @@ namespace Lisa.Zuma.BlueJay.IOS.Data
 			return ReturnNote;
 		}
 
-		public void InsertNote(Notes note)
+		public void InsertNote(NoteModel note)
 		{
 			var user = this.GetCurrentUser ();
 
-			note.OwnerID = user.ID;
+			RestClient cl = new RestClient ("http://zumabluejay-test.azurewebsites.net");
 
 			var request = new RestRequest (string.Format("api/dossier/{0}/notes/", 1), Method.POST);
 
 			request.RequestFormat = DataFormat.Json;
-			request.AddBody (note);
+			request.AddBody(note);
+			Console.WriteLine(request.ToString ());
 
-			client.ExecuteAsync(request, response => {
+			Console.WriteLine (request);
+
+			cl.ExecuteAsync(request, response => {
+
 				Console.WriteLine("klaar :"+ response.Content);
-				var callback = JObject.Parse(response.Content);
-				db.Insert(new Notes{Text = callback["text"].ToString()});
+				var callback = JsonConvert.DeserializeObject<NoteModel>(response.Content);
+
+				Store(callback);
 			});
 
 
+			//this.DeleteAllTemporaryMediaItems ();
 
 		}
 
-		public void InsertProfileItem(ProfileItems newItem)
-		{
-			newItem.ProfileID = 1;
-			db.Insert (newItem);
+			public void InsertProfileItem (ProfileItems newItem)
+			{
+				newItem.ProfileID = 1;
+				db.Insert (newItem);
+			}
+
+			public List<ProfileItems> GetProfileItemsByProfileID (int profileId)
+			{
+				var Result = db.Query<ProfileItems> ("SELECT * FROM ProfileItems WHERE ProfileID='" + profileId + "'");
+
+				return Result;
+
+			}
+
+			public void InsertNewTemporaryMediaItem (TemporaryItemMedia item)
+			{
+				db.Insert (item);
+			}
+
+			public void DeleteAllTemporaryMediaItems ()
+			{
+				db.Query<TemporaryItemMedia> ("DELETE * FROM TemporaryItemMedia");
+			}
+
+			public List<TemporaryItemMedia> ReturnAllTemporaryMediaItems ()
+			{
+				var Result = db.Query<TemporaryItemMedia> ("SELECT * FROM TemporaryItemMedia");
+
+				return Result;
+			}
+
+			public readonly IList<string> colors = new List<string> {
+				"Algemeen",
+				"Medicijngebruik",
+				"Allergieën",
+				"Contactgegevens",
+				"Hulpmiddelen",
+				"Verzorging"
+			};
+			public IList<string> GetPickerItems = new List<string> {
+				"Algemeen",
+				"Medicijngebruik",
+				"Allergieën",
+				"Contactgegevens",
+				"Hulpmiddelen",
+				"Verzorging"
+			};
+
+		private async void Store(NoteModel note) {
+			var dbNote = new Notes {
+				Text = note.Text,
+				Media = new List<NoteMediaModel>()
+			};
+
+			db.Insert (dbNote);
+
+			foreach (var media in note.Media) {
+				string url;
+				var extension = Path.GetExtension("../Documents/"+media.Name);
+				if (extension.StartsWith("."))
+				{
+					extension = extension.Substring(1);
+				}
+
+				using (var httpClient = new HttpClient())
+				{
+					using (var fileStream = File.OpenRead("../Documents/"+media.Name))
+					{
+						var content = new StreamContent(fileStream);
+						content.Headers.Add("Content-Type", "video/mp4");
+						content.Headers.Add("x-ms-blob-type", "BlockBlob");
+
+						using (var uploadResponse = await httpClient.PutAsync(media.Location, content))
+						{
+
+							var request = new RestRequest("api/dossier/1/notes/{noteId}/media/{id}", Method.PUT);
+							request.RequestFormat = DataFormat.Json;
+							request.AddUrlSegment("noteId", note.Id.ToString());
+							request.AddUrlSegment("id", media.Id.ToString());
+							request.AddBody(media);
+
+							var resp = client.Execute<NoteMediaModel>(request);
+							dbNote.Media.Add (resp.Data);
+							db.Update (dbNote);
+						}
+					}
+				}
+			}
+
 		}
-
-		public List<ProfileItems> GetProfileItemsByProfileID(int profileId)
-		{
-			var Result = db.Query<ProfileItems> ("SELECT * FROM ProfileItems WHERE ProfileID='" + profileId + "'");
-
-			return Result;
-	
-		}
-
-		public void InsertNewTemporaryMediaItem(TemporaryItemMedia item)
-		{
-			db.Insert(item);
-		}
-
-		public void DeleteAllTemporaryMediaItems()
-		{
-			db.Query<TemporaryItemMedia> ("DELETE * FROM TemporaryItemMedia");
-		}
-
-		public List<TemporaryItemMedia> ReturnAllTemporaryMediaItems()
-		{
-			var Result = db.Query<TemporaryItemMedia> ("SELECT * FROM TemporaryItemMedia");
-
-			return Result;
-		}
-
-		public readonly IList<string> colors = new List<string>
-		{
-			"Algemeen",
-			"Medicijngebruik",
-			"Allergieën",
-			"Contactgegevens",
-			"Hulpmiddelen",
-			"Verzorging"
-		};
-
-		public IList<string> GetPickerItems = new List<string>{"Algemeen", "Medicijngebruik", "Allergieën", "Contactgegevens", "Hulpmiddelen", "Verzorging"};
 
 	}
 }

@@ -22,11 +22,7 @@ namespace Lisa.Zuma.BlueJay.IOS.Models
 
 		public void SetNewNote (string text)
 		{
-			var Note = new Notes{DosierID = 1, Text = text, Media = new List<Media>()};
-
-			foreach (var x in this.GetAllDataElements()) {
-				Note.Media.Add (new Media{Location = x.Path});
-			}
+			var Note = new NoteModel{Text = text, Media = this.GetAllDataElements()};
 
 			database.InsertNote (Note);
 		}
@@ -47,7 +43,7 @@ namespace Lisa.Zuma.BlueJay.IOS.Models
 
 		public void InsertNewDataElement(int type, string path)
 		{
-			database.InsertNewTemporaryMediaItem (new TemporaryItemMedia{Type = type, Path = path});
+			database.InsertNewTemporaryMediaItem (new TemporaryItemMedia{Type = type, fileName = System.IO.Path.GetFileName(path), Path = path});
 		}
 
 		public void DeleteAllDataElements()
@@ -55,9 +51,15 @@ namespace Lisa.Zuma.BlueJay.IOS.Models
 			database.DeleteAllTemporaryMediaItems ();
 		}
 
-		private List<TemporaryItemMedia> GetAllDataElements()
+		private List<NoteMediaModel> GetAllDataElements()
 		{
-			return database.ReturnAllTemporaryMediaItems (); 
+			List<NoteMediaModel> MediaModel = new List<NoteMediaModel> ();
+
+			foreach(var x in database.ReturnAllTemporaryMediaItems()){
+				MediaModel.Add (new NoteMediaModel { Name = x.fileName });
+			}
+
+			return MediaModel;
 		}
 
 	}

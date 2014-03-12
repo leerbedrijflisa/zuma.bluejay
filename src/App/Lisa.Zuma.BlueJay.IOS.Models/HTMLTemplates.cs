@@ -63,7 +63,7 @@ namespace Lisa.Zuma.BlueJay.IOS.Models
 			return NoteHTMLContent;
 		}
 
-		private string NoteMediaHTML(string text, string media){
+		private string NoteMediaHTML(string text, List<NoteMediaModel> media){
 
 			NoteMedia = "";
 
@@ -71,8 +71,10 @@ namespace Lisa.Zuma.BlueJay.IOS.Models
 				NoteMedia += "<p>" + text + "</p>";
 			}
 
-			if (media != null && media != "") {
-				NoteMedia += "<video width='320' height='240' controls><source src='" + media + "' type='video/mp4'>Your browser does not support the video tag.</video>";
+			if (media.Count > 0){
+				foreach (var x in media) {
+					NoteMedia += "<video width='320' height='240' controls><source src='" + x.Location + "' type='video/mp4'>Your browser does not support the video tag.</video> <br />";
+				}
 			}
 
 			return NoteMedia;
@@ -92,7 +94,7 @@ namespace Lisa.Zuma.BlueJay.IOS.Models
 
 				var ItemOwner = db.GetUserById (note.OwnerID);
 
-				TemporaryMedia = this.NoteMediaHTML(note.Text, note.ParsedMedia);
+				TemporaryMedia = this.NoteMediaHTML(note.Text, note.Media);
 
 				if (ItemOwner.Role == 1) {
 					direction = "left";

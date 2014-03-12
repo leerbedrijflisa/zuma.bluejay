@@ -26,6 +26,11 @@ namespace Lisa.Zuma.BlueJay.IOS
 				NewProfileItemViewController newProfileItemViewController = new NewProfileItemViewController();
 				this.NavigationController.PushViewController(newProfileItemViewController, true);
 			};
+
+			btnBack.TouchUpInside += (sender, e) => {
+				TimelineViewController timeLineViewController = new TimelineViewController();
+				this.NavigationController.PushViewController(timeLineViewController, true);
+			};
 		}
 
 		public override void ViewWillAppear (bool animated)

@@ -6,6 +6,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ProfileViewController">
             <connections>
+                <outlet property="btnBack" destination="v2x-jS-1Uj" id="h1L-ai-4q6"/>
                 <outlet property="btnNewItem" destination="kXl-fu-osA" id="Rrp-Q2-bmc"/>
                 <outlet property="tblProfile" destination="viu-E0-lZA" id="DvD-wi-au3"/>
                 <outlet property="view" destination="2" id="3"/>
@@ -37,6 +38,15 @@
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                 </tableView>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="v2x-jS-1Uj">
+                    <rect key="frame" x="13" y="24" width="21" height="46"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <color key="backgroundColor" red="0.094117656349999995" green="0.61960786580000005" blue="0.62745100259999997" alpha="1" colorSpace="deviceRGB"/>
+                    <state key="normal" title="&lt;">
+                        <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                </button>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <simulatedStatusBarMetrics key="simulatedStatusBarMetrics" statusBarStyle="blackOpaque"/>

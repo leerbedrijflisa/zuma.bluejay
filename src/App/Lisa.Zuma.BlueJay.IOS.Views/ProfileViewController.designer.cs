@@ -13,6 +13,9 @@ namespace Lisa.Zuma.BlueJay.IOS
 	partial class ProfileViewController
 	{
 		[Outlet]
+		MonoTouch.UIKit.UIButton btnBack { get; set; }
+
+		[Outlet]
 		MonoTouch.UIKit.UIButton btnNewItem { get; set; }
 
 		[Outlet]
@@ -20,14 +23,19 @@ namespace Lisa.Zuma.BlueJay.IOS
 		
 		void ReleaseDesignerOutlets ()
 		{
+			if (btnNewItem != null) {
+				btnNewItem.Dispose ();
+				btnNewItem = null;
+			}
+
 			if (tblProfile != null) {
 				tblProfile.Dispose ();
 				tblProfile = null;
 			}
 
-			if (btnNewItem != null) {
-				btnNewItem.Dispose ();
-				btnNewItem = null;
+			if (btnBack != null) {
+				btnBack.Dispose ();
+				btnBack = null;
 			}
 		}
 	}
