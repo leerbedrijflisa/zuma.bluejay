@@ -38,7 +38,7 @@ namespace Lisa.Zuma.BlueJay.IOS.Data
 
 			CreateDummyInfo ();
 
-			client = new RestClient ("http://zumabluejay-test.azurewebsites.net");
+			client = new RestClient ("http://zumabluejay.azurewebsites.net");
 		}
 
 		public void SyncAllNotesFromDosier(int dosier, Action AsyncFunc){
@@ -134,11 +134,10 @@ namespace Lisa.Zuma.BlueJay.IOS.Data
 			return ReturnNote;
 		}
 
-		public void InsertNote(NoteModel note)
+		public void InsertNote(NoteModel note, Action Ready)
 		{
 			var user = this.GetCurrentUser ();
 
-			RestClient cl = new RestClient ("http://zumabluejay-test.azurewebsites.net");
 
 			var request = new RestRequest (string.Format("api/dossier/{0}/notes/", 1), Method.POST);
 
@@ -148,12 +147,13 @@ namespace Lisa.Zuma.BlueJay.IOS.Data
 
 			Console.WriteLine (request);
 
-			cl.ExecuteAsync(request, response => {
+			client.ExecuteAsync(request, response => {
 
 				Console.WriteLine("klaar :"+ response.Content);
 				var callback = JsonConvert.DeserializeObject<NoteModel>(response.Content);
 
-				Store(callback);
+				Store(callback, ()=>{ Ready(); });
+
 			});
 
 
@@ -209,7 +209,7 @@ namespace Lisa.Zuma.BlueJay.IOS.Data
 				"Verzorging"
 			};
 
-		private async void Store(NoteModel note) {
+		private async void Store(NoteModel note, Action AsynFunc) {
 			var dbNote = new Notes {
 				Text = note.Text,
 				Media = new List<NoteMediaModel>()
@@ -245,7 +245,7 @@ namespace Lisa.Zuma.BlueJay.IOS.Data
 							var resp = client.Execute<NoteMediaModel>(request);
 							dbNote.Media.Add (resp.Data);
 							db.Update (dbNote);
-
+							AsynFunc ();
 
 						}
 					}

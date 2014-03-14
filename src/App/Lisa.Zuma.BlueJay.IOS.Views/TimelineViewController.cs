@@ -4,6 +4,7 @@ using MonoTouch.Foundation;
 using MonoTouch.UIKit;
 using Lisa.Zuma.BlueJay.IOS.Models;
 using System.IO;
+using GCDiscreetNotification;
 
 namespace Lisa.Zuma.BlueJay.IOS
 {
@@ -12,7 +13,8 @@ namespace Lisa.Zuma.BlueJay.IOS
 		private HTMLTemplates templateParser;
 		private UIView label;
 		UIView OverlayView;
-		private DataHelper dataHelper; 
+		private DataHelper dataHelper;
+		private GCDiscreetNotificationView notificationView; 
 
 		public TimelineViewController () : base ("TimelineViewController", null)
 		{
@@ -30,7 +32,10 @@ namespace Lisa.Zuma.BlueJay.IOS
 
 		public override void ViewDidLoad ()
 		{
+
 			base.ViewDidLoad ();
+
+
 
 //			Console.WriteLine (ParsedHTML);
 
@@ -96,6 +101,23 @@ namespace Lisa.Zuma.BlueJay.IOS
 		{
 			label.Hidden = true;
 			this.NavigationController.SetNavigationBarHidden (false, true);
+		}
+
+		public void ShowLoadingBar()
+		{
+			notificationView = new GCDiscreetNotificationView (
+				text: "Note plaatsen...",
+				activity: false,
+				presentationMode: GCDNPresentationMode.Bottom,
+				view: View
+				);
+
+			notificationView.Show (animated: true);
+		}
+
+		public void HideLoadingBar()
+		{
+			notificationView.Hide (animated: true);
 		}
 
 		
