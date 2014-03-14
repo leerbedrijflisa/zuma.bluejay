@@ -43,8 +43,13 @@ namespace Lisa.Zuma.BlueJay.IOS
 			imagePicker = new UIImagePickerController ();
 
 			btnSave.TouchUpInside += (sender, e) => {
+
+				timeLineViewController.ShowLoadingBar();
+
 				parentview.NavigationController.PushViewController(timeLineViewController, false);
-				dataHelper.SetNewNote(inputText.Text);
+				dataHelper.SetNewNote(inputText.Text, () => {
+					timeLineViewController.HideLoadingBar();
+				});
 			};
 
 

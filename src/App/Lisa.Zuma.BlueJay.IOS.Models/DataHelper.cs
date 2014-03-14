@@ -20,11 +20,13 @@ namespace Lisa.Zuma.BlueJay.IOS.Models
 			database.DummyLoggedIn (id);
 		}
 
-		public void SetNewNote (string text)
+		public void SetNewNote (string text, Action Ready)
 		{
 			var Note = new NoteModel{Text = text, Media = this.GetAllDataElements()};
 
-			database.InsertNote (Note);
+			database.InsertNote (Note, () => {});
+
+			Ready ();
 		}
 
 		public IList<string> picker()
