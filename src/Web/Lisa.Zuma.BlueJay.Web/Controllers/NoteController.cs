@@ -33,7 +33,7 @@ namespace Lisa.Zuma.BlueJay.Web.Controllers
 
             foreach (var note in dossier.Notes)
             {
-                var model = ModelFactory.Create(note);
+                var model = Converter.ToNote(note);
                 result.Add(model);
             }
 
@@ -60,7 +60,7 @@ namespace Lisa.Zuma.BlueJay.Web.Controllers
                 return NotFound();
             }
 
-            var noteModel = ModelFactory.Create(note);
+            var noteModel = Converter.ToNote(note);
             return Ok(noteModel);
         }
 
@@ -78,7 +78,7 @@ namespace Lisa.Zuma.BlueJay.Web.Controllers
                 return NotFound();
             }
 
-            var note = new NoteData
+            var noteData = new NoteData
             {
                 Text = noteModel.Text
             };
@@ -91,15 +91,15 @@ namespace Lisa.Zuma.BlueJay.Web.Controllers
                     MediaLocation = GetStorageUri(media.Name)
                 };
 
-                note.Media.Add(noteMediaData);
+                noteData.Media.Add(noteMediaData);
             }
 
-            dossier.Notes.Add(note);
+            dossier.Notes.Add(noteData);
             Db.SaveChanges();
 
-            var model = ModelFactory.Create(note);
+            var note = Converter.ToNote(noteData);
             
-            return CreatedAtRoute("NoteApi", new { dossierId = dossierId }, model);
+            return CreatedAtRoute("NoteApi", new { dossierId = dossierId }, note);
         }
 
         /// <summary>
@@ -125,7 +125,7 @@ namespace Lisa.Zuma.BlueJay.Web.Controllers
             note.Text = noteModel.Text;
             Db.SaveChanges();
 
-            var result = ModelFactory.Create(note);
+            var result = Converter.ToNote(note);
             return Ok(result);
         }
 
