@@ -6,9 +6,9 @@ using System.Linq;
 
 namespace Lisa.Zuma.BlueJay.Web.Helpers
 {
-    public static class ModelFactory
+    public static class Converter
     {
-        public static Dossier Create(DossierData dossier)
+        public static Dossier ToDossier(DossierData dossier)
         {
             var model = new Dossier
             {
@@ -17,24 +17,24 @@ namespace Lisa.Zuma.BlueJay.Web.Helpers
                 Details = new List<DossierDetail>()
             };
 
-            model.Details = ModelFactory.Create(dossier.Details)
+            model.Details = Converter.ToDossierDetail(dossier.Details)
                                         .ToList();
 
-            model.Notes = ModelFactory.Create(dossier.Notes)
+            model.Notes = Converter.ToNote(dossier.Notes)
                                         .ToList();
 
             return model;
         }
 
-        public static IEnumerable<Dossier> Create(IEnumerable<DossierData> dossiers)
+        public static IEnumerable<Dossier> ToDossier(IEnumerable<DossierData> dossiers)
         {
             foreach (var dossier in dossiers)
             {
-                yield return ModelFactory.Create(dossier);
+                yield return Converter.ToDossier(dossier);
             }
         }
 
-        public static Note Create(NoteData note)
+        public static Note ToNote(NoteData note)
         {
             var model = new Note
             {
@@ -43,21 +43,21 @@ namespace Lisa.Zuma.BlueJay.Web.Helpers
                 Media = new List<NoteMedia>()
             };
 
-            model.Media = ModelFactory.Create(note.Media)
+            model.Media = Converter.ToNoteMedia(note.Media)
                                         .ToList();
 
             return model;
         }
 
-        public static IEnumerable<Note> Create(IEnumerable<NoteData> notes)
+        public static IEnumerable<Note> ToNote(IEnumerable<NoteData> notes)
         {
             foreach (var note in notes)
             {
-                yield return ModelFactory.Create(note);
+                yield return Converter.ToNote(note);
             }
         }
 
-        public static NoteMedia Create(NoteMediaData noteMedia)
+        public static NoteMedia ToNoteMedia(NoteMediaData noteMedia)
         {
             var noteMediaModel = new NoteMedia
             {
@@ -69,15 +69,15 @@ namespace Lisa.Zuma.BlueJay.Web.Helpers
             return noteMediaModel;
         }
 
-        public static IEnumerable<NoteMedia> Create(IEnumerable<NoteMediaData> noteMedias)
+        public static IEnumerable<NoteMedia> ToNoteMedia(IEnumerable<NoteMediaData> noteMedias)
         {
             foreach (var media in noteMedias)
             {
-                yield return ModelFactory.Create(media);
+                yield return Converter.ToNoteMedia(media);
             }
         }
 
-        public static DossierDetail Create(DossierDetailData dossierDetail)
+        public static DossierDetail ToDossierDetail(DossierDetailData dossierDetail)
         {
             return new DossierDetail
             {
@@ -87,11 +87,11 @@ namespace Lisa.Zuma.BlueJay.Web.Helpers
             };
         }
 
-        public static IEnumerable<DossierDetail> Create(IEnumerable<DossierDetailData> dossierDetails)
+        public static IEnumerable<DossierDetail> ToDossierDetail(IEnumerable<DossierDetailData> dossierDetails)
         {
             foreach (var detail in dossierDetails)
             {
-                yield return ModelFactory.Create(detail);
+                yield return Converter.ToDossierDetail(detail);
             }
         }
     }
