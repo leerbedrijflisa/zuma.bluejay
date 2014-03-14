@@ -72,7 +72,7 @@ namespace Lisa.Zuma.BlueJay.Web.Controllers
         /// <returns></returns>
         public IHttpActionResult Post(int dossierId, [FromBody] Note noteModel)
         {
-            var dossier = Db.Dossiers.FirstOrDefault(d => d.Id == dossierId);
+            var dossier = Db.Dossiers.Find(dossierId);
             if (dossier == null)
             {
                 return NotFound();
@@ -80,14 +80,18 @@ namespace Lisa.Zuma.BlueJay.Web.Controllers
 
             var note = new NoteData
             {
-                Text = noteModel.Text,
-                Media = new List<NoteMediaData>()
+                Text = noteModel.Text
             };
 
             foreach (var media in noteModel.Media)
             {
-                var noteMedia = StoreMedia(media);
-                note.Media.Add(noteMedia);
+                var noteMediaData = new NoteMediaData
+                {
+                    Name = media.Name,
+                    MediaLocation = GetStorageUri(media.Name)
+                };
+
+                note.Media.Add(noteMediaData);
             }
 
             dossier.Notes.Add(note);
@@ -147,19 +151,12 @@ namespace Lisa.Zuma.BlueJay.Web.Controllers
             return Ok();
         }
 
-        public NoteMediaData StoreMedia(NoteMedia media)
+        public string GetStorageUri(string file)
         {
-            var noteMedia = new NoteMediaData
-            {
-                Name = media.Name
-            };
-
-            var fileName = Guid.NewGuid().ToString() + Path.GetExtension(media.Name);
+            var fileName = Guid.NewGuid().ToString() + Path.GetExtension(file);
             var storageHelper = new StorageHelper("ZumaBlueJayStorageConnectionString", "bluejay");
 
-            noteMedia.MediaLocation = storageHelper.GetWriteableSasUri(fileName, new TimeSpan(0, 2, 0)).AbsoluteUri;
-
-            return noteMedia;
+            return storageHelper.GetWriteableSasUri(fileName, new TimeSpan(0, 2, 0)).AbsoluteUri;
         }
     }
 }
