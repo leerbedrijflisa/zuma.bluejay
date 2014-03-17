@@ -40,6 +40,7 @@ namespace Lisa.Zuma.BlueJay.Web.Helpers
             {
                 Id = note.Id,
                 Text = note.Text,
+                DateCreated = note.DateCreated,
                 Media = new List<NoteMedia>()
             };
 

@@ -80,7 +80,8 @@ namespace Lisa.Zuma.BlueJay.Web.Controllers
 
             var noteData = new NoteData
             {
-                Text = noteModel.Text
+                Text = noteModel.Text,
+                DateCreated = noteModel.DateCreated
             };
 
             foreach (var media in noteModel.Media)

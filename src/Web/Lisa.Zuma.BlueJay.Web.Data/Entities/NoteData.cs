@@ -19,6 +19,9 @@ namespace Lisa.Zuma.BlueJay.Web.Data.Entities
         public string Text { get; set; }
 
         [Required]
+        public DateTime DateCreated { get; set; }
+
+        [Required]
         public int DossierId { get; set; }
 
         public virtual DossierData Dossier { get; set; }
