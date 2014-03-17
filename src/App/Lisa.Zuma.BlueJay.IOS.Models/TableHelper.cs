@@ -2,53 +2,36 @@ using System;
 using Lisa.Zuma.BlueJay.IOS.Data;
 using MonoTouch.UIKit;
 using System.Collections.Generic;
+using System.Collections;
 
 namespace Lisa.Zuma.BlueJay.IOS.Models
 {
 	public class TableHelper
 	{
-		private Database db;
-		public TableSource tableSource;
-
 		public TableHelper()
 		{
 			db = new Database();
 		}
-
-		public TableSource DataForList()
-		{
-
-			List<TableItem> tableItems = new List<TableItem>();
-
-			var dosier = db.GetDosiers (1);
-
-			foreach (var dosiers in dosier) 
-			{
-				tableItems.Add (new TableItem(dosiers.ID, dosiers.Name));
-			}
-		
-			return new TableSource(tableItems);
-
-		}
-
-		public TableSource DataForProfileList()
-		{
-			List<TableItem> tableItem = new List<TableItem>();
-
-			var ProfileItems = db.GetProfileItemsByProfileID (1);
-
-			foreach (var profileItem in ProfileItems) 
-			{
-				tableItem.Add (new TableItem(profileItem.ID, profileItem.Title));
-			}
-
-			return new TableSource(tableItem);
-		}
-
 		public void InsertProfileItem(string title, string content)
 		{
 			db.InsertProfileItem (new ProfileItems{Title = title, Content = content});
-		} 
+		}
+
+		public TableSource CreateSource<T>(IEnumerable<T> data, Func<T, int> getId, Func<T, string> getHeading)
+		{
+			var tableItems = new List<TableItem> ();
+
+			foreach (var dataItem in data) {
+				var id = getId (dataItem);
+				var heading = getHeading (dataItem);
+				tableItems.Add(new TableItem(id, heading));
+			}
+
+			return new TableSource(tableItems);
+		}
+
+		private Database db;
+		public TableSource tableSource;
 	}
 }
 

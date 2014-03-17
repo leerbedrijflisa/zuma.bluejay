@@ -14,8 +14,9 @@ namespace Lisa.Zuma.BlueJay.IOS.Models
 {
 	public class Camera
 	{
-
 		private UploadVideo uploadVideo;
+		private DataHelper dataHelper = new DataHelper();
+
 
 		public void Capture(string date){
 
@@ -47,6 +48,26 @@ namespace Lisa.Zuma.BlueJay.IOS.Models
 				}, TaskScheduler.FromCurrentSynchronizationContext());
 
 			}
+		}
+
+		public void PickVideoAsync()
+		{
+			string FileName = String.Format("{0:d-M-yyyy-HH-mm-ss}", DateTime.Now) +".mp4";
+			var documents =
+				Environment.GetFolderPath (Environment.SpecialFolder.MyDocuments);
+			var excualPath = Path.Combine (documents, FileName);
+
+			var picker = new MediaPicker();
+			picker.PickVideoAsync().ContinueWith (t => {
+				MediaFile file = t.Result;
+				using (var f = file.GetStream() ){
+					using(var dest = File.Create(excualPath)){
+						f.CopyTo(dest);
+						var kaas = File.Exists(excualPath);
+						dataHelper.InsertNewDataElement(1, excualPath);
+					}
+				}
+			}, TaskScheduler.FromCurrentSynchronizationContext());
 		}
 	}
 }

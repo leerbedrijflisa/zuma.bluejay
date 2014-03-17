@@ -48,6 +48,16 @@ namespace Lisa.Zuma.BlueJay.IOS.Models
 			database.InsertNewTemporaryMediaItem (new TemporaryItemMedia{Type = type, fileName = System.IO.Path.GetFileName(path), Path = path});
 		}
 
+		public List<Dosier> GetDosiers()
+		{
+			return database.GetAllDosiers ();
+		}
+	
+		public List<ProfileItems> GetProfileItems()
+		{
+			return database.GetProfileItemsByProfileID (1);
+		}
+
 		public void DeleteAllDataElements()
 		{
 			database.DeleteAllTemporaryMediaItems ();

@@ -26,17 +26,15 @@ namespace Lisa.Zuma.BlueJay.IOS
 		public void RowClicked_handler (object sender, RowClickedEventArgs e){
 			TimelineViewController timeLineViewController = new TimelineViewController ();
 			this.NavigationController.PushViewController (timeLineViewController, true);
-
 		}
 
 		public override void ViewDidLoad ()
 		{
 			base.ViewDidLoad ();
 			this.NavigationItem.SetHidesBackButton (true, false);
+			var dosiers = dataHelper.GetDosiers();
 
-
-
-			var sourceFromTablehelper = tableHelper.DataForList();
+			var sourceFromTablehelper = tableHelper.CreateSource(dosiers, d => d.ID, d => d.Name);
 
 			sourceFromTablehelper.RowClicked += RowClicked_handler;
 			tblCell.Source = sourceFromTablehelper;

@@ -8,13 +8,10 @@ namespace Lisa.Zuma.BlueJay.IOS
 {
 	public partial class loginViewController : UIViewController
 	{
-		private DataHelper DataHelper;
-		private SummaryViewController summaryViewController;
 			 
 		public loginViewController () : base ("loginViewController", null)
 		{
-			DataHelper = new DataHelper ();
-			summaryViewController = new SummaryViewController ();
+			dataHelper = new DataHelper ();
 		}
 
 		public override void ViewDidLoad ()
@@ -22,15 +19,22 @@ namespace Lisa.Zuma.BlueJay.IOS
 			base.ViewDidLoad ();
 
 			btnMoeder.TouchUpInside += (object sender, EventArgs e) => {
-				DataHelper.SignIn(1);
-				this.NavigationController.PushViewController(summaryViewController, true);
+				dataHelper.SignIn(1);
+				PushToSummaryController();
 			};
 
 			btnBegeleider.TouchUpInside += (object sender, EventArgs e) => {
-				DataHelper.SignIn(2);
-				this.NavigationController.PushViewController(summaryViewController, true);
+				dataHelper.SignIn(2);
+				PushToSummaryController();
 			};
 		}
+
+		private void PushToSummaryController()
+		{
+			NavigationController.PushViewController (new SummaryViewController(), true);
+		}
+
+		private DataHelper dataHelper;
 	}
 }
 

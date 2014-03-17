@@ -32,13 +32,13 @@ namespace Lisa.Zuma.BlueJay.IOS.Data
 			db.CreateTable<Profile>();
 			db.CreateTable<ProfileItems>();
 			db.CreateTable<User>();
-			db.DropTable<TemporaryItemMedia> ();
+			//db.DropTable<TemporaryItemMedia> ();
 			db.CreateTable<TemporaryItemMedia> ();
 
 
 			CreateDummyInfo ();
 
-			client = new RestClient ("http://zumabluejay.azurewebsites.net");
+			client = new RestClient ("http://zumabluejay-test.azurewebsites.net");
 		}
 
 		public void SyncAllNotesFromDosier(int dosier, Action AsyncFunc){
@@ -88,6 +88,13 @@ namespace Lisa.Zuma.BlueJay.IOS.Data
 			var Result = db.Query<Dosier>("SELECT * FROM Dosier WHERE ID='"+id+"'");
 
 			return Result;
+		}
+
+		public List<Dosier> GetAllDosiers()
+		{
+			var result = db.Query<Dosier>("SELECT * FROM Dosier");
+
+			return result;
 		}
 
 		public List<Notes> GetNotesFromDosier(int id)
@@ -169,15 +176,15 @@ namespace Lisa.Zuma.BlueJay.IOS.Data
 
 			public List<ProfileItems> GetProfileItemsByProfileID (int profileId)
 			{
-				var Result = db.Query<ProfileItems> ("SELECT * FROM ProfileItems WHERE ProfileID='" + profileId + "'");
+				var result = db.Query<ProfileItems> ("SELECT * FROM ProfileItems WHERE ProfileID='" + profileId + "'");
 
-				return Result;
+				return result;
 
 			}
 
 			public void InsertNewTemporaryMediaItem (TemporaryItemMedia item)
 			{
-				db.Insert (item);
+				db.Insert(item);
 			}
 
 			public void DeleteAllTemporaryMediaItems ()

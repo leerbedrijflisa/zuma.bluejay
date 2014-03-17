@@ -100,7 +100,6 @@
     <Compile Include="TableItem.cs" />
     <Compile Include="RowClickedEventArgs.cs" />
     <Compile Include="TableHelper.cs" />
-    <Compile Include="TemplateParser.cs" />
     <Compile Include="HTMLTemplates.cs" />
     <Compile Include="Camera.cs" />
     <Compile Include="PickerModel.cs" />
