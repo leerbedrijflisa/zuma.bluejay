@@ -33,7 +33,7 @@ namespace Lisa.Zuma.BlueJay.Web.Controllers
             var result = new List<NoteMedia>();
             foreach (var media in note.Media)
             {
-                var noteMediaModel = ModelFactory.Create(media);
+                var noteMediaModel = Converter.ToNoteMedia(media);
                 result.Add(noteMediaModel);
             }
 
@@ -60,7 +60,7 @@ namespace Lisa.Zuma.BlueJay.Web.Controllers
                 return NotFound();
             }
             
-            var model = ModelFactory.Create(media);
+            var model = Converter.ToNoteMedia(media);
             return Ok(model);
         }
 
@@ -91,7 +91,7 @@ namespace Lisa.Zuma.BlueJay.Web.Controllers
 
             Db.SaveChanges();
 
-            var result = ModelFactory.Create(media);
+            var result = Converter.ToNoteMedia(media);
             return Ok(result);
         }
 
