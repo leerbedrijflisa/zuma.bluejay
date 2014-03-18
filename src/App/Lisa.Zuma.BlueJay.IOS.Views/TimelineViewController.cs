@@ -27,7 +27,7 @@ namespace Lisa.Zuma.BlueJay.IOS
 			btnEditProfile.TouchUpInside += eventHandlers.CreatePush<ProfileViewController>();
 			btnRefresh.TouchUpInside += eventHandlers.Create(UpdateList);
 
-			dataHelper.SyncNotesByID (1, UpdateList);
+			dataHelper.SyncNotesDataByID (1, UpdateList);
 		}
 
 		public void UpdateList()

@@ -9,12 +9,12 @@ using Xamarin.Media;
 using MonoTouch.AssetsLibrary;
 using System.IO;
 using Lisa.Zuma.BlueJay.IOS.Data;
+using Lisa.Zuma.BlueJay.IOS.Models;
 
-namespace Lisa.Zuma.BlueJay.IOS.Models
+namespace Lisa.Zuma.BlueJay.IOS
 {
 	public class Camera
 	{
-		private UploadVideo uploadVideo;
 		private DataHelper dataHelper = new DataHelper();
 
 

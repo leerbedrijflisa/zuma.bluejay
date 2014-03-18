@@ -4,19 +4,10 @@ using MonoTouch.UIKit;
 using System.Collections.Generic;
 using System.Collections;
 
-namespace Lisa.Zuma.BlueJay.IOS.Models
+namespace Lisa.Zuma.BlueJay.IOS
 {
 	public class TableHelper
 	{
-		public TableHelper()
-		{
-			db = new Database();
-		}
-		public void InsertProfileItem(string title, string content)
-		{
-			db.InsertProfileItem (new ProfileItems{Title = title, Content = content});
-		}
-
 		public TableSource CreateSource<T>(IEnumerable<T> data, Func<T, int> getId, Func<T, string> getHeading)
 		{
 			var tableItems = new List<TableItem> ();
@@ -26,12 +17,11 @@ namespace Lisa.Zuma.BlueJay.IOS.Models
 				var heading = getHeading (dataItem);
 				tableItems.Add(new TableItem(id, heading));
 			}
-
 			return new TableSource(tableItems);
 		}
 
-		private Database db;
 		public TableSource tableSource;
+
 	}
 }
 

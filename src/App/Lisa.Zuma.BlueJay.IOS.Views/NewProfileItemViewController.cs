@@ -27,7 +27,7 @@ namespace Lisa.Zuma.BlueJay.IOS
 
 		private void CreateNewProfileItem()
 		{
-			tableHelper.InsertProfileItem(txtTitle.Text, txtContent.Text);
+			dataHelper.InsertProfileItem(txtTitle.Text, txtContent.Text);
 			NavigationController.PushViewController (new ProfileViewController(), true);
 		}
 

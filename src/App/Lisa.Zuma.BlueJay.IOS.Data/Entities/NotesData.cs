@@ -4,19 +4,19 @@ using SQLite;
 
 namespace Lisa.Zuma.BlueJay.IOS.Data
 {
-	public class Notes
+	public class NotesData
 	{
-		public Notes(){
-			Media = new List<NoteMediaModel> ();
+		public NotesData(){
+			Media = new List<Media> ();
 		}
 
 		[PrimaryKey, AutoIncrement]
 		public int ID { get; set; }
 		public int OwnerID{ get; set; } 
-		public int DosierID { get; set; }
+		public int DosierDataID { get; set; }
 		public string Text { get; set; }	
 		[Ignore]
-		public List<NoteMediaModel> Media { get; set; }
+		public List<Media> Media { get; set; }
 
 		public string ParsedMedia 
 		{
@@ -36,7 +36,7 @@ namespace Lisa.Zuma.BlueJay.IOS.Data
 				var SplitValue = value.Split (new char[]{'@'}, StringSplitOptions.RemoveEmptyEntries);
 
 				foreach (var x in SplitValue) {
-					var model = new NoteMediaModel {Location = x};
+					var model = new Media {Location = x};
 					Media.Add (model);
 				}
 			}

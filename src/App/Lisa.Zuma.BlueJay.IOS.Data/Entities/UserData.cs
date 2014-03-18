@@ -3,7 +3,7 @@ using SQLite;
 
 namespace Lisa.Zuma.BlueJay.IOS.Data
 {
-	public class User
+	public class UserData
 	{
 		[PrimaryKey, AutoIncrement]
 		public int ID { get; set; }

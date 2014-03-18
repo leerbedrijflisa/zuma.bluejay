@@ -92,26 +92,18 @@
     <Reference Include="GCDiscreetNotification">
       <HintPath>..\Components\gcdiscreetnotification-1.0\lib\ios\GCDiscreetNotification.dll</HintPath>
     </Reference>
+    <Reference Include="Lisa.Zuma.BlueJay.Models">
+      <HintPath>..\..\..\..\..\Downloads\Lisa.Zuma.BlueJay.Models.dll</HintPath>
+    </Reference>
+    <Reference Include="RestSharp.MonoTouch">
+      <HintPath>..\Components\restsharp-104.1.0\lib\ios\RestSharp.MonoTouch.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\Components\json.net-4.5.11\lib\ios\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
-  <ItemGroup>
-    <Compile Include="DataHelper.cs" />
-    <Compile Include="TableSource.cs" />
-    <Compile Include="TableItem.cs" />
-    <Compile Include="RowClickedEventArgs.cs" />
-    <Compile Include="TableHelper.cs" />
-    <Compile Include="HTMLTemplates.cs" />
-    <Compile Include="Camera.cs" />
-    <Compile Include="PickerModel.cs" />
-    <Compile Include="PickerChangedEventArgs.cs" />
-    <Compile Include="Reachability.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Lisa.Zuma.BlueJay.IOS.Data\Lisa.Zuma.BlueJay.IOS.Data.csproj">
-      <Project>{87827FCE-C3EF-447D-8058-255C67F4E346}</Project>
-      <Name>Lisa.Zuma.BlueJay.IOS.Data</Name>
-    </ProjectReference>
-  </ItemGroup>
   <ItemGroup>
     <XamarinComponentReference Include="xamarin.mobile">
       <Version>0.7.1</Version>
@@ -121,5 +113,24 @@
       <Version>1.0</Version>
       <Visible>False</Visible>
     </XamarinComponentReference>
+    <XamarinComponentReference Include="restsharp">
+      <InstallationInProgress>True</InstallationInProgress>
+      <Version>104.1.0</Version>
+      <Visible>False</Visible>
+    </XamarinComponentReference>
+    <XamarinComponentReference Include="json.net">
+      <InstallationInProgress>True</InstallationInProgress>
+      <Version>4.5.11</Version>
+      <Visible>False</Visible>
+    </XamarinComponentReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="DataHelper.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Lisa.Zuma.BlueJay.IOS.Data\Lisa.Zuma.BlueJay.IOS.Data.csproj">
+      <Project>{87827FCE-C3EF-447D-8058-255C67F4E346}</Project>
+      <Name>Lisa.Zuma.BlueJay.IOS.Data</Name>
+    </ProjectReference>
   </ItemGroup>
 </Project>

@@ -92,9 +92,13 @@
     <Reference Include="GCDiscreetNotification">
       <HintPath>..\Components\gcdiscreetnotification-1.0\lib\ios\GCDiscreetNotification.dll</HintPath>
     </Reference>
+    <Reference Include="Lisa.Zuma.BlueJay.Models">
+      <HintPath>..\..\..\..\..\Downloads\Lisa.Zuma.BlueJay.Models.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
+    <Folder Include="Helpers\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Info.plist" />
@@ -128,6 +132,15 @@
       <DependentUpon>NewProfileItemViewController.cs</DependentUpon>
     </Compile>
     <Compile Include="EventHandlers.cs" />
+    <Compile Include="Helpers\TableSource.cs" />
+    <Compile Include="Helpers\TableItem.cs" />
+    <Compile Include="Helpers\TableHelper.cs" />
+    <Compile Include="Helpers\RowClickedEventArgs.cs" />
+    <Compile Include="Helpers\Reachability.cs" />
+    <Compile Include="Helpers\PickerModel.cs" />
+    <Compile Include="Helpers\PickerChangedEventArgs.cs" />
+    <Compile Include="Helpers\HTMLTemplates.cs" />
+    <Compile Include="Helpers\Camera.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

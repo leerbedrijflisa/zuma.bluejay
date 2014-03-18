@@ -44,7 +44,7 @@ namespace Lisa.Zuma.BlueJay.IOS
 		private void SaveNoteData(Object sender, EventArgs args)
 		{
 			parentView.NavigationController.PushViewController(new TimelineViewController(), false);
-			dataHelper.SetNewNote (txtInput.Text, () => {});
+			dataHelper.SetNewNote (txtInput.Text);
 		}
 
 		private void TakePicture(Object sender, EventArgs args)

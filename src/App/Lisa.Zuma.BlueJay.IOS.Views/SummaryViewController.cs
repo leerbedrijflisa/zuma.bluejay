@@ -32,7 +32,7 @@ namespace Lisa.Zuma.BlueJay.IOS
 		{
 			base.ViewDidLoad ();
 			this.NavigationItem.SetHidesBackButton (true, false);
-			var dosiers = dataHelper.GetDosiers();
+			var dosiers = dataHelper.GetDosierDatas();
 
 			var sourceFromTablehelper = tableHelper.CreateSource(dosiers, d => d.ID, d => d.Name);
 

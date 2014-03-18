@@ -2,14 +2,10 @@ using System;
 using System.Collections.Generic;
 using MonoTouch.UIKit;
 
-namespace Lisa.Zuma.BlueJay.IOS.Models
+namespace Lisa.Zuma.BlueJay.IOS
 {
 	public class PickerModel : UIPickerViewModel
 	{
-		private readonly IList<string> values;
-
-		public event EventHandler<PickerChangedEventArgs> PickerChanged;
-
 		public PickerModel(IList<string> values)
 		{
 			this.values = values;
@@ -42,5 +38,8 @@ namespace Lisa.Zuma.BlueJay.IOS.Models
 				this.PickerChanged(this, new PickerChangedEventArgs{SelectedValue = values[row]});
 			}
 		}
+
+		public event EventHandler<PickerChangedEventArgs> PickerChanged;
+		private readonly IList<string> values;
 	}
 }

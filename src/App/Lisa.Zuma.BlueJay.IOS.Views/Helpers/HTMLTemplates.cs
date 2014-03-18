@@ -1,8 +1,9 @@
 using System;
 using Lisa.Zuma.BlueJay.IOS.Data;
 using System.Collections.Generic;
+using Lisa.Zuma.BlueJay.Models;
 
-namespace Lisa.Zuma.BlueJay.IOS.Models
+namespace Lisa.Zuma.BlueJay.IOS
 {
 	public class HTMLTemplates
 	{
@@ -63,7 +64,7 @@ namespace Lisa.Zuma.BlueJay.IOS.Models
 			return NoteHTMLContent;
 		}
 
-		private string NoteMediaHTML(string text, List<NoteMediaModel> media){
+		private string NoteMediaHTML(string text, List<Media> media){
 
 			NoteMedia = "";
 
@@ -88,7 +89,7 @@ namespace Lisa.Zuma.BlueJay.IOS.Models
 			string TemporaryNote = null;
 			string TemporaryMedia;
 
-			var Note = db.GetNotesFromDosier (id);
+			var Note = db.GetNotesDataFromDosierData (id);
 
 			foreach (var note in Note) {
 
