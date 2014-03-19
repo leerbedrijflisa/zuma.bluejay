@@ -38,26 +38,6 @@ namespace Lisa.Zuma.BlueJay.IOS.Data
 			CreateDummyInfo ();
 		}
 
-//		public void SyncAllNotesDataFromDosierData(int dosier, Action AsyncFunc){
-//
-//			db.DropTable<NotesData> ();
-//
-//			var request = new RestRequest (string.Format("api/dossier/{0}/Notes/", dosier), Method.GET);
-//
-//			client.ExecuteAsync (request, response => {
-//
-//				var callback = JsonConvert.DeserializeObject<List<Note>>(response.Content);
-//
-//				foreach(var Result in callback){
-//					var note = new NotesData{DosierDataID = dosier, OwnerID = 1, Text = Result.Text, Media = Result.Media};
-//					db.Insert(note);
-//				}
-//
-//				AsyncFunc();
-//
-//			});
-//		}
-
 		public void CreateDummyInfo()
 		{
 			var count = db.Query<DosierData>("SELECT * FROM DosierData");
@@ -172,6 +152,11 @@ namespace Lisa.Zuma.BlueJay.IOS.Data
 			}
 		}
 
+		public void DeleteAllNotesForSync()
+		{
+			db.Query<NotesData> ("DELETE FROM NotesData");
+		}
+
 		public void InsertNewTemporaryMediaItem (TemporaryItemMediaData item)
 		{
 			db.Insert(item);
@@ -179,7 +164,7 @@ namespace Lisa.Zuma.BlueJay.IOS.Data
 
 		public void DeleteAllTemporaryMediaItems ()
 		{
-		db.Query<TemporaryItemMediaData> ("DELETE FROM TemporaryItemMediaData");
+			db.Query<TemporaryItemMediaData> ("DELETE FROM TemporaryItemMediaData");
 		}
 
 		public List<TemporaryItemMediaData> ReturnAllTemporaryMediaItems ()

@@ -118,7 +118,7 @@ namespace Lisa.Zuma.BlueJay.IOS.Models
 
 		public void SyncAllNotesDataFromDosierData(int dosier, Action AsyncFunc){
 
-			//database.DropTable<NotesData> ();
+			database.DeleteAllNotesForSync();
 
 			var request = new RestRequest (string.Format("api/dossier/{0}/Notes/", dosier), Method.GET);
 
