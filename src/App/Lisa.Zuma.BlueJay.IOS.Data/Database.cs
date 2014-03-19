@@ -21,10 +21,11 @@ namespace Lisa.Zuma.BlueJay.IOS.Data
 
 		public Database ()
 		{
+
+
 			var documents = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
 			Console.WriteLine (documents);
 			pathToDatabase = Path.Combine(documents, "BlueJay_DB.db");
-
 			db = new SQLite.SQLiteConnection (pathToDatabase);
 
 			db.CreateTable<DosierData>();

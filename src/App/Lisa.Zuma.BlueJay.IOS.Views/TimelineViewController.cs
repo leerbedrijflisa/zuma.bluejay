@@ -17,11 +17,15 @@ namespace Lisa.Zuma.BlueJay.IOS
 			dataHelper = new DataHelper ();
 			newNoteViewController = new NewNoteViewController(this);
 			eventHandlers = new EventHandlers (this);
+			backgroundColor = new UIButton ();
+			OverlayView = new UIView ();
 		}
 
 		public override void ViewDidLoad ()
 		{
 			base.ViewDidLoad ();
+
+			backgroundColor.TouchUpInside += eventHandlers.Create(HideNoteCreator);
 
 			btnNewNote.TouchUpInside += eventHandlers.Create(CreateNote);
 			btnEditProfile.TouchUpInside += eventHandlers.CreatePush<ProfileViewController>();
@@ -44,15 +48,14 @@ namespace Lisa.Zuma.BlueJay.IOS
 		public void CreateNote()
 		{
 			InitializeNewNoteUI();
-			NavigationController.SetNavigationBarHidden (false, true);
 		}
 
 
 		//This function will be temporary, depending on the UI.
 		public void HideNoteCreator()
 		{
-			label.Hidden = true;
-			this.NavigationController.SetNavigationBarHidden (false, true);
+			backgroundColor.Hidden = true;
+			OverlayView.Hidden = true;
 		}
 
 		public override void ViewWillAppear (bool animated)
@@ -64,16 +67,17 @@ namespace Lisa.Zuma.BlueJay.IOS
 
 		private void InitializeNewNoteUI()
 		{
-			label = new UIButton ();
-			label.Frame = new RectangleF (0, 0, View.Frame.Width, View.Frame.Height);
-			label.BackgroundColor = UIColor.Black;
-			label.Alpha = 0.5f;
-			View.Add (label);
+			backgroundColor.Hidden = false;
+			OverlayView.Hidden = false;
+
+			backgroundColor.Frame = new RectangleF (0, 0, View.Frame.Width, View.Frame.Height);
+			backgroundColor.BackgroundColor = UIColor.Black;
+			backgroundColor.Alpha = 0.5f;
+			View.Add (backgroundColor);
 
 			var x = View.Frame.Width / 2 -300;
 			var y = View.Frame.Height / 2 - 300;
 
-			UIView OverlayView = new UIView ();
 			OverlayView.Frame = new RectangleF(x, y, 400, 600);
 			OverlayView.Add (newNoteViewController.View);
 
@@ -81,10 +85,11 @@ namespace Lisa.Zuma.BlueJay.IOS
 		}
 
 		private HTMLTemplates templateParser;
-		private UIView label;
+		private UIButton backgroundColor;
 		private DataHelper dataHelper;
 		private NewNoteViewController newNoteViewController;
 		private EventHandlers eventHandlers;
+		private UIView OverlayView;
 
 
 	}

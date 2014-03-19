@@ -7,6 +7,7 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="NewNoteViewController">
             <connections>
                 <outlet property="btnCamera" destination="YZ3-BT-Ep6" id="5Z1-yM-7ym"/>
+                <outlet property="btnPickPhoto" destination="lLm-gI-Ekf" id="MMz-v5-HCY"/>
                 <outlet property="btnPickVideo" destination="ejr-Ir-aqQ" id="l4b-00-f3f"/>
                 <outlet property="btnSave" destination="3lV-ua-l80" id="fWW-hJ-ZvZ"/>
                 <outlet property="view" destination="2" id="3"/>
@@ -22,7 +23,7 @@
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <color key="backgroundColor" red="0.92990672829999999" green="0.92990672829999999" blue="0.92990672829999999" alpha="1" colorSpace="calibratedRGB"/>
                     <fontDescription key="fontDescription" name="HelveticaNeue-UltraLight" family="Helvetica Neue" pointSize="25"/>
-                    <state key="normal" title="Schrijf een bericht">
+                    <state key="normal" title="Opslaan">
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
                 </button>
@@ -42,11 +43,20 @@
                     <state key="normal" image="camera.png"/>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="ejr-Ir-aqQ">
-                    <rect key="frame" x="20" y="519" width="383" height="34"/>
+                    <rect key="frame" x="220" y="519" width="183" height="34"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <color key="backgroundColor" red="0.79860889670000001" green="0.79860889670000001" blue="0.79860889670000001" alpha="1" colorSpace="calibratedRGB"/>
                     <fontDescription key="fontDescription" name="HelveticaNeue-Thin" family="Helvetica Neue" pointSize="15"/>
                     <state key="normal" title="Video kiezen">
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="lLm-gI-Ekf">
+                    <rect key="frame" x="20" y="519" width="185" height="34"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <color key="backgroundColor" red="0.79860889670000001" green="0.79860889670000001" blue="0.79860889670000001" alpha="1" colorSpace="calibratedRGB"/>
+                    <fontDescription key="fontDescription" name="HelveticaNeue-Thin" family="Helvetica Neue" pointSize="15"/>
+                    <state key="normal" title="Foto kiezen">
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
                 </button>

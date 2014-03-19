@@ -91,14 +91,14 @@ namespace Lisa.Zuma.BlueJay.IOS.Models
 							};
 
 							dbNote.Media.Add (noteMedia);
-							database.Update (dbNote);
-							AsynFunc ();
+							database.Update(dbNote);
+
 
 						}
 					}
 				}
 			}
-
+			AsynFunc ();
 		}
 
 		public IList<string> picker()
@@ -109,10 +109,7 @@ namespace Lisa.Zuma.BlueJay.IOS.Models
 		public void SyncNotesDataByID(int id, Action DoSomething)
 		{
 			SyncAllNotesDataFromDosierData(id, ()=>{
-				if (DoSomething != null) 
-				{
 					DoSomething();
-				}
 			});
 		}
 
@@ -142,6 +139,8 @@ namespace Lisa.Zuma.BlueJay.IOS.Models
 					.ForEach (n => {
 					database.Insert (n);
 				});
+				AsyncFunc ();
+
 			});
 
 //				foreach(var Result in callback){
@@ -150,8 +149,6 @@ namespace Lisa.Zuma.BlueJay.IOS.Models
 //					var note = new NotesData{DosierDataID = dosier, OwnerID = 1, Text = Result.Text, Media = Result.Media};
 //					database.Insert(note);
 //				}
-
-			AsyncFunc ();
 
 		}
 

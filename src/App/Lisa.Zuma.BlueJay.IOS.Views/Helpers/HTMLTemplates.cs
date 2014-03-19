@@ -74,12 +74,20 @@ namespace Lisa.Zuma.BlueJay.IOS
 
 			if (media.Count > 0){
 				foreach (var x in media) {
-					NoteMedia += "<video width='320' height='240' controls><source src='" + x.Location + "' type='video/mp4'>Your browser does not support the video tag.</video> <br />";
+
+					if (x.Location.Contains (".png"))
+					{
+						NoteMedia += "<img src='" + x.Location + "' ><br />";
+					}
+
+					if (x.Location.Contains (".mp4"))
+					{
+						NoteMedia += "<video width='320' height='240' controls><source src='" + x.Location + "' type='video/mp4'>Your browser does not support the video tag.</video> <br />";
+					}
 				}
 			}
 
 			return NoteMedia;
-
 		}
 
 		public string ParseTimeLine(int id)

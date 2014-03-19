@@ -69,6 +69,26 @@ namespace Lisa.Zuma.BlueJay.IOS
 				}
 			}, TaskScheduler.FromCurrentSynchronizationContext());
 		}
+
+		public void PickPhotoAsync()
+		{
+			string FileName = String.Format("{0:d-M-yyyy-HH-mm-ss}", DateTime.Now) +".png";
+			var documents =
+				Environment.GetFolderPath (Environment.SpecialFolder.MyDocuments);
+			var excualPath = Path.Combine (documents, FileName);
+
+			var picker = new MediaPicker();
+			picker.PickPhotoAsync().ContinueWith (t => {
+				MediaFile file = t.Result;
+				using (var f = file.GetStream() ){
+					using(var dest = File.Create(excualPath)){
+						f.CopyTo(dest);
+						var kaas = File.Exists(excualPath);
+						dataHelper.InsertNewDataElement(1, excualPath);
+					}
+				}
+			}, TaskScheduler.FromCurrentSynchronizationContext());
+		}
 	}
 }
 

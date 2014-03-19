@@ -27,6 +27,7 @@ namespace Lisa.Zuma.BlueJay.IOS
 			btnSave.TouchUpInside += SaveNoteData;
 			btnCamera.TouchUpInside += TakePicture;
 			btnPickVideo.TouchUpInside += PickVideo;
+			btnPickPhoto.TouchUpInside += PickImage;
 		}
 
 		private void InitializeUI()
@@ -55,6 +56,11 @@ namespace Lisa.Zuma.BlueJay.IOS
 		private void PickVideo(Object sender, EventArgs args)
 		{
 			camera.PickVideoAsync();
+		}
+
+		private void PickImage(Object sender, EventArgs args)
+		{
+			camera.PickPhotoAsync ();
 		}
 
 		private TimelineViewController timeLineViewController;
