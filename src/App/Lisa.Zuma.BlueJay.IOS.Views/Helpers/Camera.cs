@@ -18,7 +18,7 @@ namespace Lisa.Zuma.BlueJay.IOS
 		private DataHelper dataHelper = new DataHelper();
 
 
-		public void Capture(string date){
+		public void CaptureVideo(string date){
 
 			var picker = new MediaPicker ();
 
@@ -48,6 +48,42 @@ namespace Lisa.Zuma.BlueJay.IOS
 				}, TaskScheduler.FromCurrentSynchronizationContext());
 
 			}
+		}
+
+		public void CapturePhoto(string date){
+		
+			var picker = new MediaPicker ();
+
+			if (!picker.IsCameraAvailable)
+				Console.WriteLine("No camera!");
+			else {
+				picker.TakePhotoAsync (new StoreCameraMediaOptions {
+					Name = date+".png",
+					Directory = "TemporaryFiles"
+				}).ContinueWith (t => {
+					var message = t;
+
+					if (message.IsCanceled) {
+						Console.WriteLine("User cancelled");
+						return;
+					}
+
+					Console.WriteLine(t.Result.Path);
+
+					var ImageTaked = UIImage.FromFile(t.Result.Path);
+
+					ImageTaked.SaveToPhotosAlbum((image, error) => {});
+
+//					ALAssetsLibrary library = new ALAssetsLibrary();                   
+//					library.WriteImageToSavedPhotosAlbum(new NSUrl(t.Result.Path) as UIImage, new NSDictionary(), null, (assetUrl, error) =>{
+//						Console.WriteLine ("assetUrl:"+assetUrl);
+//					});
+
+
+				}, TaskScheduler.FromCurrentSynchronizationContext());
+
+			}
+
 		}
 
 		public void PickVideoAsync()

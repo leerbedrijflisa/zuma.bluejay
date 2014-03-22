@@ -25,9 +25,11 @@ namespace Lisa.Zuma.BlueJay.IOS
 			InitializeUI ();
 
 			btnSave.TouchUpInside += SaveNoteData;
-			btnCamera.TouchUpInside += TakePicture;
+			btnCamera.TouchUpInside += TakeVideo;
+			btnPhotoCamera.TouchUpInside += TakePhoto;
 			btnPickVideo.TouchUpInside += PickVideo;
 			btnPickPhoto.TouchUpInside += PickImage;
+
 		}
 
 		private void InitializeUI()
@@ -48,19 +50,24 @@ namespace Lisa.Zuma.BlueJay.IOS
 			dataHelper.SetNewNote (txtInput.Text);
 		}
 
-		private void TakePicture(Object sender, EventArgs args)
+		private void TakeVideo(Object sender, EventArgs args)
 		{
-			camera.Capture(String.Format("{0:d-M-yyyy-HH-mm-ss}", DateTime.Now));
+			camera.CaptureVideo(String.Format("{0:d-M-yyyy-HH-mm-ss}", DateTime.Now));
 		}
 
-		private void PickVideo(Object sender, EventArgs args)
+		private void TakePhoto(Object sender, EventArgs args)
 		{
-			camera.PickVideoAsync();
+			camera.CapturePhoto(String.Format("{0:d-M-yyyy-HH-mm-ss}", DateTime.Now));
 		}
 
 		private void PickImage(Object sender, EventArgs args)
 		{
 			camera.PickPhotoAsync ();
+		}
+
+		private void PickVideo(Object sender, EventArgs args)
+		{
+			camera.PickVideoAsync();
 		}
 
 		private TimelineViewController timeLineViewController;

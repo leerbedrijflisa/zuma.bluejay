@@ -16,6 +16,9 @@ namespace Lisa.Zuma.BlueJay.IOS
 		MonoTouch.UIKit.UIButton btnCamera { get; set; }
 
 		[Outlet]
+		MonoTouch.UIKit.UIButton btnPhotoCamera { get; set; }
+
+		[Outlet]
 		MonoTouch.UIKit.UIButton btnPickPhoto { get; set; }
 
 		[Outlet]
@@ -31,6 +34,11 @@ namespace Lisa.Zuma.BlueJay.IOS
 				btnCamera = null;
 			}
 
+			if (btnPickPhoto != null) {
+				btnPickPhoto.Dispose ();
+				btnPickPhoto = null;
+			}
+
 			if (btnPickVideo != null) {
 				btnPickVideo.Dispose ();
 				btnPickVideo = null;
@@ -41,9 +49,9 @@ namespace Lisa.Zuma.BlueJay.IOS
 				btnSave = null;
 			}
 
-			if (btnPickPhoto != null) {
-				btnPickPhoto.Dispose ();
-				btnPickPhoto = null;
+			if (btnPhotoCamera != null) {
+				btnPhotoCamera.Dispose ();
+				btnPhotoCamera = null;
 			}
 		}
 	}

@@ -1,7 +1,8 @@
 using System;
 using Lisa.Zuma.BlueJay.IOS.Data;
 using System.Collections.Generic;
-using Lisa.Zuma.BlueJay.Models;
+using Lisa.Zuma.BlueJay.IOS.Models;
+
 
 namespace Lisa.Zuma.BlueJay.IOS
 {
@@ -115,7 +116,8 @@ namespace Lisa.Zuma.BlueJay.IOS
 					role = "Ouder";
 				}
 
-				TemporaryNote += this.NoteHTML (direction, null, ItemOwner.Name, role, "nu", TemporaryMedia);
+
+				TemporaryNote += this.NoteHTML (direction, null, ItemOwner.Name, role, note.Date.ToFancyString(), TemporaryMedia);
 
 
 			}

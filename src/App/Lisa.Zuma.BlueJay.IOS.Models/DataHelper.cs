@@ -26,7 +26,7 @@ namespace Lisa.Zuma.BlueJay.IOS.Models
 
 		public void SetNewNote (string text)
 		{
-			var note = new Note{Text = text, Media = GetAllDataElements()};
+			var note = new Note{Text = text, DateCreated = DateTime.Now, Media = GetAllDataElements()};
 
 			var user = database.GetCurrentUser ();
 
@@ -39,11 +39,10 @@ namespace Lisa.Zuma.BlueJay.IOS.Models
 			Console.WriteLine (request);
 
 			client.ExecuteAsync(request, response => {
-
 				Console.WriteLine("klaar :"+ response.Content);
 				var callback = JsonConvert.DeserializeObject<Note>(response.Content);
 
-				Store(callback,  () => {});
+				Store(callback,  () => { DeleteAllDataElements(); });
 			});
 		}
 
@@ -128,7 +127,9 @@ namespace Lisa.Zuma.BlueJay.IOS.Models
 					DosierDataID = dosier, 
 					OwnerID = 1, 
 					Text = n.Text, 
+					Date = n.DateCreated,
 					Media = n.Media
+					
 								.Select (m => new Media () { 
 						Name = m.Name, 
 						Location = m.Location 

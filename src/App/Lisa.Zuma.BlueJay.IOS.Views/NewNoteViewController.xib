@@ -6,7 +6,8 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="NewNoteViewController">
             <connections>
-                <outlet property="btnCamera" destination="YZ3-BT-Ep6" id="5Z1-yM-7ym"/>
+                <outlet property="btnCamera" destination="W2W-p5-2rD" id="0ci-8Y-3em"/>
+                <outlet property="btnPhotoCamera" destination="1xG-SY-HLp" id="iw0-uS-Ben"/>
                 <outlet property="btnPickPhoto" destination="lLm-gI-Ekf" id="MMz-v5-HCY"/>
                 <outlet property="btnPickVideo" destination="ejr-Ir-aqQ" id="l4b-00-f3f"/>
                 <outlet property="btnSave" destination="3lV-ua-l80" id="fWW-hJ-ZvZ"/>
@@ -19,13 +20,27 @@
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="3lV-ua-l80">
-                    <rect key="frame" x="20" y="561" width="295" height="54"/>
+                    <rect key="frame" x="20" y="561" width="384" height="54"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <color key="backgroundColor" red="0.92990672829999999" green="0.92990672829999999" blue="0.92990672829999999" alpha="1" colorSpace="calibratedRGB"/>
                     <fontDescription key="fontDescription" name="HelveticaNeue-UltraLight" family="Helvetica Neue" pointSize="25"/>
                     <state key="normal" title="Opslaan">
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="W2W-p5-2rD">
+                    <rect key="frame" x="213" y="488" width="190" height="34"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <color key="backgroundColor" red="0.79860889670000001" green="0.79860889670000001" blue="0.79860889670000001" alpha="1" colorSpace="calibratedRGB"/>
+                    <color key="tintColor" red="0.79860889670000001" green="0.79860889670000001" blue="0.79860889670000001" alpha="1" colorSpace="calibratedRGB"/>
+                    <state key="normal" title="Video maken"/>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="1xG-SY-HLp">
+                    <rect key="frame" x="21" y="488" width="190" height="34"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <color key="backgroundColor" red="0.79860889670000001" green="0.79860889670000001" blue="0.79860889670000001" alpha="1" colorSpace="calibratedRGB"/>
+                    <color key="tintColor" red="0.79860889670000001" green="0.79860889670000001" blue="0.79860889670000001" alpha="1" colorSpace="calibratedRGB"/>
+                    <state key="normal" title="Foto maken"/>
                 </button>
                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Nieuw bericht aanmaken" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="3Cd-sE-Bx6">
                     <rect key="frame" x="0.0" y="0.0" width="423" height="58"/>
@@ -35,28 +50,23 @@
                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="YZ3-BT-Ep6">
-                    <rect key="frame" x="317" y="561" width="86" height="54"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <color key="backgroundColor" red="0.79860889670000001" green="0.79860889670000001" blue="0.79860889670000001" alpha="1" colorSpace="calibratedRGB"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                    <state key="normal" image="camera.png"/>
-                </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="ejr-Ir-aqQ">
-                    <rect key="frame" x="220" y="519" width="183" height="34"/>
+                    <rect key="frame" x="213" y="525" width="190" height="34"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <color key="backgroundColor" red="0.79860889670000001" green="0.79860889670000001" blue="0.79860889670000001" alpha="1" colorSpace="calibratedRGB"/>
-                    <fontDescription key="fontDescription" name="HelveticaNeue-Thin" family="Helvetica Neue" pointSize="15"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="18"/>
                     <state key="normal" title="Video kiezen">
+                        <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="lLm-gI-Ekf">
-                    <rect key="frame" x="20" y="519" width="185" height="34"/>
+                    <rect key="frame" x="20" y="525" width="191" height="34"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <color key="backgroundColor" red="0.79860889670000001" green="0.79860889670000001" blue="0.79860889670000001" alpha="1" colorSpace="calibratedRGB"/>
-                    <fontDescription key="fontDescription" name="HelveticaNeue-Thin" family="Helvetica Neue" pointSize="15"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="18"/>
                     <state key="normal" title="Foto kiezen">
+                        <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
                 </button>
@@ -66,7 +76,4 @@
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
         </view>
     </objects>
-    <resources>
-        <image name="camera.png" width="106" height="54"/>
-    </resources>
 </document>
