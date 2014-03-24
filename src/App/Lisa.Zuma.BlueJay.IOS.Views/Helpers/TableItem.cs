@@ -1,7 +1,8 @@
 using System;
 using MonoTouch.UIKit;
 
-namespace Lisa.Zuma.BlueJay.IOS.Models {
+namespace Lisa.Zuma.BlueJay.IOS
+{
 	public class TableItem {
 		public string Heading { get; set; }
 		

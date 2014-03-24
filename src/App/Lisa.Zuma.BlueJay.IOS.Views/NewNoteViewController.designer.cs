@@ -7,13 +7,19 @@
 using MonoTouch.Foundation;
 using System.CodeDom.Compiler;
 
-namespace Lisa.Zuma.BlueJay.IOS
+namespace Lisa.Zuma.BlueJay.IOS.Views
 {
 	[Register ("NewNoteViewController")]
 	partial class NewNoteViewController
 	{
 		[Outlet]
 		MonoTouch.UIKit.UIButton btnCamera { get; set; }
+
+		[Outlet]
+		MonoTouch.UIKit.UIButton btnPhotoCamera { get; set; }
+
+		[Outlet]
+		MonoTouch.UIKit.UIButton btnPickPhoto { get; set; }
 
 		[Outlet]
 		MonoTouch.UIKit.UIButton btnPickVideo { get; set; }
@@ -28,14 +34,24 @@ namespace Lisa.Zuma.BlueJay.IOS
 				btnCamera = null;
 			}
 
-			if (btnSave != null) {
-				btnSave.Dispose ();
-				btnSave = null;
+			if (btnPickPhoto != null) {
+				btnPickPhoto.Dispose ();
+				btnPickPhoto = null;
 			}
 
 			if (btnPickVideo != null) {
 				btnPickVideo.Dispose ();
 				btnPickVideo = null;
+			}
+
+			if (btnSave != null) {
+				btnSave.Dispose ();
+				btnSave = null;
+			}
+
+			if (btnPhotoCamera != null) {
+				btnPhotoCamera.Dispose ();
+				btnPhotoCamera = null;
 			}
 		}
 	}

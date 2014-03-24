@@ -4,7 +4,7 @@ using MonoTouch.Foundation;
 using MonoTouch.UIKit;
 using Lisa.Zuma.BlueJay.IOS.Models;
 
-namespace Lisa.Zuma.BlueJay.IOS
+namespace Lisa.Zuma.BlueJay.IOS.Views
 {
 	public partial class SummaryViewController : UIViewController
 	{
@@ -26,17 +26,15 @@ namespace Lisa.Zuma.BlueJay.IOS
 		public void RowClicked_handler (object sender, RowClickedEventArgs e){
 			TimelineViewController timeLineViewController = new TimelineViewController ();
 			this.NavigationController.PushViewController (timeLineViewController, true);
-
 		}
 
 		public override void ViewDidLoad ()
 		{
 			base.ViewDidLoad ();
 			this.NavigationItem.SetHidesBackButton (true, false);
+			var dosiers = dataHelper.GetDosierDatas();
 
-
-
-			var sourceFromTablehelper = tableHelper.DataForList();
+			var sourceFromTablehelper = tableHelper.CreateSource(dosiers, d => d.ID, d => d.Name);
 
 			sourceFromTablehelper.RowClicked += RowClicked_handler;
 			tblCell.Source = sourceFromTablehelper;

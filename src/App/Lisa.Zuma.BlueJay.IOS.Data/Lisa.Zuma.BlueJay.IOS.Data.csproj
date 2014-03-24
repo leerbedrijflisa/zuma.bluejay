@@ -96,17 +96,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Components\SQLite.cs" />
-    <Compile Include="Entities\Dosier.cs" />
-    <Compile Include="Entities\Notes.cs" />
-    <Compile Include="Entities\Profile.cs" />
-    <Compile Include="Entities\User.cs" />
     <Compile Include="Database.cs" />
-    <Compile Include="Entities\ProfileItems.cs" />
-    <Compile Include="UploadVideo.cs" />
-    <Compile Include="NoteMediaModel.cs" />
-    <Compile Include="Entities\TemporaryItemMedia.cs" />
+    <Compile Include="MimeTypesHelper.cs" />
+    <Compile Include="Entities\DosierData.cs" />
+    <Compile Include="Entities\NotesData.cs" />
+    <Compile Include="Entities\ProfileData.cs" />
+    <Compile Include="Entities\ProfileItemsData.cs" />
+    <Compile Include="Entities\TemporaryItemMediaData.cs" />
+    <Compile Include="Entities\UserData.cs" />
     <Compile Include="Entities\Media.cs" />
-    <Compile Include="NoteModel.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

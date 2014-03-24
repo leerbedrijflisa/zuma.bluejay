@@ -5,7 +5,7 @@ using MonoTouch.UIKit;
 using MonoTouch.SystemConfiguration;
 using MonoTouch.CoreFoundation;
 
-namespace Lisa.Zuma.BlueJay.IOS.Models
+namespace Lisa.Zuma.BlueJay.IOS
 {
 
 public enum NetworkStatus {

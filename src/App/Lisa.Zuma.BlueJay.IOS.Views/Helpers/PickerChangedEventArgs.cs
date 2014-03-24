@@ -1,6 +1,6 @@
 using System;
 
-namespace Lisa.Zuma.BlueJay.IOS.Models
+namespace Lisa.Zuma.BlueJay.IOS
 {
 	public class PickerChangedEventArgs : EventArgs
 	{

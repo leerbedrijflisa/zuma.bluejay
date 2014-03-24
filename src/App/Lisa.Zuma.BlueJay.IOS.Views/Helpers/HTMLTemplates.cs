@@ -1,8 +1,10 @@
 using System;
 using Lisa.Zuma.BlueJay.IOS.Data;
 using System.Collections.Generic;
+using Lisa.Zuma.BlueJay.IOS.Models;
 
-namespace Lisa.Zuma.BlueJay.IOS.Models
+
+namespace Lisa.Zuma.BlueJay.IOS
 {
 	public class HTMLTemplates
 	{
@@ -63,7 +65,7 @@ namespace Lisa.Zuma.BlueJay.IOS.Models
 			return NoteHTMLContent;
 		}
 
-		private string NoteMediaHTML(string text, List<NoteMediaModel> media){
+		private string NoteMediaHTML(string text, List<Media> media){
 
 			NoteMedia = "";
 
@@ -73,12 +75,20 @@ namespace Lisa.Zuma.BlueJay.IOS.Models
 
 			if (media.Count > 0){
 				foreach (var x in media) {
-					NoteMedia += "<video width='320' height='240' controls><source src='" + x.Location + "' type='video/mp4'>Your browser does not support the video tag.</video> <br />";
+
+					if (x.Location.Contains (".png"))
+					{
+						NoteMedia += "<img src='" + x.Location + "' ><br />";
+					}
+
+					if (x.Location.Contains (".mp4"))
+					{
+						NoteMedia += "<video width='320' height='240' controls><source src='" + x.Location + "' type='video/mp4'>Your browser does not support the video tag.</video> <br />";
+					}
 				}
 			}
 
 			return NoteMedia;
-
 		}
 
 		public string ParseTimeLine(int id)
@@ -88,7 +98,7 @@ namespace Lisa.Zuma.BlueJay.IOS.Models
 			string TemporaryNote = null;
 			string TemporaryMedia;
 
-			var Note = db.GetNotesFromDosier (id);
+			var Note = db.GetNotesDataFromDosierData (id);
 
 			foreach (var note in Note) {
 
@@ -106,7 +116,8 @@ namespace Lisa.Zuma.BlueJay.IOS.Models
 					role = "Ouder";
 				}
 
-				TemporaryNote += this.NoteHTML (direction, null, ItemOwner.Name, role, "nu", TemporaryMedia);
+
+				TemporaryNote += this.NoteHTML (direction, null, ItemOwner.Name, role, note.Date.ToFancyString(), TemporaryMedia);
 
 
 			}

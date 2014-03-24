@@ -3,8 +3,9 @@ using SQLite;
 
 namespace Lisa.Zuma.BlueJay.IOS.Data
 {
-	public class TemporaryItemMedia
+	public class TemporaryItemMediaData
 	{
+		[PrimaryKey, AutoIncrement]
 		public int ID {get;set;}
 		public int Type {get;set;}
 		public string Path {get;set;}
