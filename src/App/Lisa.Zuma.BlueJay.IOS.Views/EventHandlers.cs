@@ -1,7 +1,7 @@
 using System;
 using MonoTouch.UIKit;
 
-namespace Lisa.Zuma.BlueJay.IOS
+namespace Lisa.Zuma.BlueJay.IOS.Views
 {
 	public class EventHandlers
 	{

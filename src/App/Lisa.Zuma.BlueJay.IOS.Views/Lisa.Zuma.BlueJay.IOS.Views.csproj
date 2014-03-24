@@ -8,7 +8,7 @@
     <ProjectGuid>{EC12A1E5-641A-407E-9669-25D16E30B36A}</ProjectGuid>
     <ProjectTypeGuids>{6BC8ED88-2882-458C-8E55-DFD12B67127B};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <OutputType>Exe</OutputType>
-    <RootNamespace>Lisa.Zuma.BlueJay.IOS</RootNamespace>
+    <RootNamespace>Lisa.Zuma.BlueJay.IOS.Views</RootNamespace>
     <IPhoneResourcePrefix>Resources</IPhoneResourcePrefix>
     <AssemblyName>LisaZumaBlueJayIOS</AssemblyName>
   </PropertyGroup>
@@ -157,20 +157,6 @@
     <InterfaceDefinition Include="NewNoteViewController.xib" />
     <InterfaceDefinition Include="ProfileViewController.xib" />
     <InterfaceDefinition Include="NewProfileItemViewController.xib" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="HTML\all.css" />
-    <Content Include="HTML\timeline\index.html" />
-    <Content Include="HTML\timeline\item.html" />
-    <Content Include="HTML\timeline\media.html" />
-    <Content Include="HTML\timeline.css" />
-    <Content Include="HTML\images\active-unit.png" />
-    <Content Include="HTML\images\icons.png" />
-    <Content Include="HTML\images\icons-2.png" />
-    <Content Include="HTML\images\icons-3.png" />
-    <Content Include="HTML\images\icons-4.png" />
-    <Content Include="HTML\images\icons-5.png" />
-    <Content Include="HTML\images\line.png" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\camera.png" />

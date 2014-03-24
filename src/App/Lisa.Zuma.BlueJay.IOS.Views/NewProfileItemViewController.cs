@@ -5,7 +5,7 @@ using MonoTouch.UIKit;
 using Lisa.Zuma.BlueJay.IOS.Models;
 using System.Collections.Generic;
 
-namespace Lisa.Zuma.BlueJay.IOS
+namespace Lisa.Zuma.BlueJay.IOS.Views
 {
 	public partial class NewProfileItemViewController : UIViewController
 	{

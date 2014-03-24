@@ -6,7 +6,7 @@ using Lisa.Zuma.BlueJay.IOS.Models;
 using System.IO;
 using GCDiscreetNotification;
 
-namespace Lisa.Zuma.BlueJay.IOS
+namespace Lisa.Zuma.BlueJay.IOS.Views
 {
 	public partial class TimelineViewController : UIViewController
 	{
