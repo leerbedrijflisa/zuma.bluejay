@@ -33,7 +33,7 @@ namespace Lisa.Zuma.BlueJay.Web.Controllers
 
             foreach (var note in dossier.Notes)
             {
-                var model = ModelFactory.Create(note);
+                var model = Converter.ToNote(note);
                 result.Add(model);
             }
 
@@ -60,7 +60,7 @@ namespace Lisa.Zuma.BlueJay.Web.Controllers
                 return NotFound();
             }
 
-            var noteModel = ModelFactory.Create(note);
+            var noteModel = Converter.ToNote(note);
             return Ok(noteModel);
         }
 
@@ -72,30 +72,35 @@ namespace Lisa.Zuma.BlueJay.Web.Controllers
         /// <returns></returns>
         public IHttpActionResult Post(int dossierId, [FromBody] Note noteModel)
         {
-            var dossier = Db.Dossiers.FirstOrDefault(d => d.Id == dossierId);
+            var dossier = Db.Dossiers.Find(dossierId);
             if (dossier == null)
             {
                 return NotFound();
             }
 
-            var note = new NoteData
+            var noteData = new NoteData
             {
                 Text = noteModel.Text,
-                Media = new List<NoteMediaData>()
+                DateCreated = noteModel.DateCreated
             };
 
             foreach (var media in noteModel.Media)
             {
-                var noteMedia = StoreMedia(media);
-                note.Media.Add(noteMedia);
+                var noteMediaData = new NoteMediaData
+                {
+                    Name = media.Name,
+                    MediaLocation = GetStorageUri(media.Name)
+                };
+
+                noteData.Media.Add(noteMediaData);
             }
 
-            dossier.Notes.Add(note);
+            dossier.Notes.Add(noteData);
             Db.SaveChanges();
 
-            var model = ModelFactory.Create(note);
+            var note = Converter.ToNote(noteData);
             
-            return CreatedAtRoute("NoteApi", new { dossierId = dossierId }, model);
+            return CreatedAtRoute("NoteApi", new { dossierId = dossierId }, note);
         }
 
         /// <summary>
@@ -121,7 +126,7 @@ namespace Lisa.Zuma.BlueJay.Web.Controllers
             note.Text = noteModel.Text;
             Db.SaveChanges();
 
-            var result = ModelFactory.Create(note);
+            var result = Converter.ToNote(note);
             return Ok(result);
         }
 
@@ -147,19 +152,12 @@ namespace Lisa.Zuma.BlueJay.Web.Controllers
             return Ok();
         }
 
-        public NoteMediaData StoreMedia(NoteMedia media)
+        public string GetStorageUri(string file)
         {
-            var noteMedia = new NoteMediaData
-            {
-                Name = media.Name
-            };
-
-            var fileName = Guid.NewGuid().ToString() + Path.GetExtension(media.Name);
+            var fileName = Guid.NewGuid().ToString() + Path.GetExtension(file);
             var storageHelper = new StorageHelper("ZumaBlueJayStorageConnectionString", "bluejay");
 
-            noteMedia.MediaLocation = storageHelper.GetWriteableSasUri(fileName, new TimeSpan(0, 2, 0)).AbsoluteUri;
-
-            return noteMedia;
+            return storageHelper.GetWriteableSasUri(fileName, new TimeSpan(0, 2, 0)).AbsoluteUri;
         }
     }
 }

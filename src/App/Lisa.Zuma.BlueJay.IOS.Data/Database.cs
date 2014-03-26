@@ -14,98 +14,83 @@ namespace Lisa.Zuma.BlueJay.IOS.Data
 	{
 		private string pathToDatabase;
 		private SQLite.SQLiteConnection db;
-		private User ReturnUser;
-		private Notes ReturnNote;
-		private User ReturnUserLoggedIn;
+		private UserData ReturnUser;
+		private NotesData ReturnNote;
+		private UserData ReturnUserLoggedIn;
 		private RestClient client;
 
 		public Database ()
 		{
+
+
 			var documents = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
 			Console.WriteLine (documents);
 			pathToDatabase = Path.Combine(documents, "BlueJay_DB.db");
-
 			db = new SQLite.SQLiteConnection (pathToDatabase);
 
-			db.CreateTable<Dosier>();
-			db.CreateTable<Notes>();
-			db.CreateTable<Profile>();
-			db.CreateTable<ProfileItems>();
-			db.CreateTable<User>();
-			db.DropTable<TemporaryItemMedia> ();
-			db.CreateTable<TemporaryItemMedia> ();
+			db.CreateTable<DosierData>();
+			db.CreateTable<NotesData>();
+			db.CreateTable<ProfileItemsData>();
+			db.CreateTable<UserData>();
+			//db.DropTable<TemporaryItemMedia> ();
+			db.CreateTable<TemporaryItemMediaData> ();
 
 
 			CreateDummyInfo ();
-
-			client = new RestClient ("http://zumabluejay.azurewebsites.net");
-		}
-
-		public void SyncAllNotesFromDosier(int dosier, Action AsyncFunc){
-
-			db.DropTable<Notes> ();
-
-			var request = new RestRequest (string.Format("api/dossier/{0}/notes/", dosier), Method.GET);
-
-			client.ExecuteAsync (request, response => {
-
-				var callback = JsonConvert.DeserializeObject<List<NoteModel>>(response.Content);
-
-				foreach(var Result in callback){
-					var note = new Notes{DosierID = dosier, OwnerID = 1, Text = Result.Text, Media = Result.Media};
-					db.Insert(note);
-				}
-
-				AsyncFunc();
-
-			});
 		}
 
 		public void CreateDummyInfo()
 		{
-			var count = db.Query<Dosier>("SELECT * FROM Dosier");
+			var count = db.Query<DosierData>("SELECT * FROM DosierData");
 
 			if (count.Count == 0) {
-				db.Insert(new Dosier{Name = "Martijn"});
+				db.Insert(new DosierData{Name = "Martijn"});
 			}
 
-			var count2 = db.Query<User>("SELECT * FROM User");
+			var count2 = db.Query<UserData>("SELECT * FROM UserData");
 
 			if (count2.Count == 0) {
-				db.Insert (new User{Role = 1, Name = "Marie-antoinette"});
-				db.Insert (new User{Role = 2, Name = "Debbie"});
+				db.Insert (new UserData{Role = 1, Name = "Marie-antoinette"});
+				db.Insert (new UserData{Role = 2, Name = "Debbie"});
 			}
 		}
 
 		public void DummyLoggedIn(int id)
 		{
-			db.Query<User>("UPDATE User SET LoggedIn = 0");
-			db.Query<User>("UPDATE User SET LoggedIn = 1 WHERE ID = '"+ id +"'");
+			db.Query<UserData>("UPDATE UserData SET LoggedIn = 0");
+			db.Query<UserData>("UPDATE UserData SET LoggedIn = 1 WHERE ID = '"+ id +"'");
 		}
 
-		public List<Dosier> GetDosiers(int id)
+		public List<DosierData> GetDosierDatas(int id)
 		{
-			var Result = db.Query<Dosier>("SELECT * FROM Dosier WHERE ID='"+id+"'");
+			var Result = db.Query<DosierData>("SELECT * FROM DosierData WHERE ID='"+id+"'");
 
 			return Result;
 		}
 
-		public List<Notes> GetNotesFromDosier(int id)
+		public List<DosierData> GetAllDosierDatas()
 		{
-			var Result = db.Query<Notes>("SELECT * FROM Notes WHERE DosierID='"+id+"' ORDER BY ID DESC");
-			//			db.Table<Notes> ().Where(t => t.ID == id).OrderByDescending(t => t.ID);
+			var result = db.Query<DosierData>("SELECT * FROM DosierData");
+
+			return result;
+		}
+
+		public List<NotesData> GetNotesDataFromDosierData(int id)
+		{
+			var Result = db.Query<NotesData>("SELECT * FROM NotesData WHERE DosierDataID='"+id+"' ORDER BY ID DESC");
+			//			db.Table<NotesData> ().Where(t => t.ID == id).OrderByDescending(t => t.ID);
 			//
-			//			var result = from note in db.Table<Notes>()
-			//				where note.DosierID == id
+			//			var result = from note in db.Table<NotesData>()
+			//				where note.DosierDataID == id
 			//				orderby note.ID descending
 			//				select new { Name = note.ID.ToString() };
 
 			return Result;
 		}
 
-		public User GetUserById(int id)
+		public UserData GetUserById(int id)
 		{
-			var Result = db.Query<User>("SELECT * FROM User WHERE ID='"+id+"'");
+			var Result = db.Query<UserData>("SELECT * FROM UserData WHERE ID='"+id+"'");
 
 			foreach (var Query in Result) {
 				ReturnUser = Query;
@@ -113,9 +98,9 @@ namespace Lisa.Zuma.BlueJay.IOS.Data
 
 			return ReturnUser;
 		}
-		public User GetCurrentUser()
+		public UserData GetCurrentUser()
 		{
-			var Result = db.Query<User>("SELECT * FROM User WHERE LoggedIn=1");
+			var Result = db.Query<UserData>("SELECT * FROM UserData WHERE LoggedIn=1");
 
 			foreach (var Query in Result) {
 				ReturnUserLoggedIn = Query;
@@ -124,9 +109,9 @@ namespace Lisa.Zuma.BlueJay.IOS.Data
 
 		}
 
-		public Notes GetMediaFromNoteByID(int id)
+		public NotesData GetMediaFromNoteByID(int id)
 		{
-			var Result = db.Query<Notes>("SELECT * FROM Notes WHERE ID='"+id+"' LIMIT 1");
+			var Result = db.Query<NotesData>("SELECT * FROM NotesData WHERE ID='"+id+"' LIMIT 1");
 
 			foreach (var Query in Result) {
 				ReturnNote = Query;
@@ -134,125 +119,80 @@ namespace Lisa.Zuma.BlueJay.IOS.Data
 			return ReturnNote;
 		}
 
-		public void InsertNote(NoteModel note)
+		public void InsertNote(NotesData note)
 		{
-			var user = this.GetCurrentUser ();
-
-
-			var request = new RestRequest (string.Format("api/dossier/{0}/notes/", 1), Method.POST);
-
-			request.RequestFormat = DataFormat.Json;
-			request.AddBody(note);
-			Console.WriteLine(request.ToString ());
-
-			Console.WriteLine (request);
-
-			client.ExecuteAsync(request, response => {
-
-				Console.WriteLine("klaar :"+ response.Content);
-				var callback = JsonConvert.DeserializeObject<NoteModel>(response.Content);
-
-				Store(callback);
-			});
-
-
-			//this.DeleteAllTemporaryMediaItems ();
-
+			db.Insert (note);
 		}
 
-			public void InsertProfileItem (ProfileItems newItem)
-			{
-				newItem.ProfileID = 1;
-				db.Insert (newItem);
-			}
+		public void InsertProfileItem (ProfileItemsData newItem)
+		{
+			newItem.ProfileID = 1;
+			db.Insert (newItem);
+		}
 
-			public List<ProfileItems> GetProfileItemsByProfileID (int profileId)
-			{
-				var Result = db.Query<ProfileItems> ("SELECT * FROM ProfileItems WHERE ProfileID='" + profileId + "'");
+		public List<ProfileItemsData> GetProfileItemsByProfileID (int profileId)
+		{
+		var result = db.Query<ProfileItemsData> ("SELECT * FROM ProfileItemsData WHERE ProfileID='" + profileId + "'");
 
-				return Result;
+			return result;
+		}
 
-			}
-
-			public void InsertNewTemporaryMediaItem (TemporaryItemMedia item)
+		public void Insert<T>(T item) where T : class
+		{
+			if(TableExists(typeof(T))) 
 			{
 				db.Insert (item);
 			}
-
-			public void DeleteAllTemporaryMediaItems ()
-			{
-				db.Query<TemporaryItemMedia> ("DELETE * FROM TemporaryItemMedia");
-			}
-
-			public List<TemporaryItemMedia> ReturnAllTemporaryMediaItems ()
-			{
-				var Result = db.Query<TemporaryItemMedia> ("SELECT * FROM TemporaryItemMedia");
-
-				return Result;
-			}
-
-			public readonly IList<string> colors = new List<string> {
-				"Algemeen",
-				"Medicijngebruik",
-				"Allergieën",
-				"Contactgegevens",
-				"Hulpmiddelen",
-				"Verzorging"
-			};
-			public IList<string> GetPickerItems = new List<string> {
-				"Algemeen",
-				"Medicijngebruik",
-				"Allergieën",
-				"Contactgegevens",
-				"Hulpmiddelen",
-				"Verzorging"
-			};
-
-		private async void Store(NoteModel note) {
-			var dbNote = new Notes {
-				Text = note.Text,
-				Media = new List<NoteMediaModel>()
-			};
-
-			db.Insert (dbNote);
-
-			foreach (var media in note.Media) {
-				string url;
-				var extension = Path.GetExtension("../Documents/"+media.Name);
-				if (extension.StartsWith("."))
-				{
-					extension = extension.Substring(1);
-				}
-
-				using (var httpClient = new HttpClient())
-				{
-					using (var fileStream = File.OpenRead("../Documents/"+media.Name))
-					{
-						var content = new StreamContent(fileStream);
-						content.Headers.Add("Content-Type", "video/mp4");
-						content.Headers.Add("x-ms-blob-type", "BlockBlob");
-
-						using (var uploadResponse = await httpClient.PutAsync(media.Location, content))
-						{
-
-							var request = new RestRequest("api/dossier/1/notes/{noteId}/media/{id}", Method.PUT);
-							request.RequestFormat = DataFormat.Json;
-							request.AddUrlSegment("noteId", note.Id.ToString());
-							request.AddUrlSegment("id", media.Id.ToString());
-							request.AddBody(media);
-
-							var resp = client.Execute<NoteMediaModel>(request);
-							dbNote.Media.Add (resp.Data);
-							db.Update (dbNote);
-
-
-						}
-					}
-				}
-			}
-
 		}
 
+		public void Update<T>(T item) where T : class 
+		{
+			if (TableExists (typeof(T))) 
+			{
+				db.Update (item);
+			}
+		}
+
+		public void DeleteAllNotesForSync()
+		{
+			db.Query<NotesData> ("DELETE FROM NotesData");
+		}
+
+		public void InsertNewTemporaryMediaItem (TemporaryItemMediaData item)
+		{
+			db.Insert(item);
+		}
+
+		public void DeleteAllTemporaryMediaItems ()
+		{
+			db.Query<TemporaryItemMediaData> ("DELETE FROM TemporaryItemMediaData");
+		}
+
+		public List<TemporaryItemMediaData> ReturnAllTemporaryMediaItems ()
+		{
+		var Result = db.Query<TemporaryItemMediaData> ("SELECT * FROM TemporaryItemMediaData");
+
+			return Result;
+		}
+
+		public readonly IList<string> GetPickerItems = new List<string> {
+			"Algemeen",
+			"Medicijngebruik",
+			"Allergieën",
+			"Contactgegevens",
+			"Hulpmiddelen",
+			"Verzorging"
+		};
+
+		private bool TableExists<T>(T item) where T : class 
+		{
+			return TableExists (typeof(T));
+		}
+
+		private bool TableExists(Type type) 
+		{
+			return db.TableMappings.Count (m => m.MappedType == type) > 0;
+		}
 	}
 }
 

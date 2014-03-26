@@ -27,7 +27,7 @@ namespace Lisa.Zuma.BlueJay.Web.Controllers
                 return NotFound();
             }
 
-            var dossierModel = ModelFactory.Create(dossier);
+            var dossierModel = Converter.ToDossier(dossier);
 
             return Ok(dossierModel);
         }

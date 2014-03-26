@@ -2,78 +2,79 @@ using System;
 using System.Drawing;
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
-using  Lisa.Zuma.BlueJay.IOS.Models;
+using Lisa.Zuma.BlueJay.IOS.Models;
 using System.IO;
 using Xamarin.Media;
 using System.Threading.Tasks;
 
-namespace Lisa.Zuma.BlueJay.IOS
+namespace Lisa.Zuma.BlueJay.IOS.Views
 {
 	public partial class NewNoteViewController : UIViewController
 	{
-		private TimelineViewController timeLineViewController;
-		private TimelineViewController parentview;
-		private DataHelper dataHelper;
-		private UIImagePickerController imagePicker;
-
-		public NewNoteViewController (TimelineViewController thisview) : base ("NewNoteViewController", null)
+		public NewNoteViewController (TimelineViewController thisView) : base ("NewNoteViewController", null)
 		{
-			timeLineViewController = new TimelineViewController ();
 			dataHelper = new DataHelper ();
-			parentview = thisview;
-		}
-
-		public override void DidReceiveMemoryWarning ()
-		{
-			// Releases the view if it doesn't have a superview.
-			base.DidReceiveMemoryWarning ();
-			
-			// Release any cached data, images, etc that aren't in use.
+			parentView = thisView;
+			camera = new Camera();
 		}
 
 		public override void ViewDidLoad ()
 		{
 			base.ViewDidLoad ();
 
-			UITextView inputText = new UITextView ();
-			inputText.Frame = new RectangleF(30, 70, this.View.Frame.Width - 60, this.View.Frame.Width - 60);
-			inputText.BackgroundColor = UIColor.FromRGB (242,242,242);
-			View.Add (inputText);
+			InitializeUI ();
 
-			imagePicker = new UIImagePickerController ();
-
-			btnSave.TouchUpInside += (sender, e) => {
-				parentview.NavigationController.PushViewController(timeLineViewController, false);
-				dataHelper.SetNewNote(inputText.Text);
-			};
-
-
-			btnCamera.TouchUpInside += (sender, e) => {
-				Camera camera = new Camera();
-
-				camera.Capture(String.Format("{0:d-M-yyyy-HH-mm-ss}", DateTime.Now));
-			};
-
-			btnPickVideo.TouchUpInside += (sender, e) => {
-
-				string FileName = String.Format("{0:d-M-yyyy-HH-mm-ss}", DateTime.Now) +".mp4";
-				string excualPath = "../Documents/"+FileName;
-
-				var picker = new MediaPicker();
-				picker.PickVideoAsync().ContinueWith (t => {
-					MediaFile file = t.Result;
-					using (var f = file.GetStream() ){
-						using(var dest = File.Create(excualPath)){
-							f.CopyTo(dest);
-							var kaas = File.Exists(excualPath);
-							System.Diagnostics.Debug.WriteLine("kaas? " + kaas.ToString());
-							dataHelper.InsertNewDataElement(1, excualPath);
-						}
-					}
-				}, TaskScheduler.FromCurrentSynchronizationContext());
-			};
+			btnSave.TouchUpInside += SaveNoteData;
+			btnCamera.TouchUpInside += TakeVideo;
+			btnPhotoCamera.TouchUpInside += TakePhoto;
+			btnPickVideo.TouchUpInside += PickVideo;
+			btnPickPhoto.TouchUpInside += PickImage;
 
 		}
+
+		private void InitializeUI()
+		{
+			var width = 60;
+			var height = 60;
+
+			txtInput = new UITextView();
+			txtInput.Frame = new RectangleF(30, 70, width, height);
+			txtInput.BackgroundColor = UIColor.FromRGB(242, 242, 242);
+
+			View.Add(txtInput);
+		}
+
+		private void SaveNoteData(Object sender, EventArgs args)
+		{
+			parentView.NavigationController.PushViewController(new TimelineViewController(), false);
+			dataHelper.SetNewNote (txtInput.Text);
+		}
+
+		private void TakeVideo(Object sender, EventArgs args)
+		{
+			camera.CaptureVideo(String.Format("{0:d-M-yyyy-HH-mm-ss}", DateTime.Now));
+		}
+
+		private void TakePhoto(Object sender, EventArgs args)
+		{
+			camera.CapturePhoto(String.Format("{0:d-M-yyyy-HH-mm-ss}", DateTime.Now));
+		}
+
+		private void PickImage(Object sender, EventArgs args)
+		{
+			camera.PickPhotoAsync ();
+		}
+
+		private void PickVideo(Object sender, EventArgs args)
+		{
+			camera.PickVideoAsync();
+		}
+
+		private TimelineViewController timeLineViewController;
+		private TimelineViewController parentView;
+		private DataHelper dataHelper;
+		private UITextView txtInput;
+		private Camera camera;
 
 	}
 }

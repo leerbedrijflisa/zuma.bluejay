@@ -8,10 +8,18 @@ namespace Lisa.Zuma.BlueJay.Web.Data.Entities
     [Table("Notes")]
     public class NoteData
     {
+        public NoteData()
+        {
+            Media = new List<NoteMediaData>();
+        }
+
         [Key]
         public int Id { get; set; }
 
         public string Text { get; set; }
+
+        [Required]
+        public DateTime DateCreated { get; set; }
 
         [Required]
         public int DossierId { get; set; }
