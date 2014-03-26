@@ -9,6 +9,7 @@ using Microsoft.Owin.Security.OAuth;
 using Owin;
 using Lisa.Zuma.BlueJay.Web.Providers;
 using Lisa.Zuma.BlueJay.Web.Data.Entities;
+using Lisa.Zuma.BlueJay.Web.Data;
 
 namespace Lisa.Zuma.BlueJay.Web
 {
@@ -18,7 +19,7 @@ namespace Lisa.Zuma.BlueJay.Web
         {
             PublicClientId = "self";
 
-            UserManagerFactory = () => new UserManager<UserData>(new UserStore<UserData>());
+            UserManagerFactory = () => new UserManager<UserData>(new UserStore<UserData>(new BlueJayContext()));
 
             OAuthOptions = new OAuthAuthorizationServerOptions
             {
