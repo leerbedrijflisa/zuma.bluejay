@@ -16,6 +16,7 @@ using Microsoft.Owin.Security.OAuth;
 using Lisa.Zuma.BlueJay.Web.Models;
 using Lisa.Zuma.BlueJay.Web.Providers;
 using Lisa.Zuma.BlueJay.Web.Results;
+using Lisa.Zuma.BlueJay.Web.Data.Entities;
 
 namespace Lisa.Zuma.BlueJay.Web.Controllers
 {
@@ -30,14 +31,14 @@ namespace Lisa.Zuma.BlueJay.Web.Controllers
         {
         }
 
-        public AccountController(UserManager<IdentityUser> userManager,
+        public AccountController(UserManager<UserData> userManager,
             ISecureDataFormat<AuthenticationTicket> accessTokenFormat)
         {
             UserManager = userManager;
             AccessTokenFormat = accessTokenFormat;
         }
 
-        public UserManager<IdentityUser> UserManager { get; private set; }
+        public UserManager<UserData> UserManager { get; private set; }
         public ISecureDataFormat<AuthenticationTicket> AccessTokenFormat { get; private set; }
 
         // GET api/Account/UserInfo
@@ -245,7 +246,7 @@ namespace Lisa.Zuma.BlueJay.Web.Controllers
                 return new ChallengeResult(provider, this);
             }
 
-            IdentityUser user = await UserManager.FindAsync(new UserLoginInfo(externalLogin.LoginProvider,
+            var user = await UserManager.FindAsync(new UserLoginInfo(externalLogin.LoginProvider,
                 externalLogin.ProviderKey));
 
             bool hasRegistered = user != null;
@@ -321,13 +322,14 @@ namespace Lisa.Zuma.BlueJay.Web.Controllers
                 return BadRequest(ModelState);
             }
 
-            IdentityUser user = new IdentityUser
+            var user = new UserData
             {
-                UserName = model.UserName
+                UserName = model.UserName,
+                Type = "PARENT"
             };
-
+            
             IdentityResult result = await UserManager.CreateAsync(user, model.Password);
-            IHttpActionResult errorResult = GetErrorResult(result);
+            IHttpActionResult errorResult = GetErrorResult(result);            
 
             if (errorResult != null)
             {
@@ -355,9 +357,10 @@ namespace Lisa.Zuma.BlueJay.Web.Controllers
                 return InternalServerError();
             }
 
-            IdentityUser user = new IdentityUser
+            var user = new UserData
             {
-                UserName = model.UserName
+                UserName = model.UserName,
+                Type = "PARENT"
             };
             user.Logins.Add(new IdentityUserLogin
             {
