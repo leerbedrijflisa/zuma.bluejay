@@ -17,8 +17,7 @@ namespace Lisa.Zuma.BlueJay.Web.Controllers
     {
         public IHttpActionResult Get(int id)
         {
-            string userId = User.Identity.GetUserId();
-            var user = Db.Users.Find(userId);
+            var user = UserManager.FindById(User.Identity.GetUserId());
             if (user == null)
             {
                 return NotFound();
@@ -37,19 +36,13 @@ namespace Lisa.Zuma.BlueJay.Web.Controllers
 
         public IHttpActionResult Get()
         {
-            string userId = User.Identity.GetUserId();
-            var user = Db.Users.Find(userId);
+            var user = UserManager.FindById(User.Identity.GetUserId());
             if (user == null)
             {
                 return NotFound();
             }
 
-            var dossiers = Db
-                .Dossiers
-                .Where(d => d.Watchers.Count(u => u.Id == user.Id) > 0)
-                .ToList();
-
-            var dossierModels = Converter.ToDossier(dossiers);
+            var dossierModels = Converter.ToDossier(user.Dossiers);
 
             return Ok(dossierModels);
         }
