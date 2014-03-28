@@ -7,7 +7,7 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="LockScreenViewController">
             <connections>
                 <outlet property="btnNumberEight" destination="ROD-s8-1gz" id="WCy-SF-HsS"/>
-                <outlet property="btnNumberFive" destination="Qrp-v8-RWB" id="3eG-DH-Goj"/>
+                <outlet property="btnNumberFive" destination="qTe-7C-kZw" id="4Jl-eL-OLk"/>
                 <outlet property="btnNumberFour" destination="IpJ-g4-3Qh" id="KqF-Xo-5ve"/>
                 <outlet property="btnNumberNine" destination="aid-AY-IXZ" id="jxt-19-Ikc"/>
                 <outlet property="btnNumberOne" destination="yXk-VY-wBw" id="kVv-qx-1JS"/>
