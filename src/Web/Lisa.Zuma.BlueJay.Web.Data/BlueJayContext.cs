@@ -1,4 +1,5 @@
 ﻿using Lisa.Zuma.BlueJay.Web.Data.Entities;
+using Microsoft.AspNet.Identity.EntityFramework;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Lisa.Zuma.BlueJay.Web.Data
 {
-    public class BlueJayContext : DbContext
+    public class BlueJayContext : IdentityDbContext<UserData>
     {
         public BlueJayContext()
             : this("DefaultConnection")
@@ -21,7 +22,7 @@ namespace Lisa.Zuma.BlueJay.Web.Data
         }
 
         public DbSet<NoteData> Notes { get; set; }
-        public DbSet<UserData> Users { get; set; }
+        //public DbSet<UserData> Users { get; set; }
         public DbSet<NoteMediaData> NoteMedia { get; set; }
         public DbSet<DossierData> Dossiers { get; set; }
         public DbSet<DossierDetailData> DossierDetails { get; set; }

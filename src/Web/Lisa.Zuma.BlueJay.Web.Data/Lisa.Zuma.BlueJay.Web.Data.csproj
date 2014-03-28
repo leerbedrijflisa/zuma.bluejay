@@ -45,6 +45,12 @@
     <Reference Include="EntityFramework.SqlServer">
       <HintPath>..\packages\EntityFramework.6.0.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.Core">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.Core.1.0.0\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.EntityFramework">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.EntityFramework.1.0.0\lib\net45\Microsoft.AspNet.Identity.EntityFramework.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
@@ -61,6 +67,7 @@
     <Compile Include="Entities\NoteData.cs" />
     <Compile Include="Entities\NoteMediaData.cs" />
     <Compile Include="Entities\UserData.cs" />
+    <Compile Include="Extensions\UserDataExtensions.cs" />
     <Compile Include="Migrations\201402251327093_InitialMigration.cs" />
     <Compile Include="Migrations\201402251327093_InitialMigration.Designer.cs">
       <DependentUpon>201402251327093_InitialMigration.cs</DependentUpon>
@@ -76,6 +83,10 @@
     <Compile Include="Migrations\201403171322544_NoteDateCreated.cs" />
     <Compile Include="Migrations\201403171322544_NoteDateCreated.Designer.cs">
       <DependentUpon>201403171322544_NoteDateCreated.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201403261427588_IdentityUser.cs" />
+    <Compile Include="Migrations\201403261427588_IdentityUser.Designer.cs">
+      <DependentUpon>201403261427588_IdentityUser.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -97,7 +108,11 @@
     <EmbeddedResource Include="Migrations\201403171322544_NoteDateCreated.resx">
       <DependentUpon>201403171322544_NoteDateCreated.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201403261427588_IdentityUser.resx">
+      <DependentUpon>201403261427588_IdentityUser.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
