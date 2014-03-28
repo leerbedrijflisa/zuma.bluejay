@@ -67,6 +67,7 @@
     <Compile Include="Entities\NoteData.cs" />
     <Compile Include="Entities\NoteMediaData.cs" />
     <Compile Include="Entities\UserData.cs" />
+    <Compile Include="Extensions\UserDataExtensions.cs" />
     <Compile Include="Migrations\201402251327093_InitialMigration.cs" />
     <Compile Include="Migrations\201402251327093_InitialMigration.Designer.cs">
       <DependentUpon>201402251327093_InitialMigration.cs</DependentUpon>
@@ -111,6 +112,7 @@
       <DependentUpon>201403261427588_IdentityUser.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
