@@ -68,6 +68,7 @@
     <Compile Include="Entities\NoteMediaData.cs" />
     <Compile Include="Entities\UserData.cs" />
     <Compile Include="Extensions\DossierDataExtensions.cs" />
+    <Compile Include="Extensions\NoteDataExtensions.cs" />
     <Compile Include="Extensions\UserDataExtensions.cs" />
     <Compile Include="Migrations\201402251327093_InitialMigration.cs" />
     <Compile Include="Migrations\201402251327093_InitialMigration.Designer.cs">
