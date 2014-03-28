@@ -1,5 +1,6 @@
 ﻿using Lisa.Zuma.BlueJay.Web.Data;
 using Lisa.Zuma.BlueJay.Web.Data.Entities;
+using Lisa.Zuma.BlueJay.Web.Data.Extensions;
 using Lisa.Zuma.BlueJay.Web.Helpers;
 using Lisa.Zuma.BlueJay.Web.Models;
 using Microsoft.AspNet.Identity;
@@ -17,18 +18,18 @@ namespace Lisa.Zuma.BlueJay.Web.Controllers
     {
         public IHttpActionResult Get(int id)
         {
-            var user = UserManager.FindById(User.Identity.GetUserId());
+            var user = base.GetCurrentUser();
             if (user == null)
             {
                 return NotFound();
             }
 
-            var dossier = user.Dossiers.FirstOrDefault(d => d.Id == id);
-            if (dossier == null)
+            var dossier = default(DossierData);
+            if (!user.TryGetDossier(id, out dossier))
             {
                 return NotFound();
             }
-
+                        
             var dossierModel = Converter.ToDossier(dossier);
 
             return Ok(dossierModel);
@@ -36,7 +37,7 @@ namespace Lisa.Zuma.BlueJay.Web.Controllers
 
         public IHttpActionResult Get()
         {
-            var user = UserManager.FindById(User.Identity.GetUserId());
+            var user = base.GetCurrentUser();
             if (user == null)
             {
                 return NotFound();
