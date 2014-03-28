@@ -138,6 +138,10 @@
     <Compile Include="Helpers\PickerChangedEventArgs.cs" />
     <Compile Include="Helpers\HTMLTemplates.cs" />
     <Compile Include="Helpers\Camera.cs" />
+    <Compile Include="LockScreenViewController.cs" />
+    <Compile Include="LockScreenViewController.designer.cs">
+      <DependentUpon>LockScreenViewController.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -157,9 +161,14 @@
     <InterfaceDefinition Include="NewNoteViewController.xib" />
     <InterfaceDefinition Include="ProfileViewController.xib" />
     <InterfaceDefinition Include="NewProfileItemViewController.xib" />
+    <InterfaceDefinition Include="LockScreenViewController.xib" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\camera.png" />
+    <BundleResource Include="Resources\roundje.png" />
+    <BundleResource Include="Resources\ios_7_galaxy-wide.jpg" />
+    <BundleResource Include="Resources\number-insert.png" />
+    <BundleResource Include="Resources\number-emtpy.png" />
   </ItemGroup>
   <ItemGroup>
     <XamarinComponentReference Include="xamarin.mobile">

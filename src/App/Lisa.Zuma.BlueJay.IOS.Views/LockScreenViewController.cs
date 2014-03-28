@@ -10,20 +10,34 @@ namespace Lisa.Zuma.BlueJay.IOS.Views
 		public LockScreenViewController () : base ("LockScreenViewController", null)
 		{
 		}
-
-		public override void DidReceiveMemoryWarning ()
-		{
-			// Releases the view if it doesn't have a superview.
-			base.DidReceiveMemoryWarning ();
 			
-			// Release any cached data, images, etc that aren't in use.
-		}
-
 		public override void ViewDidLoad ()
 		{
 			base.ViewDidLoad ();
-			
-			// Perform any additional setup after loading the view, typically from a nib.
+		
+		}
+
+		private void InitializeUI()
+		{
+			btnNumberOne.TouchUpInside += WriteToConsole;
+			btnNumberTwo.TouchUpInside += WriteToConsole;
+			btnNumberThree.TouchUpInside +=WriteToConsole;
+			btnNumberFour.TouchUpInside += WriteToConsole;
+			btnNumberFive.TouchUpInside += WriteToConsole;
+			btnNumberSix.TouchUpInside += WriteToConsole;
+			btnNumberSeven.TouchUpInside += WriteToConsole;
+			btnNumberEight.TouchUpInside += WriteToConsole;
+			btnNumberNine.TouchUpInside += WriteToConsole;
+			btnNumberZero.TouchUpInside += WriteToConsole;
+		}
+
+		public void WriteToConsole(Object sender, EventArgs args)
+		{
+			var txt = sender as UIButton;
+			if (txt != null) {
+				var val = txt.CurrentTitle;
+				Console.WriteLine (val);
+			}
 		}
 	}
 }
