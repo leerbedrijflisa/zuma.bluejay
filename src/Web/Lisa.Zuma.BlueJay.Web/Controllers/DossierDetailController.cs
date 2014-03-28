@@ -2,6 +2,7 @@
 using Lisa.Zuma.BlueJay.Web.Data.Entities;
 using Lisa.Zuma.BlueJay.Web.Helpers;
 using Lisa.Zuma.BlueJay.Web.Models;
+using Lisa.Zuma.BlueJay.Web.Data.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,8 +17,14 @@ namespace Lisa.Zuma.BlueJay.Web.Controllers
     {
         public IHttpActionResult Get(int dossierId)
         {
-            var dossier = Db.Dossiers.FirstOrDefault(d => d.Id == dossierId);
-            if (dossier == null)
+            var user = base.GetCurrentUser();
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            var dossier = default(DossierData);
+            if (!user.TryGetDossier(dossierId, out dossier))
             {
                 return NotFound();
             }
@@ -28,14 +35,20 @@ namespace Lisa.Zuma.BlueJay.Web.Controllers
 
         public IHttpActionResult Get(int dossierId, int id)
         {
-            var dossier = Db.Dossiers.FirstOrDefault(d => d.Id == dossierId);
-            if (dossier == null)
+            var user = base.GetCurrentUser();
+            if (user == null)
             {
                 return NotFound();
             }
 
-            var detail = dossier.Details.FirstOrDefault(d => d.Id == id);
-            if (detail == null)
+            var dossier = default(DossierData);
+            if (!user.TryGetDossier(dossierId, out dossier))
+            {
+                return NotFound();
+            }
+
+            var detail = default(DossierDetailData);
+            if (!dossier.TryGetDetail(id, out detail))
             {
                 return NotFound();
             }
@@ -46,8 +59,14 @@ namespace Lisa.Zuma.BlueJay.Web.Controllers
 
         public IHttpActionResult Post(int dossierId, [FromBody] DossierDetail dossierDetailModel)
         {
-            var dossier = Db.Dossiers.FirstOrDefault(d => d.Id == dossierId);
-            if (dossier == null)
+            var user = base.GetCurrentUser();
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            var dossier = default(DossierData);
+            if (!user.TryGetDossier(dossierId, out dossier))
             {
                 return NotFound();
             }
@@ -67,14 +86,20 @@ namespace Lisa.Zuma.BlueJay.Web.Controllers
 
         public IHttpActionResult Put(int dossierId, int id, [FromBody] DossierDetail dossierDetailModel)
         {
-            var dossier = Db.Dossiers.FirstOrDefault(d => d.Id == dossierId);
-            if (dossier == null) 
+            var user = base.GetCurrentUser();
+            if (user == null)
             {
                 return NotFound();
             }
 
-            var detail = dossier.Details.FirstOrDefault(d => d.Id == id);
-            if (detail == null)
+            var dossier = default(DossierData);
+            if (!user.TryGetDossier(dossierId, out dossier))
+            {
+                return NotFound();
+            }
+
+            var detail = default(DossierDetailData);
+            if (!dossier.TryGetDetail(id, out detail))
             {
                 return NotFound();
             }
@@ -97,14 +122,20 @@ namespace Lisa.Zuma.BlueJay.Web.Controllers
 
         public IHttpActionResult Delete(int dossierId, int id)
         {
-            var dossier = Db.Dossiers.FirstOrDefault(d => d.Id == dossierId);
-            if (dossier == null)
+            var user = base.GetCurrentUser();
+            if (user == null)
             {
                 return NotFound();
             }
 
-            var detail = dossier.Details.FirstOrDefault(d => d.Id == id);
-            if (detail == null)
+            var dossier = default(DossierData);
+            if (!user.TryGetDossier(dossierId, out dossier))
+            {
+                return NotFound();
+            }
+
+            var detail = default(DossierDetailData);
+            if (!dossier.TryGetDetail(id, out detail))
             {
                 return NotFound();
             }
