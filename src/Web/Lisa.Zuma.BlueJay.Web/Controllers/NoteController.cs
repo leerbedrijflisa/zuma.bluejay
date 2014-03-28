@@ -15,6 +15,7 @@ using System.Web.Http;
 
 namespace Lisa.Zuma.BlueJay.Web.Controllers
 {
+    [Authorize]
     public class NoteController : BaseApiController
     {
         /// <summary>

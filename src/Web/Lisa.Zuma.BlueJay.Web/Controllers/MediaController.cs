@@ -14,6 +14,7 @@ using System.Web.Http;
 
 namespace Lisa.Zuma.BlueJay.Web.Controllers
 {
+    [Authorize]
     public class MediaController : BaseApiController
     {
         public IHttpActionResult Get(int dossierId, int noteId)
