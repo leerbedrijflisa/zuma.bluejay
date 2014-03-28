@@ -18,14 +18,8 @@ namespace Lisa.Zuma.BlueJay.Web.Controllers
     {
         public IHttpActionResult Get(int id)
         {
-            var user = base.GetCurrentUser();
-            if (user == null)
-            {
-                return NotFound();
-            }
-
             var dossier = default(DossierData);
-            if (!user.TryGetDossier(id, out dossier))
+            if (!CurrentUser.TryGetDossier(id, out dossier))
             {
                 return NotFound();
             }
@@ -37,13 +31,7 @@ namespace Lisa.Zuma.BlueJay.Web.Controllers
 
         public IHttpActionResult Get()
         {
-            var user = base.GetCurrentUser();
-            if (user == null)
-            {
-                return NotFound();
-            }
-
-            var dossierModels = Converter.ToDossier(user.Dossiers);
+            var dossierModels = Converter.ToDossier(CurrentUser.Dossiers);
 
             return Ok(dossierModels);
         }

@@ -2,6 +2,7 @@
 using Lisa.Zuma.BlueJay.Web.Data.Entities;
 using Lisa.Zuma.BlueJay.Web.Helpers;
 using Lisa.Zuma.BlueJay.Web.Models;
+using Lisa.Zuma.BlueJay.Web.Data.Extensions;
 using Microsoft.WindowsAzure;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Blob;
@@ -24,8 +25,8 @@ namespace Lisa.Zuma.BlueJay.Web.Controllers
         /// <param name="dossierId">The id of the dossier from which to retrieve the notes.</param>
         public IHttpActionResult Get(int dossierId)
         {
-            var dossier = Db.Dossiers.FirstOrDefault(d => d.Id == dossierId);
-            if (dossier == null)
+            var dossier = default(DossierData);
+            if (!CurrentUser.TryGetDossier(dossierId, out dossier))
             {
                 return NotFound();
             }
@@ -49,14 +50,14 @@ namespace Lisa.Zuma.BlueJay.Web.Controllers
         /// <returns></returns>
         public IHttpActionResult Get(int dossierId, int id)
         {
-            var dossier = Db.Dossiers.FirstOrDefault(d => d.Id == dossierId);
-            if (dossier == null)
+            var dossier = default(DossierData);
+            if (!CurrentUser.TryGetDossier(dossierId, out dossier))
             {
                 return NotFound();
             }
 
-            var note = dossier.Notes.FirstOrDefault(n => n.Id == id);
-            if (note == null)
+            var note = default(NoteData);
+            if (!dossier.TryGetNote(id, out note))
             {
                 return NotFound();
             }
@@ -73,8 +74,8 @@ namespace Lisa.Zuma.BlueJay.Web.Controllers
         /// <returns></returns>
         public IHttpActionResult Post(int dossierId, [FromBody] Note noteModel)
         {
-            var dossier = Db.Dossiers.Find(dossierId);
-            if (dossier == null)
+            var dossier = default(DossierData);
+            if (!CurrentUser.TryGetDossier(dossierId, out dossier))
             {
                 return NotFound();
             }
@@ -112,14 +113,14 @@ namespace Lisa.Zuma.BlueJay.Web.Controllers
         /// <returns></returns>
         public IHttpActionResult Put(int dossierId, [FromBody] Note noteModel)
         {
-            var dossier = Db.Dossiers.FirstOrDefault(d => d.Id == dossierId);
-            if (dossier == null)
+            var dossier = default(DossierData);
+            if (!CurrentUser.TryGetDossier(dossierId, out dossier))
             {
                 return NotFound();
             }
 
-            var note = dossier.Notes.FirstOrDefault(n => n.Id == noteModel.Id);
-            if (note == null)
+            var note = default(NoteData);
+            if (!dossier.TryGetNote(noteModel.Id, out note))
             {
                 return NotFound();
             }
@@ -133,14 +134,14 @@ namespace Lisa.Zuma.BlueJay.Web.Controllers
 
         public IHttpActionResult Delete(int dossierId, int id)
         {
-            var dossier = Db.Dossiers.FirstOrDefault(d => d.Id == dossierId);
-            if (dossier == null)
+            var dossier = default(DossierData);
+            if (!CurrentUser.TryGetDossier(dossierId, out dossier))
             {
                 return NotFound();
             }
 
-            var note = dossier.Notes.FirstOrDefault(n => n.Id == id);
-            if (note == null)
+            var note = default(NoteData);
+            if (!dossier.TryGetNote(id, out note))
             {
                 return NotFound();
             }
