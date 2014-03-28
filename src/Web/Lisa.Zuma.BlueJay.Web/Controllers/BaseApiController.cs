@@ -1,5 +1,6 @@
 ﻿using Lisa.Zuma.BlueJay.Web.Data;
 using Lisa.Zuma.BlueJay.Web.Data.Entities;
+using Lisa.Zuma.BlueJay.Web.Extensions;
 using Microsoft.AspNet.Identity;
 using System;
 using System.Collections.Generic;
@@ -14,6 +15,11 @@ namespace Lisa.Zuma.BlueJay.Web.Controllers
     {
         protected BlueJayContext Db { get; private set; }
         protected UserManager<UserData> UserManager { get; private set; }
+
+        protected UserData GetCurrentUser()
+        {
+            return UserManager.GetCurrentUser();
+        }
 
         protected override void Initialize(HttpControllerContext controllerContext)
         {
