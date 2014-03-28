@@ -25,14 +25,8 @@ namespace Lisa.Zuma.BlueJay.Web.Controllers
         /// <param name="dossierId">The id of the dossier from which to retrieve the notes.</param>
         public IHttpActionResult Get(int dossierId)
         {
-            var user = base.GetCurrentUser();
-            if (user == null)
-            {
-                return NotFound();
-            }
-
             var dossier = default(DossierData);
-            if (!user.TryGetDossier(dossierId, out dossier))
+            if (!CurrentUser.TryGetDossier(dossierId, out dossier))
             {
                 return NotFound();
             }
@@ -56,14 +50,8 @@ namespace Lisa.Zuma.BlueJay.Web.Controllers
         /// <returns></returns>
         public IHttpActionResult Get(int dossierId, int id)
         {
-            var user = base.GetCurrentUser();
-            if (user == null)
-            {
-                return NotFound();
-            }
-
             var dossier = default(DossierData);
-            if (!user.TryGetDossier(dossierId, out dossier))
+            if (!CurrentUser.TryGetDossier(dossierId, out dossier))
             {
                 return NotFound();
             }
@@ -86,14 +74,8 @@ namespace Lisa.Zuma.BlueJay.Web.Controllers
         /// <returns></returns>
         public IHttpActionResult Post(int dossierId, [FromBody] Note noteModel)
         {
-            var user = base.GetCurrentUser();
-            if (user == null)
-            {
-                return NotFound();
-            }
-
             var dossier = default(DossierData);
-            if (!user.TryGetDossier(dossierId, out dossier))
+            if (!CurrentUser.TryGetDossier(dossierId, out dossier))
             {
                 return NotFound();
             }
@@ -131,14 +113,8 @@ namespace Lisa.Zuma.BlueJay.Web.Controllers
         /// <returns></returns>
         public IHttpActionResult Put(int dossierId, [FromBody] Note noteModel)
         {
-            var user = base.GetCurrentUser();
-            if (user == null)
-            {
-                return NotFound();
-            }
-
             var dossier = default(DossierData);
-            if (!user.TryGetDossier(dossierId, out dossier))
+            if (!CurrentUser.TryGetDossier(dossierId, out dossier))
             {
                 return NotFound();
             }
@@ -158,14 +134,8 @@ namespace Lisa.Zuma.BlueJay.Web.Controllers
 
         public IHttpActionResult Delete(int dossierId, int id)
         {
-            var user = base.GetCurrentUser();
-            if (user == null)
-            {
-                return NotFound();
-            }
-
             var dossier = default(DossierData);
-            if (!user.TryGetDossier(dossierId, out dossier))
+            if (!CurrentUser.TryGetDossier(dossierId, out dossier))
             {
                 return NotFound();
             }

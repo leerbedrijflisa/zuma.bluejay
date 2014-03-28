@@ -20,14 +20,8 @@ namespace Lisa.Zuma.BlueJay.Web.Controllers
     {
         public IHttpActionResult Get(int dossierId, int noteId)
         {
-            var user = base.GetCurrentUser();
-            if (user == null)
-            {
-                return NotFound();
-            }
-
             var dossier = default(DossierData);
-            if (!user.TryGetDossier(dossierId, out dossier))
+            if (!CurrentUser.TryGetDossier(dossierId, out dossier))
             {
                 return NotFound();
             }
@@ -50,14 +44,8 @@ namespace Lisa.Zuma.BlueJay.Web.Controllers
 
         public IHttpActionResult Get(int dossierId, int noteId, int id)
         {
-            var user = base.GetCurrentUser();
-            if (user == null)
-            {
-                return NotFound();
-            }
-
             var dossier = default(DossierData);
-            if (!user.TryGetDossier(dossierId, out dossier))
+            if (!CurrentUser.TryGetDossier(dossierId, out dossier))
             {
                 return NotFound();
             }
@@ -80,14 +68,8 @@ namespace Lisa.Zuma.BlueJay.Web.Controllers
 
         public IHttpActionResult Put(int dossierId, int noteId, int id, [FromBody] NoteMedia noteMediaModel)
         {
-            var user = base.GetCurrentUser();
-            if (user == null)
-            {
-                return NotFound();
-            }
-
             var dossier = default(DossierData);
-            if (!user.TryGetDossier(dossierId, out dossier))
+            if (!CurrentUser.TryGetDossier(dossierId, out dossier))
             {
                 return NotFound();
             }
@@ -117,14 +99,8 @@ namespace Lisa.Zuma.BlueJay.Web.Controllers
 
         public IHttpActionResult Delete(int dossierId, int noteId, int id)
         {
-            var user = base.GetCurrentUser();
-            if (user == null)
-            {
-                return NotFound();
-            }
-
             var dossier = default(DossierData);
-            if (!user.TryGetDossier(dossierId, out dossier))
+            if (!CurrentUser.TryGetDossier(dossierId, out dossier))
             {
                 return NotFound();
             }
