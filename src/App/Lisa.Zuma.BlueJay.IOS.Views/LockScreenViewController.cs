@@ -17,20 +17,26 @@ namespace Lisa.Zuma.BlueJay.IOS.Views
 		{
 			base.ViewDidLoad ();
 			ButtonHandle ();
+			NavigationController.SetNavigationBarHidden (true, false);
 		}
 
 		private void ButtonHandle()
 		{
-			btnNumberOne.TouchUpInside += setNumberToList;
-			btnNumberTwo.TouchUpInside += setNumberToList;
-			btnNumberThree.TouchUpInside +=setNumberToList;
-			btnNumberFour.TouchUpInside += setNumberToList;
-			btnNumberFive.TouchUpInside += setNumberToList;
-			btnNumberSix.TouchUpInside += setNumberToList;
-			btnNumberSeven.TouchUpInside += setNumberToList;
-			btnNumberEight.TouchUpInside += setNumberToList;
-			btnNumberNine.TouchUpInside += setNumberToList;
-			btnNumberZero.TouchUpInside += setNumberToList;
+			ButtonList.AddRange (new List<UIButton>{btnNumberOne,
+				btnNumberTwo,
+				btnNumberThree,
+				btnNumberFour,
+				btnNumberFive,
+				btnNumberSix,
+				btnNumberSeven,
+				btnNumberEight,
+				btnNumberNine,
+				btnNumberZero
+			});
+
+			foreach(var button in ButtonList){
+				button.TouchUpInside += setNumberToList;
+			}
 		}
 
 		private void setNumberToList(Object sender, EventArgs args)
@@ -45,14 +51,15 @@ namespace Lisa.Zuma.BlueJay.IOS.Views
 				Console.WriteLine (Combination.Length);
 
 				if (Combination.Length == 4) {
-//					NSThread.SleepFor (200);
+
 					if (Combination == DummyCombination.ToString ()) {
-						Console.WriteLine ("Good Job !");
-						clearChosenCombination ();
+						Console.WriteLine ("Yes!");
+						Combination = string.Empty;
 					} else {
 						Console.WriteLine ("Nope !");
-						clearChosenCombination ();
+						CominationFailedAnimation ();
 					}
+
 				}
 
 			}
@@ -84,6 +91,42 @@ namespace Lisa.Zuma.BlueJay.IOS.Views
 				break;
 			}
 		}
+
+		private void CominationFailedAnimation()
+		{
+			SetButtonState(ButtonList, false);
+
+			NSTimer.CreateScheduledTimer (TimeSpan.FromMilliseconds(500), delegate {
+				SetButtonState(ButtonList, true);
+				clearChosenCombination ();
+			});
+
+			ImageViewAnimation (new List<UIImageView>{imvInputOne, imvInputTwo, imvInputThree, imvInputFour});
+
+		}
+
+		private void ImageViewAnimation(List<UIImageView> imageViewList)
+		{
+			foreach( var imageView in imageViewList){
+				imageView.AnimationImages = new UIImage[] {
+					UIImage.FromBundle("number-emtpy.png"),
+					UIImage.FromBundle("number-insert.png")
+				};
+
+				imageView.AnimationRepeatCount = 2;
+				imageView.AnimationDuration = 0.2;
+				imageView.StartAnimating ();
+			}
+		}
+
+		private void SetButtonState(List<UIButton> buttonList, bool state)
+		{
+			foreach (var button in buttonList) {
+				button.Enabled = state;
+			}
+		}
+
+		private List<UIButton> ButtonList = new List<UIButton> (); 
 
 		private string Combination;
 		private int DummyCombination;
