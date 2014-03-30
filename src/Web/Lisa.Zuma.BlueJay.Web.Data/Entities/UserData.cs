@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNet.Identity.EntityFramework;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
@@ -10,10 +11,10 @@ using System.Threading.Tasks;
 namespace Lisa.Zuma.BlueJay.Web.Data.Entities
 {
     [Table("Users")]
-    public class UserData
+    public class UserData : IdentityUser
     {
-        [Key]
-        public int Id { get; set; }
+        //[Key]
+        //public int Id { get; set; }
 
         [Required]
         [DefaultValue("PARENT")]

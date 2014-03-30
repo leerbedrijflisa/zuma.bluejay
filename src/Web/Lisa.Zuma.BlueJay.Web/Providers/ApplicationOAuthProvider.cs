@@ -8,15 +8,16 @@ using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.Owin.Security;
 using Microsoft.Owin.Security.Cookies;
 using Microsoft.Owin.Security.OAuth;
+using Lisa.Zuma.BlueJay.Web.Data.Entities;
 
 namespace Lisa.Zuma.BlueJay.Web.Providers
 {
     public class ApplicationOAuthProvider : OAuthAuthorizationServerProvider
     {
         private readonly string _publicClientId;
-        private readonly Func<UserManager<IdentityUser>> _userManagerFactory;
+        private readonly Func<UserManager<UserData>> _userManagerFactory;
 
-        public ApplicationOAuthProvider(string publicClientId, Func<UserManager<IdentityUser>> userManagerFactory)
+        public ApplicationOAuthProvider(string publicClientId, Func<UserManager<UserData>> userManagerFactory)
         {
             if (publicClientId == null)
             {
@@ -34,9 +35,9 @@ namespace Lisa.Zuma.BlueJay.Web.Providers
 
         public override async Task GrantResourceOwnerCredentials(OAuthGrantResourceOwnerCredentialsContext context)
         {
-            using (UserManager<IdentityUser> userManager = _userManagerFactory())
+            using (UserManager<UserData> userManager = _userManagerFactory())
             {
-                IdentityUser user = await userManager.FindAsync(context.UserName, context.Password);
+                UserData user = await userManager.FindAsync(context.UserName, context.Password);
 
                 if (user == null)
                 {

@@ -1,5 +1,6 @@
 ﻿using Lisa.Zuma.BlueJay.Models;
 using Lisa.Zuma.BlueJay.Web.Data.Entities;
+using Lisa.Zuma.BlueJay.Web.Data.Extensions;
 using Lisa.Zuma.BlueJay.Web.Helpers;
 using Lisa.Zuma.BlueJay.Web.Models;
 using Microsoft.WindowsAzure;
@@ -14,18 +15,19 @@ using System.Web.Http;
 
 namespace Lisa.Zuma.BlueJay.Web.Controllers
 {
+    [Authorize]
     public class MediaController : BaseApiController
     {
         public IHttpActionResult Get(int dossierId, int noteId)
         {
-            var dossier = Db.Dossiers.FirstOrDefault(d => d.Id == dossierId);
-            if (dossier == null)
+            var dossier = default(DossierData);
+            if (!CurrentUser.TryGetDossier(dossierId, out dossier))
             {
                 return NotFound();
             }
 
-            var note = dossier.Notes.FirstOrDefault(n => n.Id == noteId);
-            if (note == null)
+            var note = default(NoteData);
+            if (!dossier.TryGetNote(noteId, out note))
             {
                 return NotFound();
             }
@@ -42,20 +44,20 @@ namespace Lisa.Zuma.BlueJay.Web.Controllers
 
         public IHttpActionResult Get(int dossierId, int noteId, int id)
         {
-            var dossier = Db.Dossiers.FirstOrDefault(d => d.Id == dossierId);
-            if (dossier == null)
+            var dossier = default(DossierData);
+            if (!CurrentUser.TryGetDossier(dossierId, out dossier))
             {
                 return NotFound();
             }
 
-            var note = dossier.Notes.FirstOrDefault(n => n.Id == noteId);
-            if (note == null)
+            var note = default(NoteData);
+            if (!dossier.TryGetNote(noteId, out note))
             {
                 return NotFound();
             }
 
-            var media = note.Media.FirstOrDefault(m => m.Id == id);
-            if (media == null) 
+            var media = default(NoteMediaData);
+            if (!note.TryGetMedia(id, out media))
             {
                 return NotFound();
             }
@@ -66,20 +68,20 @@ namespace Lisa.Zuma.BlueJay.Web.Controllers
 
         public IHttpActionResult Put(int dossierId, int noteId, int id, [FromBody] NoteMedia noteMediaModel)
         {
-            var dossier = Db.Dossiers.FirstOrDefault(d => d.Id == dossierId);
-            if (dossier == null)
+            var dossier = default(DossierData);
+            if (!CurrentUser.TryGetDossier(dossierId, out dossier))
             {
                 return NotFound();
             }
 
-            var note = dossier.Notes.FirstOrDefault(n => n.Id == noteId);
-            if (note == null)
+            var note = default(NoteData);
+            if (!dossier.TryGetNote(noteId, out note))
             {
                 return NotFound();
             }
 
-            var media = note.Media.FirstOrDefault(m => m.Id == id);
-            if (media == null)
+            var media = default(NoteMediaData);
+            if (!note.TryGetMedia(id, out media))
             {
                 return NotFound();
             }
@@ -97,20 +99,20 @@ namespace Lisa.Zuma.BlueJay.Web.Controllers
 
         public IHttpActionResult Delete(int dossierId, int noteId, int id)
         {
-            var dossier = Db.Dossiers.FirstOrDefault(d => d.Id == dossierId);
-            if (dossier == null)
+            var dossier = default(DossierData);
+            if (!CurrentUser.TryGetDossier(dossierId, out dossier))
             {
                 return NotFound();
             }
 
-            var note = dossier.Notes.FirstOrDefault(n => n.Id == noteId);
-            if (note == null)
+            var note = default(NoteData);
+            if (!dossier.TryGetNote(noteId, out note))
             {
                 return NotFound();
             }
 
-            var media = note.Media.FirstOrDefault(m => m.Id == id);
-            if (media == null)
+            var media = default(NoteMediaData);
+            if (!note.TryGetMedia(id, out media))
             {
                 return NotFound();
             }
