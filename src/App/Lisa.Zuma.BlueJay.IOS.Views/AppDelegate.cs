@@ -20,12 +20,20 @@ namespace Lisa.Zuma.BlueJay.IOS.Views
 			loginViewController LoginViewController = new loginViewController ();
 
 			var RootNavigationController = new UINavigationController ();
-			RootNavigationController.PushViewController (new LockScreenViewController(), true);
+			RootNavigationController.PushViewController (new loginViewController(), true);
 
 			this.window.RootViewController = RootNavigationController;
 			this.window.MakeKeyAndVisible ();
 
 			return true;
+		}
+
+		public override void DidEnterBackground (UIApplication application)
+		{
+			var RootNavigationController = new UINavigationController ();
+			RootNavigationController.PushViewController (new LockScreenViewController(), true);
+
+			this.window.RootViewController = RootNavigationController;
 		}
 	}
 }

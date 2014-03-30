@@ -55,6 +55,7 @@ namespace Lisa.Zuma.BlueJay.IOS.Views
 					if (Combination == DummyCombination.ToString ()) {
 						Console.WriteLine ("Yes!");
 						Combination = string.Empty;
+						NavigationController.PushViewController (new SummaryViewController(), true);
 					} else {
 						Console.WriteLine ("Nope !");
 						CominationFailedAnimation ();
