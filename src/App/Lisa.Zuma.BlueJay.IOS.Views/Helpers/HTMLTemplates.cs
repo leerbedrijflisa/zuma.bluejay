@@ -106,15 +106,9 @@ namespace Lisa.Zuma.BlueJay.IOS
 
 				TemporaryMedia = this.NoteMediaHTML(note.Text, note.Media);
 
-				if (ItemOwner.Role == 1) {
 					direction = "left";
 					role = "Begeleider";
-				}
 
-				if (ItemOwner.Role == 2) {
-					direction = "right";
-					role = "Ouder";
-				}
 
 
 				TemporaryNote += this.NoteHTML (direction, null, ItemOwner.Name, role, note.Date.ToFancyString(), TemporaryMedia);

@@ -13,21 +13,29 @@ namespace Lisa.Zuma.BlueJay.IOS.Views
 	partial class loginViewController
 	{
 		[Outlet]
-		MonoTouch.UIKit.UIButton btnBegeleider { get; set; }
+		MonoTouch.UIKit.UIButton btnSignIn { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UIButton btnMoeder { get; set; }
+		MonoTouch.UIKit.UITextField txtPassword { get; set; }
+
+		[Outlet]
+		MonoTouch.UIKit.UITextField txtUsername { get; set; }
 		
 		void ReleaseDesignerOutlets ()
 		{
-			if (btnMoeder != null) {
-				btnMoeder.Dispose ();
-				btnMoeder = null;
+			if (txtPassword != null) {
+				txtPassword.Dispose ();
+				txtPassword = null;
 			}
 
-			if (btnBegeleider != null) {
-				btnBegeleider.Dispose ();
-				btnBegeleider = null;
+			if (txtUsername != null) {
+				txtUsername.Dispose ();
+				txtUsername = null;
+			}
+
+			if (btnSignIn != null) {
+				btnSignIn.Dispose ();
+				btnSignIn = null;
 			}
 		}
 	}

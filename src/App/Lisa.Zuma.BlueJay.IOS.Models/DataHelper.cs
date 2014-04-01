@@ -7,6 +7,8 @@ using RestSharp;
 using Newtonsoft.Json;
 using System.Net.Http;
 using System.Linq;
+using System.Net;
+using Newtonsoft.Json.Linq;
 
 namespace Lisa.Zuma.BlueJay.IOS.Models
 {
@@ -18,10 +20,26 @@ namespace Lisa.Zuma.BlueJay.IOS.Models
 			client = new RestClient ("http://zumabluejay-test.azurewebsites.net");
 		}
 
-		//Temporary class
-		public void SignIn(int id)
+		public void SignIn(string username, string password, Action kaas)
 		{
-			database.DummyLoggedIn (id);
+			client.Authenticator = new SimpleAuthenticator("username", username, "password", password);
+
+			var request = new RestRequest("token", Method.POST);
+			request.AddParameter ("grant_type", "password");
+			client.ExecuteAsync(request, response =>
+				{
+					if (response.StatusCode == HttpStatusCode.OK)
+					{
+						var jsonResponse = JsonConvert.DeserializeObject<signInRequestInformation>(response.Content);
+						database.Clear("UserData");
+						database.Insert(new UserData{ Name = jsonResponse.userName, AccesToken = jsonResponse.access_token });
+						kaas();
+					}
+					else
+					{
+						Console.WriteLine("nok");
+					}
+				});
 		}
 
 		public void SetNewNote (string text)
@@ -184,6 +202,7 @@ namespace Lisa.Zuma.BlueJay.IOS.Models
 		
 			return MediaModel;
 		}
+
 
 		private Database database;
 		private RestClient client;
