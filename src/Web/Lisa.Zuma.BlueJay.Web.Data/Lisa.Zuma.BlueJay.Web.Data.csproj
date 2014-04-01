@@ -70,12 +70,14 @@
     <Compile Include="Extensions\DossierDataExtensions.cs" />
     <Compile Include="Extensions\NoteDataExtensions.cs" />
     <Compile Include="Extensions\UserDataExtensions.cs" />
+    <Compile Include="GenericRepository.cs" />
     <Compile Include="Migrations\201403311052190_InitialMigration.cs" />
     <Compile Include="Migrations\201403311052190_InitialMigration.Designer.cs">
       <DependentUpon>201403311052190_InitialMigration.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UnitOfWork.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
