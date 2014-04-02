@@ -9,64 +9,64 @@ using System.Threading.Tasks;
 
 namespace Lisa.Zuma.BlueJay.Web.Data
 {
-    public class UnitOfWork : IDisposable
+    public class UnitOfWork : IUnitOfWork
     {
         public UnitOfWork(bool autoSaveStoreChanges = false)
         {
             this.autoSaveStoreChanges = autoSaveStoreChanges;
         }
 
-        public GenericRepository<DossierData> DossierRepository
+        public IGenericRepository<DossierData> DossierRepository
         {
             get
             {
-                if (this.dossierRepository == null)
+                if (dossierRepo == null)
                 {
-                    this.dossierRepository = new GenericRepository<DossierData>(context);
+                    dossierRepo = new GenericRepository<DossierData>(context);
                 }
 
-                return dossierRepository;
+                return dossierRepo;
             }
         }
 
-        public GenericRepository<DossierDetailData> DossierDetailRepository
+        public IGenericRepository<DossierDetailData> DossierDetailRepository
         {
             get
             {
-                if (this.dossierDetailRepository == null)
+                if (dossierDetailRepo == null)
                 {
-                    this.dossierDetailRepository = new GenericRepository<DossierDetailData>(context);
+                    dossierDetailRepo = new GenericRepository<DossierDetailData>(context);
                 }
 
-                return dossierDetailRepository;
+                return dossierDetailRepo;
             }
         }
 
-        public GenericRepository<NoteData> NoteRepository
+        public IGenericRepository<NoteData> NoteRepository
         {
             get
             {
-                if (this.noteRepository == null)
+                if (noteRepo == null)
                 {
-                    this.noteRepository = new GenericRepository<NoteData>(context);
+                    noteRepo = new GenericRepository<NoteData>(context);
                 }
 
-                return noteRepository;
+                return noteRepo;
             }
         }
 
-        public GenericRepository<NoteMediaData> NoteMediaRepository
+        public IGenericRepository<NoteMediaData> NoteMediaRepository
         {
             get
             {
-                if (this.noteMediaRepository == null)
+                if (noteMediaRepo == null)
                 {
-                    this.noteMediaRepository = new GenericRepository<NoteMediaData>(context);
+                    noteMediaRepo = new GenericRepository<NoteMediaData>(context);
                 }
 
-                return noteMediaRepository;
+                return noteMediaRepo;
             }
-        }
+        }        
 
         public UserManager<UserData> UserManager
         {
@@ -110,12 +110,13 @@ namespace Lisa.Zuma.BlueJay.Web.Data
         }
 
         private BlueJayContext context = new BlueJayContext("DefaultConnection");
-        private GenericRepository<DossierData> dossierRepository;
-        private GenericRepository<DossierDetailData> dossierDetailRepository;
-        private GenericRepository<NoteData> noteRepository;
-        private GenericRepository<NoteMediaData> noteMediaRepository;
         private UserManager<UserData> userManager;
         private bool disposed = false;
         private bool autoSaveStoreChanges = false;
+
+        private GenericRepository<DossierData> dossierRepo;
+        private GenericRepository<DossierDetailData> dossierDetailRepo;
+        private GenericRepository<NoteData> noteRepo;
+        private GenericRepository<NoteMediaData> noteMediaRepo;
     }
 }
