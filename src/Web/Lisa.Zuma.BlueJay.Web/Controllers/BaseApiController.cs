@@ -13,7 +13,7 @@ namespace Lisa.Zuma.BlueJay.Web.Controllers
 {
     public class BaseApiController : ApiController
     {
-        protected UnitOfWork UoW
+        protected IUnitOfWork UoW
         {
             get
             {
