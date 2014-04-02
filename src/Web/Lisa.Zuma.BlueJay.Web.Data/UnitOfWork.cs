@@ -11,6 +11,11 @@ namespace Lisa.Zuma.BlueJay.Web.Data
 {
     public class UnitOfWork : IDisposable
     {
+        public UnitOfWork(bool autoSaveStoreChanges = false)
+        {
+            this.autoSaveStoreChanges = autoSaveStoreChanges;
+        }
+
         public GenericRepository<DossierData> DossierRepository
         {
             get
@@ -70,6 +75,7 @@ namespace Lisa.Zuma.BlueJay.Web.Data
                 if (this.userManager == null)
                 {
                     var store = CreateUserStore();
+                    store.AutoSaveChanges = this.autoSaveStoreChanges;
                     this.userManager = new UserManager<UserData>(store);
                 }
 
@@ -98,7 +104,7 @@ namespace Lisa.Zuma.BlueJay.Web.Data
             this.disposed = true;
         }
 
-        private IUserStore<UserData> CreateUserStore()
+        private UserStore<UserData> CreateUserStore()
         {
             return new UserStore<UserData>(context);
         }
@@ -110,5 +116,6 @@ namespace Lisa.Zuma.BlueJay.Web.Data
         private GenericRepository<NoteMediaData> noteMediaRepository;
         private UserManager<UserData> userManager;
         private bool disposed = false;
+        private bool autoSaveStoreChanges = false;
     }
 }
