@@ -13,8 +13,30 @@ namespace Lisa.Zuma.BlueJay.Web.Controllers
 {
     public class BaseApiController : ApiController
     {
-        protected BlueJayContext Db { get; private set; }
-        protected UserManager<UserData> UserManager { get; private set; }
+        protected UnitOfWork UoW
+        {
+            get
+            {
+                if (uow == null)
+                {
+                    // By default, the UserManager will call Db.SaveChanges when any data belonging to the user is changed.
+                    // This may or may not conflict with pending changes and can cause data corruption or crashes.
+                    // Set the parameter "autoSaveStoreChanges" to true, to enable automatic saving after issueing calls to
+                    // the UserManager. If not, you must call UoW.Save() when performing basic CRUD operations.
+                    uow = new UnitOfWork(true);
+                }
+
+                return uow;
+            }
+        }
+
+        protected UserManager<UserData> UserManager
+        {
+            get
+            {
+                return UoW.UserManager;
+            }
+        }
 
         /// <summary>
         /// Gets the currently logged-in user for this request.
@@ -31,16 +53,14 @@ namespace Lisa.Zuma.BlueJay.Web.Controllers
 
         protected override void Initialize(HttpControllerContext controllerContext)
         {
-            Db = new BlueJayContext("DefaultConnection");
-            UserManager = Startup.UserManagerFactory();
-
             base.Initialize(controllerContext);
         }
 
         protected override void Dispose(bool disposing)
         {
-            Db.Dispose();
             base.Dispose(disposing);
         }
+
+        private UnitOfWork uow;
     }
 }
