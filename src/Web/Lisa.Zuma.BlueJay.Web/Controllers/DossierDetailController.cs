@@ -60,7 +60,7 @@ namespace Lisa.Zuma.BlueJay.Web.Controllers
             };
 
             dossier.Details.Add(detail);
-            Db.SaveChanges();
+            UoW.Save();
 
             var model = Converter.ToDossierDetail(detail);
             return CreatedAtRoute("DossierDetailApi", new { dossierId = dossierId, id = detail.Id }, model);
@@ -90,7 +90,7 @@ namespace Lisa.Zuma.BlueJay.Web.Controllers
                 detail.Contents = dossierDetailModel.Contents;
             }
 
-            Db.SaveChanges();
+            UoW.Save();
 
             var model = Converter.ToDossierDetail(detail);
             return Ok(model);
@@ -109,9 +109,9 @@ namespace Lisa.Zuma.BlueJay.Web.Controllers
             {
                 return NotFound();
             }
-
-            Db.DossierDetails.Remove(detail);
-            Db.SaveChanges();
+            
+            UoW.DossierDetailRepository.Delete(detail);
+            UoW.Save();
 
             return Ok();
         }
