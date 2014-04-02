@@ -71,6 +71,8 @@
     <Compile Include="Extensions\NoteDataExtensions.cs" />
     <Compile Include="Extensions\UserDataExtensions.cs" />
     <Compile Include="GenericRepository.cs" />
+    <Compile Include="IGenericRepository.cs" />
+    <Compile Include="IUnitOfWork.cs" />
     <Compile Include="Migrations\201403311052190_InitialMigration.cs" />
     <Compile Include="Migrations\201403311052190_InitialMigration.Designer.cs">
       <DependentUpon>201403311052190_InitialMigration.cs</DependentUpon>
