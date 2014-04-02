@@ -7,8 +7,8 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Lisa.Zuma.BlueJay.Web.Data
-{
-    public class GenericRepository<TEntity> where TEntity : class
+{    
+    public class GenericRepository<TEntity> : IGenericRepository<TEntity> where TEntity : class
     {
         public GenericRepository(BlueJayContext context)
         {
