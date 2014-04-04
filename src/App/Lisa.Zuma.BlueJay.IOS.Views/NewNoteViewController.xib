@@ -7,6 +7,7 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="NewNoteViewController">
             <connections>
                 <outlet property="btnCamera" destination="W2W-p5-2rD" id="0ci-8Y-3em"/>
+                <outlet property="btnMediaSummary" destination="kIe-lT-g2Z" id="5BT-zM-LpR"/>
                 <outlet property="btnPhotoCamera" destination="1xG-SY-HLp" id="iw0-uS-Ben"/>
                 <outlet property="btnPickPhoto" destination="lLm-gI-Ekf" id="MMz-v5-HCY"/>
                 <outlet property="btnPickVideo" destination="ejr-Ir-aqQ" id="l4b-00-f3f"/>
@@ -67,6 +68,13 @@
                     <fontDescription key="fontDescription" type="system" pointSize="18"/>
                     <state key="normal" title="Foto kiezen">
                         <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="tailTruncation" id="kIe-lT-g2Z">
+                    <rect key="frame" x="71" y="450" width="281" height="30"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <state key="normal" title="Er zijn 0 mediaitems toegevoegd">
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
                 </button>

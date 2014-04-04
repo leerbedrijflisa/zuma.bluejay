@@ -111,7 +111,7 @@ namespace Lisa.Zuma.BlueJay.IOS
 
 
 
-				TemporaryNote += this.NoteHTML (direction, null, ItemOwner.Name, role, note.Date.ToFancyString(), TemporaryMedia);
+				TemporaryNote += this.NoteHTML (direction, null, "Gebruiker", role, note.Date.ToFancyString(), TemporaryMedia);
 
 
 			}

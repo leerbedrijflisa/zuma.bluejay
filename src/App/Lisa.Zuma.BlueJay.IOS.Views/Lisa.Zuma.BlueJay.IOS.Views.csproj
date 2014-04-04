@@ -92,6 +92,7 @@
     <Reference Include="GCDiscreetNotification">
       <HintPath>..\Components\gcdiscreetnotification-1.0\lib\ios\GCDiscreetNotification.dll</HintPath>
     </Reference>
+    <Reference Include="MonoTouch.Dialog-1" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
@@ -146,6 +147,10 @@
       <DependentUpon>TableSource.cs</DependentUpon>
     </Compile>
     <Compile Include="Classes\LoadingOverlay.cs" />
+    <Compile Include="MediaSummaryViewController.cs" />
+    <Compile Include="MediaSummaryViewController.designer.cs">
+      <DependentUpon>MediaSummaryViewController.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -166,6 +171,7 @@
     <InterfaceDefinition Include="ProfileViewController.xib" />
     <InterfaceDefinition Include="NewProfileItemViewController.xib" />
     <InterfaceDefinition Include="LockScreenViewController.xib" />
+    <InterfaceDefinition Include="MediaSummaryViewController.xib" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\camera.png" />

@@ -45,9 +45,9 @@ namespace Lisa.Zuma.BlueJay.IOS.Models
 		public void SetNewNote (string text)
 		{
 			var note = new Note{Text = text, DateCreated = DateTime.Now, Media = GetAllDataElements()};
-			var user = database.GetCurrentUser ();
+			//var user = database.GetCurrentUser ();
 			var request = new RestRequest (string.Format("api/dossier/{0}/Notes/", 1), Method.POST);
-
+			request.AddHeader  ("Authorization", "bearer "+ database.accessToken);
 			request.RequestFormat = DataFormat.Json;
 			request.AddBody(note);
 
@@ -92,7 +92,8 @@ namespace Lisa.Zuma.BlueJay.IOS.Models
 							var request = new RestRequest("api/dossier/1/Notes/{noteId}/media/{id}", Method.PUT);
 							request.RequestFormat = DataFormat.Json;
 							request.AddUrlSegment("noteId", note.Id.ToString());
-							request.AddUrlSegment("id", media.Id.ToString());
+							request.AddUrlSegment("id", media.Id.ToString());		
+							request.AddHeader("Authorization", "bearer "+ database.accessToken);
 							request.AddBody(media);
 
 							var resp = client.Execute<NoteMedia>(request);
@@ -130,7 +131,7 @@ namespace Lisa.Zuma.BlueJay.IOS.Models
 			database.DeleteAllNotesForSync();
 
 			var request = new RestRequest (string.Format("api/dossier/{0}/Notes/", dosier), Method.GET);
-
+			request.AddHeader  ("Authorization", "bearer "+ database.accessToken);
 			client.ExecuteAsync (request, response => {
 
 				var callback = JsonConvert.DeserializeObject<List<Note>> (response.Content);
@@ -191,6 +192,16 @@ namespace Lisa.Zuma.BlueJay.IOS.Models
 			database.InsertProfileItem (new ProfileItemsData{Title = title, Content = content});
 		}
 
+		public List<TemporaryItemMediaData> GetSummaryOfMediaItems()
+		{
+			return database.ReturnAllTemporaryMediaItems ();
+		}
+
+		public int SummaryItemsCount()
+		{
+			return database.ReturnAllTemporaryMediaItems ()
+						   .Count;
+		}
 
 		private List<NoteMedia> GetAllDataElements()
 		{

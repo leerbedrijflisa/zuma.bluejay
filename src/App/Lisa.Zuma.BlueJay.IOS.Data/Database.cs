@@ -18,6 +18,7 @@ namespace Lisa.Zuma.BlueJay.IOS.Data
 		private NotesData ReturnNote;
 		private UserData ReturnUserLoggedIn;
 		private RestClient client;
+		public string accessToken;
 
 		public Database ()
 		{
@@ -37,6 +38,7 @@ namespace Lisa.Zuma.BlueJay.IOS.Data
 
 
 			CreateDummyInfo ();
+			AccessToken ();
 		}
 
 		public void CreateDummyInfo()
@@ -47,6 +49,14 @@ namespace Lisa.Zuma.BlueJay.IOS.Data
 				db.Insert(new DosierData{Name = "Martijn"});
 			}
 
+		}
+
+		public void AccessToken()
+		{
+			var token = db.Table<UserData> ();
+			foreach (var accesstoken in token) {
+				accessToken = accesstoken.AccesToken;
+			}
 		}
 
 		public void DummyLoggedIn(int id)
