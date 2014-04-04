@@ -29,6 +29,9 @@ namespace Lisa.Zuma.BlueJay.IOS
 		public TableItem () { }
 		
 		public TableItem (int id, string heading)
-		{ Id = id; Heading = heading; }
+		{ Id = id; Heading = heading;}
+
+		public TableItem (int id, string heading, string image)
+		{ Id = id; Heading = heading; ImageName = image;}
 	}
 }

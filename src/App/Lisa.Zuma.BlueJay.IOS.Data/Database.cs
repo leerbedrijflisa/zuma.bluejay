@@ -18,6 +18,7 @@ namespace Lisa.Zuma.BlueJay.IOS.Data
 		private NotesData ReturnNote;
 		private UserData ReturnUserLoggedIn;
 		private RestClient client;
+		public string accessToken;
 
 		public Database ()
 		{
@@ -31,12 +32,13 @@ namespace Lisa.Zuma.BlueJay.IOS.Data
 			db.CreateTable<DosierData>();
 			db.CreateTable<NotesData>();
 			db.CreateTable<ProfileItemsData>();
-			db.CreateTable<UserData>();
+			db.CreateTable<UserData> ();
 			//db.DropTable<TemporaryItemMedia> ();
 			db.CreateTable<TemporaryItemMediaData> ();
 
 
 			CreateDummyInfo ();
+			AccessToken ();
 		}
 
 		public void CreateDummyInfo()
@@ -47,11 +49,13 @@ namespace Lisa.Zuma.BlueJay.IOS.Data
 				db.Insert(new DosierData{Name = "Martijn"});
 			}
 
-			var count2 = db.Query<UserData>("SELECT * FROM UserData");
+		}
 
-			if (count2.Count == 0) {
-				db.Insert (new UserData{Role = 1, Name = "Marie-antoinette"});
-				db.Insert (new UserData{Role = 2, Name = "Debbie"});
+		public void AccessToken()
+		{
+			var token = db.Table<UserData> ();
+			foreach (var accesstoken in token) {
+				accessToken = accesstoken.AccesToken;
 			}
 		}
 
@@ -151,6 +155,13 @@ namespace Lisa.Zuma.BlueJay.IOS.Data
 			{
 				db.Update (item);
 			}
+		}
+
+		public void Clear(string tableName)
+		{
+//			db.Delete(tableName);
+//			db.CreateCommand ("DELETE FROM" + tableName);
+			db.Execute ("DELETE FROM " + tableName);
 		}
 
 		public void DeleteAllNotesForSync()
