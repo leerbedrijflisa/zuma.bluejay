@@ -33,7 +33,7 @@ namespace Lisa.Zuma.BlueJay.Web
 
         public static OAuthAuthorizationServerOptions OAuthOptions { get; private set; }
 
-        public static Func<UserManager<UserData>> UserManagerFactory { get; set; }
+        private static Func<UserManager<UserData>> UserManagerFactory { get; set; }
 
         public static string PublicClientId { get; private set; }
 

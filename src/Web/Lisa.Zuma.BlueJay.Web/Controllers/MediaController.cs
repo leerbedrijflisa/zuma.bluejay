@@ -91,7 +91,7 @@ namespace Lisa.Zuma.BlueJay.Web.Controllers
             //media.MediaLocation = storageHelper.GetReadableSasUri(filename, new TimeSpan(0, 2, 0)).AbsoluteUri;
             media.MediaLocation = storageHelper.GetReadableSasUri(filename, new TimeSpan(1, 0, 0)).AbsoluteUri;
 
-            Db.SaveChanges();
+            UoW.Save();
 
             var result = Converter.ToNoteMedia(media);
             return Ok(result);
@@ -118,8 +118,9 @@ namespace Lisa.Zuma.BlueJay.Web.Controllers
             }
 
             string location = media.MediaLocation;
-            Db.NoteMedia.Remove(media);
-            Db.SaveChanges();
+
+            UoW.NoteMediaRepository.Delete(media);
+            UoW.Save();
 
             var storageHelper = new StorageHelper("ZumaBlueJayStorageConnectionString", "bluejay");
             storageHelper.RemoveFromStorageByUri(location);
