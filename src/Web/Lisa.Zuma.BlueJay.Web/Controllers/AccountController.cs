@@ -22,23 +22,30 @@ namespace Lisa.Zuma.BlueJay.Web.Controllers
 {
     [Authorize]
     [RoutePrefix("api/Account")]
-    public class AccountController : ApiController
+    public class AccountController : BaseApiController
     {
         private const string LocalLoginProvider = "Local";
 
-        public AccountController()
-            : this(Startup.UserManagerFactory(), Startup.OAuthOptions.AccessTokenFormat)
+        public AccountController() 
+            : base()
         {
+            this.Initialize(base.UserManager, Startup.OAuthOptions.AccessTokenFormat);
         }
 
         public AccountController(UserManager<UserData> userManager,
-            ISecureDataFormat<AuthenticationTicket> accessTokenFormat)
+            ISecureDataFormat<AuthenticationTicket> accessTokenFormat) 
+            : base()
         {
-            UserManager = userManager;
+            this.Initialize(userManager, accessTokenFormat);
+        }
+
+        public void Initialize(UserManager<UserData> userManager, ISecureDataFormat<AuthenticationTicket> accessTokenFormat)
+        {
+            Manager = userManager;
             AccessTokenFormat = accessTokenFormat;
         }
 
-        public UserManager<UserData> UserManager { get; private set; }
+        public UserManager<UserData> Manager { get; private set; }
         public ISecureDataFormat<AuthenticationTicket> AccessTokenFormat { get; private set; }
 
         // GET api/Account/UserInfo
@@ -68,7 +75,7 @@ namespace Lisa.Zuma.BlueJay.Web.Controllers
         [Route("ManageInfo")]
         public async Task<ManageInfoViewModel> GetManageInfo(string returnUrl, bool generateState = false)
         {
-            IdentityUser user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
+            IdentityUser user = await Manager.FindByIdAsync(User.Identity.GetUserId());
 
             if (user == null)
             {
@@ -113,7 +120,7 @@ namespace Lisa.Zuma.BlueJay.Web.Controllers
                 return BadRequest(ModelState);
             }
 
-            IdentityResult result = await UserManager.ChangePasswordAsync(User.Identity.GetUserId(), model.OldPassword,
+            IdentityResult result = await Manager.ChangePasswordAsync(User.Identity.GetUserId(), model.OldPassword,
                 model.NewPassword);
             IHttpActionResult errorResult = GetErrorResult(result);
 
@@ -134,7 +141,7 @@ namespace Lisa.Zuma.BlueJay.Web.Controllers
                 return BadRequest(ModelState);
             }
 
-            IdentityResult result = await UserManager.AddPasswordAsync(User.Identity.GetUserId(), model.NewPassword);
+            IdentityResult result = await Manager.AddPasswordAsync(User.Identity.GetUserId(), model.NewPassword);
             IHttpActionResult errorResult = GetErrorResult(result);
 
             if (errorResult != null)
@@ -172,7 +179,7 @@ namespace Lisa.Zuma.BlueJay.Web.Controllers
                 return BadRequest("The external login is already associated with an account.");
             }
 
-            IdentityResult result = await UserManager.AddLoginAsync(User.Identity.GetUserId(),
+            IdentityResult result = await Manager.AddLoginAsync(User.Identity.GetUserId(),
                 new UserLoginInfo(externalData.LoginProvider, externalData.ProviderKey));
 
             IHttpActionResult errorResult = GetErrorResult(result);
@@ -198,11 +205,11 @@ namespace Lisa.Zuma.BlueJay.Web.Controllers
 
             if (model.LoginProvider == LocalLoginProvider)
             {
-                result = await UserManager.RemovePasswordAsync(User.Identity.GetUserId());
+                result = await Manager.RemovePasswordAsync(User.Identity.GetUserId());
             }
             else
             {
-                result = await UserManager.RemoveLoginAsync(User.Identity.GetUserId(),
+                result = await Manager.RemoveLoginAsync(User.Identity.GetUserId(),
                     new UserLoginInfo(model.LoginProvider, model.ProviderKey));
             }
 
@@ -246,7 +253,7 @@ namespace Lisa.Zuma.BlueJay.Web.Controllers
                 return new ChallengeResult(provider, this);
             }
 
-            var user = await UserManager.FindAsync(new UserLoginInfo(externalLogin.LoginProvider,
+            var user = await Manager.FindAsync(new UserLoginInfo(externalLogin.LoginProvider,
                 externalLogin.ProviderKey));
 
             bool hasRegistered = user != null;
@@ -254,9 +261,9 @@ namespace Lisa.Zuma.BlueJay.Web.Controllers
             if (hasRegistered)
             {
                 Authentication.SignOut(DefaultAuthenticationTypes.ExternalCookie);
-                ClaimsIdentity oAuthIdentity = await UserManager.CreateIdentityAsync(user,
+                ClaimsIdentity oAuthIdentity = await Manager.CreateIdentityAsync(user,
                     OAuthDefaults.AuthenticationType);
-                ClaimsIdentity cookieIdentity = await UserManager.CreateIdentityAsync(user,
+                ClaimsIdentity cookieIdentity = await Manager.CreateIdentityAsync(user,
                     CookieAuthenticationDefaults.AuthenticationType);
                 AuthenticationProperties properties = ApplicationOAuthProvider.CreateProperties(user.UserName);
                 Authentication.SignIn(properties, oAuthIdentity, cookieIdentity);
@@ -325,10 +332,11 @@ namespace Lisa.Zuma.BlueJay.Web.Controllers
             var user = new UserData
             {
                 UserName = model.UserName,
-                Type = "PARENT"
+                Type = "PARENT",
+                Dossiers = new List<DossierData>()
             };
             
-            IdentityResult result = await UserManager.CreateAsync(user, model.Password);
+            IdentityResult result = await Manager.CreateAsync(user, model.Password);
             IHttpActionResult errorResult = GetErrorResult(result);            
 
             if (errorResult != null)
@@ -367,7 +375,7 @@ namespace Lisa.Zuma.BlueJay.Web.Controllers
                 LoginProvider = externalLogin.LoginProvider,
                 ProviderKey = externalLogin.ProviderKey
             });
-            IdentityResult result = await UserManager.CreateAsync(user);
+            IdentityResult result = await Manager.CreateAsync(user);
             IHttpActionResult errorResult = GetErrorResult(result);
 
             if (errorResult != null)
@@ -382,7 +390,7 @@ namespace Lisa.Zuma.BlueJay.Web.Controllers
         {
             if (disposing)
             {
-                UserManager.Dispose();
+                Manager.Dispose();
             }
 
             base.Dispose(disposing);

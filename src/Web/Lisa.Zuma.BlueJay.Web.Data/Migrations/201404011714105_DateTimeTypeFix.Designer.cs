@@ -7,13 +7,13 @@ namespace Lisa.Zuma.BlueJay.Web.Data.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.0.0-20911")]
-    public sealed partial class NoteDateCreated : IMigrationMetadata
+    public sealed partial class DateTimeTypeFix : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(NoteDateCreated));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(DateTimeTypeFix));
         
         string IMigrationMetadata.Id
         {
-            get { return "201403171322544_NoteDateCreated"; }
+            get { return "201404011714105_DateTimeTypeFix"; }
         }
         
         string IMigrationMetadata.Source

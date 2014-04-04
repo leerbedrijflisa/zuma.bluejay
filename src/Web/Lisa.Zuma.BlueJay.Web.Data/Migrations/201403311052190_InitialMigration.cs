@@ -3,10 +3,57 @@ namespace Lisa.Zuma.BlueJay.Web.Data.Migrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class IdentityUser : DbMigration
+    public partial class InitialMigration : DbMigration
     {
         public override void Up()
         {
+            CreateTable(
+                "dbo.DossierDetails",
+                c => new
+                    {
+                        Id = c.Int(nullable: false, identity: true),
+                        Category = c.String(nullable: false),
+                        Contents = c.String(nullable: false),
+                        DossierId = c.Int(nullable: false),
+                    })
+                .PrimaryKey(t => t.Id)
+                .ForeignKey("dbo.Dossiers", t => t.DossierId, cascadeDelete: true)
+                .Index(t => t.DossierId);
+            
+            CreateTable(
+                "dbo.Dossiers",
+                c => new
+                    {
+                        Id = c.Int(nullable: false, identity: true),
+                    })
+                .PrimaryKey(t => t.Id);
+            
+            CreateTable(
+                "dbo.Notes",
+                c => new
+                    {
+                        Id = c.Int(nullable: false, identity: true),
+                        Text = c.String(),
+                        DateCreated = c.DateTime(nullable: false),
+                        DossierId = c.Int(nullable: false),
+                    })
+                .PrimaryKey(t => t.Id)
+                .ForeignKey("dbo.Dossiers", t => t.DossierId, cascadeDelete: true)
+                .Index(t => t.DossierId);
+            
+            CreateTable(
+                "dbo.NoteMedias",
+                c => new
+                    {
+                        Id = c.Int(nullable: false, identity: true),
+                        Name = c.String(nullable: false),
+                        MediaLocation = c.String(nullable: false),
+                        NoteId = c.Int(nullable: false),
+                    })
+                .PrimaryKey(t => t.Id)
+                .ForeignKey("dbo.Notes", t => t.NoteId, cascadeDelete: true)
+                .Index(t => t.NoteId);
+            
             CreateTable(
                 "dbo.AspNetUsers",
                 c => new
@@ -66,58 +113,52 @@ namespace Lisa.Zuma.BlueJay.Web.Data.Migrations
                         Name = c.String(nullable: false),
                     })
                 .PrimaryKey(t => t.Id);
-
-            DropIndex("dbo.UserDossiers", "IX_UserId");
-            DropForeignKey("dbo.UserDossiers", "UserId", "dbo.Users");            
-            DropPrimaryKey("dbo.UserDossiers");            
-
-            AlterColumn("dbo.UserDossiers", "UserId", c => c.String(nullable: false, maxLength: 128));
-
-            AddPrimaryKey("dbo.UserDossiers", new[] { "UserId", "DossierId" });
-            AddForeignKey("dbo.UserDossiers", "UserId", "dbo.AspNetUsers", "Id");
-            CreateIndex("dbo.UserDossiers", "UserId");     
-
-            DropTable("dbo.Users");
+            
+            CreateTable(
+                "dbo.UserDossiers",
+                c => new
+                    {
+                        UserId = c.String(nullable: false, maxLength: 128),
+                        DossierId = c.Int(nullable: false),
+                    })
+                .PrimaryKey(t => new { t.UserId, t.DossierId })
+                .ForeignKey("dbo.AspNetUsers", t => t.UserId, cascadeDelete: true)
+                .ForeignKey("dbo.Dossiers", t => t.DossierId, cascadeDelete: true)
+                .Index(t => t.UserId)
+                .Index(t => t.DossierId);
+            
         }
         
         public override void Down()
         {
-            CreateTable(
-                "dbo.Users",
-                c => new
-                    {
-                        Id = c.Int(nullable: false, identity: true),
-                        Type = c.String(nullable: false),
-                    })
-                .PrimaryKey(t => t.Id);
-            
+            DropForeignKey("dbo.UserDossiers", "DossierId", "dbo.Dossiers");
+            DropForeignKey("dbo.UserDossiers", "UserId", "dbo.AspNetUsers");
             DropForeignKey("dbo.AspNetUserClaims", "User_Id", "dbo.AspNetUsers");
             DropForeignKey("dbo.AspNetUserRoles", "UserId", "dbo.AspNetUsers");
             DropForeignKey("dbo.AspNetUserRoles", "RoleId", "dbo.AspNetRoles");
             DropForeignKey("dbo.AspNetUserLogins", "UserId", "dbo.AspNetUsers");
+            DropForeignKey("dbo.NoteMedias", "NoteId", "dbo.Notes");
+            DropForeignKey("dbo.Notes", "DossierId", "dbo.Dossiers");
+            DropForeignKey("dbo.DossierDetails", "DossierId", "dbo.Dossiers");
+            DropIndex("dbo.UserDossiers", new[] { "DossierId" });
+            DropIndex("dbo.UserDossiers", new[] { "UserId" });
             DropIndex("dbo.AspNetUserClaims", new[] { "User_Id" });
             DropIndex("dbo.AspNetUserRoles", new[] { "UserId" });
             DropIndex("dbo.AspNetUserRoles", new[] { "RoleId" });
             DropIndex("dbo.AspNetUserLogins", new[] { "UserId" });
-
-            DropIndex("dbo.UserDossiers", "IX_UserId");
-            DropForeignKey("dbo.UserDossiers", "UserId", "dbo.AspNetUsers");
-            DropPrimaryKey("dbo.UserDossiers");
-
-            // Clear mappings because of data type conflicts.
-            Sql("DELETE FROM [dbo].[UserDossiers] WHERE ISNUMERIC([UserId]) <> 1");
-
-            AlterColumn("dbo.UserDossiers", "UserId", c => c.Int(nullable: false));
-            
-            AddPrimaryKey("dbo.UserDossiers", new[] { "UserId", "DossierId" });
-            AddForeignKey("dbo.UserDossiers", "UserId", "dbo.Users", "Id");
-            CreateIndex("dbo.UserDossiers", "UserId");            
-
+            DropIndex("dbo.NoteMedias", new[] { "NoteId" });
+            DropIndex("dbo.Notes", new[] { "DossierId" });
+            DropIndex("dbo.DossierDetails", new[] { "DossierId" });
+            DropTable("dbo.UserDossiers");
             DropTable("dbo.AspNetRoles");
             DropTable("dbo.AspNetUserRoles");
             DropTable("dbo.AspNetUserLogins");
             DropTable("dbo.AspNetUserClaims");
             DropTable("dbo.AspNetUsers");
+            DropTable("dbo.NoteMedias");
+            DropTable("dbo.Notes");
+            DropTable("dbo.Dossiers");
+            DropTable("dbo.DossierDetails");
         }
     }
 }

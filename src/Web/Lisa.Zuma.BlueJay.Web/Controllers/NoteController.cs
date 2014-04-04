@@ -98,7 +98,7 @@ namespace Lisa.Zuma.BlueJay.Web.Controllers
             }
 
             dossier.Notes.Add(noteData);
-            Db.SaveChanges();
+            UoW.Save();
 
             var note = Converter.ToNote(noteData);
             
@@ -126,7 +126,7 @@ namespace Lisa.Zuma.BlueJay.Web.Controllers
             }
 
             note.Text = noteModel.Text;
-            Db.SaveChanges();
+            UoW.Save();
 
             var result = Converter.ToNote(note);
             return Ok(result);
@@ -146,10 +146,8 @@ namespace Lisa.Zuma.BlueJay.Web.Controllers
                 return NotFound();
             }
 
-            // Remove note by calling Db.Notes.Remove(note), dossier.Notes.Remove(note) will crash after Db.SaveChanges()
-            // because it tries to set the relation to NULL to persist the entry in the database.
-            Db.Notes.Remove(note);
-            Db.SaveChanges();
+            UoW.NoteRepository.Delete(note);
+            UoW.Save();
 
             return Ok();
         }
