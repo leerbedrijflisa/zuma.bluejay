@@ -26,7 +26,11 @@ namespace Lisa.Zuma.BlueJay.Web
                 TokenEndpointPath = new PathString("/Token"),
                 Provider = new ApplicationOAuthProvider(PublicClientId, UserManagerFactory),
                 AuthorizeEndpointPath = new PathString("/api/Account/ExternalLogin"),
-                AccessTokenExpireTimeSpan = TimeSpan.FromDays(14),
+
+                // Added support for a refresh token
+                AccessTokenExpireTimeSpan = TimeSpan.FromMinutes(2),
+                RefreshTokenProvider = new ApplicationRefreshTokenProvider(),
+
                 AllowInsecureHttp = true
             };
         }

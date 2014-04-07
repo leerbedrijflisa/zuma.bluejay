@@ -50,6 +50,10 @@ namespace Lisa.Zuma.BlueJay.Web.Providers
                 ClaimsIdentity cookiesIdentity = await userManager.CreateIdentityAsync(user,
                     CookieAuthenticationDefaults.AuthenticationType);
                 AuthenticationProperties properties = CreateProperties(user.UserName);
+
+                // create metadata to pass on to refresh token provider
+                properties.Dictionary.Add("as:client_id", context.ClientId);
+
                 AuthenticationTicket ticket = new AuthenticationTicket(oAuthIdentity, properties);
                 context.Validated(ticket);
                 context.Request.Context.Authentication.SignIn(cookiesIdentity);
@@ -69,9 +73,19 @@ namespace Lisa.Zuma.BlueJay.Web.Providers
         public override Task ValidateClientAuthentication(OAuthValidateClientAuthenticationContext context)
         {
             // Resource owner password credentials does not provide a client ID.
-            if (context.ClientId == null)
+            //if (context.ClientId == null)
+            //{
+            //    context.Validated();
+            //}
+
+            string id, secret;
+            if (context.TryGetFormCredentials(out id, out secret))
             {
-                context.Validated();
+                if (secret == "secret")
+                {
+                    context.OwinContext.Set<string>("as:client_id", id);
+                    context.Validated();
+                }
             }
 
             return Task.FromResult<object>(null);
@@ -90,6 +104,23 @@ namespace Lisa.Zuma.BlueJay.Web.Providers
             }
 
             return Task.FromResult<object>(null);
+        }
+
+        public override async Task GrantRefreshToken(OAuthGrantRefreshTokenContext context)
+        {
+            var originalClient = context.Ticket.Properties.Dictionary["as:client_id"];
+            var currentClient = context.OwinContext.Get<string>("as:client_id");
+
+            // enforce client binding of refresh token
+            if (originalClient != currentClient)
+            {
+                context.Rejected();
+                return;
+            }
+
+            var identity = new ClaimsIdentity(context.Ticket.Identity);
+            var ticket = new AuthenticationTicket(identity, context.Ticket.Properties);
+            context.Validated(ticket);
         }
 
         public static AuthenticationProperties CreateProperties(string userName)
