@@ -68,17 +68,20 @@ namespace Lisa.Zuma.BlueJay.IOS.Views
 
 		private void PickImage(Object sender, EventArgs args)
 		{
-			camera.PickPhotoAsync ();
-			UpdateButtonNumber ();
+			camera.PickPhotoAsync (() => {
+				UpdateButtonNumber ();
+				Console.WriteLine("refresh");
+			});
+
 		}
 
 		private void PickVideo(Object sender, EventArgs args)
 		{
-			camera.PickVideoAsync();
-			UpdateButtonNumber ();
+			camera.PickVideoAsync(() => UpdateButtonNumber ());
+
 		}
 
-		private void UpdateButtonNumber()
+		public void UpdateButtonNumber()
 		{
 			var count = dataHelper.SummaryItemsCount ();
 
@@ -86,7 +89,7 @@ namespace Lisa.Zuma.BlueJay.IOS.Views
 			btnMediaSummary.SetTitle (buttonTitle, UIControlState.Normal);
 		}
 
-		public override void ViewWillAppear (bool animated)
+		public override void ViewDidAppear (bool animated)
 		{
 			UpdateButtonNumber ();
 		}
