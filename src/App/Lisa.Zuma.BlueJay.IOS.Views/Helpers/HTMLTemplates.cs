@@ -78,7 +78,7 @@ namespace Lisa.Zuma.BlueJay.IOS
 
 					if (x.Location.Contains (".png"))
 					{
-						NoteMedia += "<img src='" + x.Location + "' ><br />";
+						NoteMedia += "<img style='max-width:320px; max-height:240px;' src='" + x.Location + "' ><br />";
 					}
 
 					if (x.Location.Contains (".mp4"))
