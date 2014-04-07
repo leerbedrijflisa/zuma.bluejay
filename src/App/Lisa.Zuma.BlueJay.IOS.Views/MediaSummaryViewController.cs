@@ -23,6 +23,10 @@ namespace Lisa.Zuma.BlueJay.IOS.Views
 			UpdateList ();
 		}
 
+		public void Update()
+		{
+		}
+
 		public void UpdateList()
 		{
 			var TemporaryMediaItems = dataHelper.GetSummaryOfMediaItems();
@@ -30,12 +34,13 @@ namespace Lisa.Zuma.BlueJay.IOS.Views
 			var sourceFromTablehelper = tableHelper.CreateSource(TemporaryMediaItems, tmi => tmi.ID, tmi => tmi.fileName, tmi => tmi.Path);
 
 			tblView.Source = sourceFromTablehelper;
+
+			tblView.ReloadData ();
 		}
 
 		public override void ViewDidAppear (bool animated)
 		{
 			UpdateList ();
-			tblView.ReloadData ();
 		}
 
 		private DataHelper dataHelper;

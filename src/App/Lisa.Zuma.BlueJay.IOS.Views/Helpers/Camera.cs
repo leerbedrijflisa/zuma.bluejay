@@ -12,13 +12,14 @@ using Xamarin.Media;
 using Lisa.Zuma.BlueJay.IOS.Data;
 using Lisa.Zuma.BlueJay.IOS.Models;
 
-namespace Lisa.Zuma.BlueJay.IOS
+namespace Lisa.Zuma.BlueJay.IOS.Views
 {
 	public class Camera
 	{
 		public Camera ()
 		{
 			dataHelper = new DataHelper ();
+			mediaSummary = new MediaSummaryViewController ();
 		}
 
 		public void CaptureVideo(string date){
@@ -49,12 +50,15 @@ namespace Lisa.Zuma.BlueJay.IOS
 		{
 			var picker = new MediaPicker();
 			picker.PickVideoAsync().ContinueWith (t => SaveFileToMedialibrary(t.Result, ".mp4"), TaskScheduler.FromCurrentSynchronizationContext());
+
 		}
 
 		public void PickPhotoAsync()
 		{
 			var picker = new MediaPicker();
 			picker.PickPhotoAsync().ContinueWith (t => SaveFileToMedialibrary(t.Result, ".png"), TaskScheduler.FromCurrentSynchronizationContext());
+
+			mediaSummary.Update();
 		}
 
 		private void SaveFileToMedialibrary(MediaFile file, string ext)
@@ -72,6 +76,7 @@ namespace Lisa.Zuma.BlueJay.IOS
 		}
 
 		private DataHelper dataHelper;
+		private MediaSummaryViewController mediaSummary;
 	}
 }
 

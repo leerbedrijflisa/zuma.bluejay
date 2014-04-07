@@ -31,6 +31,12 @@ namespace Lisa.Zuma.BlueJay.IOS.Views
 					NavigationController.PushViewController (new SummaryViewController(), true);
 					loadingOverlay.Hide();
 				});
+			}, () => {
+				InvokeOnMainThread (delegate { 
+					loadingOverlay.Hide();
+					new UIAlertView("Verkeerde inlog", "De ingevoerde gegevens zijn onjuist"
+						, null, "probeer opniew...", null).Show();
+				});
 			});
 		}
 

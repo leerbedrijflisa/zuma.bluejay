@@ -20,7 +20,7 @@ namespace Lisa.Zuma.BlueJay.IOS.Models
 			client = new RestClient ("http://zumabluejay-test.azurewebsites.net");
 		}
 
-		public void SignIn(string username, string password, Action kaas)
+		public void SignIn(string username, string password, Action SuccessFunction, Action FailFunction)
 		{
 			client.Authenticator = new SimpleAuthenticator("username", username, "password", password);
 
@@ -33,11 +33,11 @@ namespace Lisa.Zuma.BlueJay.IOS.Models
 						var jsonResponse = JsonConvert.DeserializeObject<signInRequestInformation>(response.Content);
 						database.Clear("UserData");
 						database.Insert(new UserData{ Name = jsonResponse.userName, AccesToken = jsonResponse.access_token });
-						kaas();
+						SuccessFunction();
 					}
 					else
 					{
-						Console.WriteLine("nok");
+						FailFunction();
 					}
 				});
 		}
