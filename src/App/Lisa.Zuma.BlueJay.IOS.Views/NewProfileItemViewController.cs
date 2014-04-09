@@ -27,8 +27,13 @@ namespace Lisa.Zuma.BlueJay.IOS.Views
 
 		private void CreateNewProfileItem()
 		{
+			if(!string.IsNullOrEmpty(txtTitle.Text) && !string.IsNullOrEmpty(txtContent.Text)){
 			dataHelper.InsertProfileItem(txtTitle.Text, txtContent.Text);
 			NavigationController.PushViewController (new ProfileViewController(), true);
+			}else{
+				new UIAlertView("Lege invoervelden", "vul alle velden in !"
+					, null, "probeer opniew...", null).Show();
+			}
 		}
 
 		private void InitializeUI()

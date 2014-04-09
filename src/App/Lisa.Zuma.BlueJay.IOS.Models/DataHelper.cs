@@ -9,6 +9,7 @@ using System.Net.Http;
 using System.Linq;
 using System.Net;
 using Newtonsoft.Json.Linq;
+using MonoTouch.UIKit;
 
 namespace Lisa.Zuma.BlueJay.IOS.Models
 {
@@ -45,18 +46,25 @@ namespace Lisa.Zuma.BlueJay.IOS.Models
 		public void SetNewNote (string text)
 		{
 			var note = new Note{Text = text, DateCreated = DateTime.Now, Media = GetAllDataElements()};
-			//var user = database.GetCurrentUser ();
-			var request = new RestRequest (string.Format("api/dossier/{0}/Notes/", 1), Method.POST);
-			request.AddHeader  ("Authorization", "bearer "+ database.accessToken);
-			request.RequestFormat = DataFormat.Json;
-			request.AddBody(note);
+			if (note.Media.Count > 0 || !string.IsNullOrEmpty (note.Text)) {
+				//var user = database.GetCurrentUser ();
+				var request = new RestRequest (string.Format ("api/dossier/{0}/Notes/", 1), Method.POST);
+				request.AddHeader ("Authorization", "bearer " + database.accessToken);
+				request.RequestFormat = DataFormat.Json;
+				request.AddBody (note);
 
-			client.ExecuteAsync(request, response => {
-				Console.WriteLine("klaar :"+ response.Content);
-				var callback = JsonConvert.DeserializeObject<Note>(response.Content);
+				client.ExecuteAsync (request, response => {
+					Console.WriteLine ("klaar :" + response.Content);
+					var callback = JsonConvert.DeserializeObject<Note> (response.Content);
 
-				Store(callback,  () => { DeleteAllDataElements(); });
-			});
+					Store (callback, () => {
+						DeleteAllDataElements ();
+					});
+				});
+			} else {
+				new UIAlertView("Leeg bericht", "Je probeert een leeg bericht te plaatsen, dit is niet toegestaan !"
+					, null, "Begrepen !", null).Show();
+			}
 		}
 
 		private async void Store(Note note, Action AsynFunc) {

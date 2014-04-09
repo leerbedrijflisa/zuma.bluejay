@@ -46,22 +46,20 @@ namespace Lisa.Zuma.BlueJay.IOS.Views
 			}, TaskScheduler.FromCurrentSynchronizationContext());
 		}
 
-		public void PickVideoAsync()
+		public void PickVideoAsync( Action Ready)
 		{
 			var picker = new MediaPicker();
-			picker.PickVideoAsync().ContinueWith (t => SaveFileToMedialibrary(t.Result, ".mp4"), TaskScheduler.FromCurrentSynchronizationContext());
+			picker.PickVideoAsync().ContinueWith (t => SaveFileToMedialibrary(t.Result, ".mp4", () => Ready()), TaskScheduler.FromCurrentSynchronizationContext());
 
 		}
 
-		public void PickPhotoAsync()
+		public void PickPhotoAsync(Action Ready)
 		{
 			var picker = new MediaPicker();
-			picker.PickPhotoAsync().ContinueWith (t => SaveFileToMedialibrary(t.Result, ".png"), TaskScheduler.FromCurrentSynchronizationContext());
-
-			mediaSummary.Update();
+			picker.PickPhotoAsync().ContinueWith (t => SaveFileToMedialibrary(t.Result, ".png", () => Ready()), TaskScheduler.FromCurrentSynchronizationContext());
 		}
 
-		private void SaveFileToMedialibrary(MediaFile file, string ext)
+		private void SaveFileToMedialibrary(MediaFile file, string ext, Action ResultFunc)
 		{
 			var FileName = Guid.NewGuid()+ext;
 			var documents = Environment.GetFolderPath (Environment.SpecialFolder.MyDocuments);
@@ -73,6 +71,10 @@ namespace Lisa.Zuma.BlueJay.IOS.Views
 					dataHelper.InsertNewDataElement(1, excualPath);
 				}
 			}
+
+			ResultFunc ();
+
+
 		}
 
 		private DataHelper dataHelper;
