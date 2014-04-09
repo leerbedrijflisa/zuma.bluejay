@@ -34,11 +34,17 @@ namespace Lisa.Zuma.BlueJay.IOS.Views
 
 		private void InitializeUI()
 		{
-			var width = 60;
-			var height = 60;
+
+			UIPopoverController myPopOver = new UIPopoverController(new MediaSummaryViewController()); 
+
+			btnMediaSummary.TouchUpInside += (sender, e) => {
+				myPopOver.PopoverContentSize = new SizeF (450f, 420f);
+				myPopOver.PresentFromRect (btnMediaSummary.Frame, this.View, UIPopoverArrowDirection.Down, true);
+				UpdateButtonNumber();
+			};   
 
 			txtInput = new UITextView();
-			txtInput.Frame = new RectangleF(30, 70, width, height);
+			txtInput.Frame = new RectangleF(20, 70, 380, 350);
 			txtInput.BackgroundColor = UIColor.FromRGB(242, 242, 242);
 
 			View.Add(txtInput);
@@ -62,12 +68,30 @@ namespace Lisa.Zuma.BlueJay.IOS.Views
 
 		private void PickImage(Object sender, EventArgs args)
 		{
-			camera.PickPhotoAsync ();
+			camera.PickPhotoAsync (() => {
+				UpdateButtonNumber ();
+				Console.WriteLine("refresh");
+			});
+
 		}
 
 		private void PickVideo(Object sender, EventArgs args)
 		{
-			camera.PickVideoAsync();
+			camera.PickVideoAsync(() => UpdateButtonNumber ());
+
+		}
+
+		public void UpdateButtonNumber()
+		{
+			var count = dataHelper.SummaryItemsCount ();
+
+			var buttonTitle = String.Format ("Er zijn {0} mediaitems toegevoegd...", count);
+			btnMediaSummary.SetTitle (buttonTitle, UIControlState.Normal);
+		}
+
+		public override void ViewDidAppear (bool animated)
+		{
+			UpdateButtonNumber ();
 		}
 
 		private TimelineViewController timeLineViewController;

@@ -45,6 +45,12 @@
     <Reference Include="EntityFramework.SqlServer">
       <HintPath>..\packages\EntityFramework.6.0.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.Core">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.Core.1.0.0\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.EntityFramework">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.EntityFramework.1.0.0\lib\net45\Microsoft.AspNet.Identity.EntityFramework.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
@@ -61,41 +67,34 @@
     <Compile Include="Entities\NoteData.cs" />
     <Compile Include="Entities\NoteMediaData.cs" />
     <Compile Include="Entities\UserData.cs" />
-    <Compile Include="Migrations\201402251327093_InitialMigration.cs" />
-    <Compile Include="Migrations\201402251327093_InitialMigration.Designer.cs">
-      <DependentUpon>201402251327093_InitialMigration.cs</DependentUpon>
+    <Compile Include="Extensions\DossierDataExtensions.cs" />
+    <Compile Include="Extensions\NoteDataExtensions.cs" />
+    <Compile Include="Extensions\UserDataExtensions.cs" />
+    <Compile Include="GenericRepository.cs" />
+    <Compile Include="IGenericRepository.cs" />
+    <Compile Include="IUnitOfWork.cs" />
+    <Compile Include="Migrations\201403311052190_InitialMigration.cs" />
+    <Compile Include="Migrations\201403311052190_InitialMigration.Designer.cs">
+      <DependentUpon>201403311052190_InitialMigration.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201403101116175_DossierDetails.cs" />
-    <Compile Include="Migrations\201403101116175_DossierDetails.Designer.cs">
-      <DependentUpon>201403101116175_DossierDetails.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201403111106403_EntityRefactorMigration.cs" />
-    <Compile Include="Migrations\201403111106403_EntityRefactorMigration.Designer.cs">
-      <DependentUpon>201403111106403_EntityRefactorMigration.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201403171322544_NoteDateCreated.cs" />
-    <Compile Include="Migrations\201403171322544_NoteDateCreated.Designer.cs">
-      <DependentUpon>201403171322544_NoteDateCreated.cs</DependentUpon>
+    <Compile Include="Migrations\201404011714105_DateTimeTypeFix.cs" />
+    <Compile Include="Migrations\201404011714105_DateTimeTypeFix.Designer.cs">
+      <DependentUpon>201404011714105_DateTimeTypeFix.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UnitOfWork.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201402251327093_InitialMigration.resx">
-      <DependentUpon>201402251327093_InitialMigration.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201403311052190_InitialMigration.resx">
+      <DependentUpon>201403311052190_InitialMigration.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201403101116175_DossierDetails.resx">
-      <DependentUpon>201403101116175_DossierDetails.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201403111106403_EntityRefactorMigration.resx">
-      <DependentUpon>201403111106403_EntityRefactorMigration.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201403171322544_NoteDateCreated.resx">
-      <DependentUpon>201403171322544_NoteDateCreated.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201404011714105_DateTimeTypeFix.resx">
+      <DependentUpon>201404011714105_DateTimeTypeFix.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

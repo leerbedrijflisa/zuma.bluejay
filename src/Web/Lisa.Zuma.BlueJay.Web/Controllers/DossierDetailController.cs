@@ -2,6 +2,7 @@
 using Lisa.Zuma.BlueJay.Web.Data.Entities;
 using Lisa.Zuma.BlueJay.Web.Helpers;
 using Lisa.Zuma.BlueJay.Web.Models;
+using Lisa.Zuma.BlueJay.Web.Data.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,12 +12,13 @@ using System.Web.Http;
 
 namespace Lisa.Zuma.BlueJay.Web.Controllers
 {
+    [Authorize]
     public class DossierDetailController : BaseApiController
     {
         public IHttpActionResult Get(int dossierId)
         {
-            var dossier = Db.Dossiers.FirstOrDefault(d => d.Id == dossierId);
-            if (dossier == null)
+            var dossier = default(DossierData);
+            if (!CurrentUser.TryGetDossier(dossierId, out dossier))
             {
                 return NotFound();
             }
@@ -27,14 +29,14 @@ namespace Lisa.Zuma.BlueJay.Web.Controllers
 
         public IHttpActionResult Get(int dossierId, int id)
         {
-            var dossier = Db.Dossiers.FirstOrDefault(d => d.Id == dossierId);
-            if (dossier == null)
+            var dossier = default(DossierData);
+            if (!CurrentUser.TryGetDossier(dossierId, out dossier))
             {
                 return NotFound();
             }
 
-            var detail = dossier.Details.FirstOrDefault(d => d.Id == id);
-            if (detail == null)
+            var detail = default(DossierDetailData);
+            if (!dossier.TryGetDetail(id, out detail))
             {
                 return NotFound();
             }
@@ -45,8 +47,8 @@ namespace Lisa.Zuma.BlueJay.Web.Controllers
 
         public IHttpActionResult Post(int dossierId, [FromBody] DossierDetail dossierDetailModel)
         {
-            var dossier = Db.Dossiers.FirstOrDefault(d => d.Id == dossierId);
-            if (dossier == null)
+            var dossier = default(DossierData);
+            if (!CurrentUser.TryGetDossier(dossierId, out dossier))
             {
                 return NotFound();
             }
@@ -58,7 +60,7 @@ namespace Lisa.Zuma.BlueJay.Web.Controllers
             };
 
             dossier.Details.Add(detail);
-            Db.SaveChanges();
+            UoW.Save();
 
             var model = Converter.ToDossierDetail(detail);
             return CreatedAtRoute("DossierDetailApi", new { dossierId = dossierId, id = detail.Id }, model);
@@ -66,14 +68,14 @@ namespace Lisa.Zuma.BlueJay.Web.Controllers
 
         public IHttpActionResult Put(int dossierId, int id, [FromBody] DossierDetail dossierDetailModel)
         {
-            var dossier = Db.Dossiers.FirstOrDefault(d => d.Id == dossierId);
-            if (dossier == null) 
+            var dossier = default(DossierData);
+            if (!CurrentUser.TryGetDossier(dossierId, out dossier))
             {
                 return NotFound();
             }
 
-            var detail = dossier.Details.FirstOrDefault(d => d.Id == id);
-            if (detail == null)
+            var detail = default(DossierDetailData);
+            if (!dossier.TryGetDetail(id, out detail))
             {
                 return NotFound();
             }
@@ -88,7 +90,7 @@ namespace Lisa.Zuma.BlueJay.Web.Controllers
                 detail.Contents = dossierDetailModel.Contents;
             }
 
-            Db.SaveChanges();
+            UoW.Save();
 
             var model = Converter.ToDossierDetail(detail);
             return Ok(model);
@@ -96,20 +98,20 @@ namespace Lisa.Zuma.BlueJay.Web.Controllers
 
         public IHttpActionResult Delete(int dossierId, int id)
         {
-            var dossier = Db.Dossiers.FirstOrDefault(d => d.Id == dossierId);
-            if (dossier == null)
+            var dossier = default(DossierData);
+            if (!CurrentUser.TryGetDossier(dossierId, out dossier))
             {
                 return NotFound();
             }
 
-            var detail = dossier.Details.FirstOrDefault(d => d.Id == id);
-            if (detail == null)
+            var detail = default(DossierDetailData);
+            if (!dossier.TryGetDetail(id, out detail))
             {
                 return NotFound();
             }
-
-            Db.DossierDetails.Remove(detail);
-            Db.SaveChanges();
+            
+            UoW.DossierDetailRepository.Delete(detail);
+            UoW.Save();
 
             return Ok();
         }

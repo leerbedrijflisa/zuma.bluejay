@@ -12,13 +12,14 @@ using Xamarin.Media;
 using Lisa.Zuma.BlueJay.IOS.Data;
 using Lisa.Zuma.BlueJay.IOS.Models;
 
-namespace Lisa.Zuma.BlueJay.IOS
+namespace Lisa.Zuma.BlueJay.IOS.Views
 {
 	public class Camera
 	{
 		public Camera ()
 		{
 			dataHelper = new DataHelper ();
+			mediaSummary = new MediaSummaryViewController ();
 		}
 
 		public void CaptureVideo(string date){
@@ -45,19 +46,20 @@ namespace Lisa.Zuma.BlueJay.IOS
 			}, TaskScheduler.FromCurrentSynchronizationContext());
 		}
 
-		public void PickVideoAsync()
+		public void PickVideoAsync( Action Ready)
 		{
 			var picker = new MediaPicker();
-			picker.PickVideoAsync().ContinueWith (t => SaveFileToMedialibrary(t.Result, ".mp4"), TaskScheduler.FromCurrentSynchronizationContext());
+			picker.PickVideoAsync().ContinueWith (t => SaveFileToMedialibrary(t.Result, ".mp4", () => Ready()), TaskScheduler.FromCurrentSynchronizationContext());
+
 		}
 
-		public void PickPhotoAsync()
+		public void PickPhotoAsync(Action Ready)
 		{
 			var picker = new MediaPicker();
-			picker.PickPhotoAsync().ContinueWith (t => SaveFileToMedialibrary(t.Result, ".png"), TaskScheduler.FromCurrentSynchronizationContext());
+			picker.PickPhotoAsync().ContinueWith (t => SaveFileToMedialibrary(t.Result, ".png", () => Ready()), TaskScheduler.FromCurrentSynchronizationContext());
 		}
 
-		private void SaveFileToMedialibrary(MediaFile file, string ext)
+		private void SaveFileToMedialibrary(MediaFile file, string ext, Action ResultFunc)
 		{
 			var FileName = Guid.NewGuid()+ext;
 			var documents = Environment.GetFolderPath (Environment.SpecialFolder.MyDocuments);
@@ -69,9 +71,14 @@ namespace Lisa.Zuma.BlueJay.IOS
 					dataHelper.InsertNewDataElement(1, excualPath);
 				}
 			}
+
+			ResultFunc ();
+
+
 		}
 
 		private DataHelper dataHelper;
+		private MediaSummaryViewController mediaSummary;
 	}
 }
 

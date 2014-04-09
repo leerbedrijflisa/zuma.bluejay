@@ -125,6 +125,7 @@
   <ItemGroup>
     <Compile Include="DataHelper.cs" />
     <Compile Include="DateExtensions.cs" />
+    <Compile Include="signInRequestInformation.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Lisa.Zuma.BlueJay.IOS.Data\Lisa.Zuma.BlueJay.IOS.Data.csproj">

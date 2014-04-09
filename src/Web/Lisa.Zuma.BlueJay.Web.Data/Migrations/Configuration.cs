@@ -7,6 +7,8 @@ namespace Lisa.Zuma.BlueJay.Web.Data.Migrations
     using System.Collections.Generic;
     using System.Linq;
     using System.IO;
+    using Microsoft.AspNet.Identity;
+    using Microsoft.AspNet.Identity.EntityFramework;
 
     internal sealed class Configuration : DbMigrationsConfiguration<Lisa.Zuma.BlueJay.Web.Data.BlueJayContext>
     {
@@ -18,6 +20,9 @@ namespace Lisa.Zuma.BlueJay.Web.Data.Migrations
         protected override void Seed(Lisa.Zuma.BlueJay.Web.Data.BlueJayContext context)
         {
             //  This method will be called after migrating to the latest version.
+            var userStore = new UserStore<UserData>(new BlueJayContext());
+            var userManager = new UserManager<UserData>(userStore);
+
             var dossier = new DossierData
             {
                 Details = new List<DossierDetailData>()
@@ -26,7 +31,8 @@ namespace Lisa.Zuma.BlueJay.Web.Data.Migrations
             var parent = new UserData
             {
                 Type = "PARENT",
-                Dossiers = new List<DossierData>
+                UserName = "Bert",
+                Dossiers = new List<DossierData>()
                 {
                     dossier
                 }
@@ -35,43 +41,15 @@ namespace Lisa.Zuma.BlueJay.Web.Data.Migrations
             var mentor = new UserData
             {
                 Type = "MENTOR",
-                Dossiers = new List<DossierData>
+                UserName = "Frank",
+                Dossiers = new List<DossierData>()
                 {
                     dossier
                 }
             };
 
-            context.Users.AddOrUpdate(
-                u => u.Type,
-                parent,
-                mentor
-            );
-
-            try
-            {
-                context.SaveChanges();
-            }
-            catch (System.Data.Entity.Validation.DbEntityValidationException e)
-            {
-                var outputLines = new List<string>();
-                foreach (var eve in e.EntityValidationErrors)
-                {
-                    outputLines.Add(string.Format(
-                        "{0}: Entity of type \"{1}\" in state \"{2}\" has the following validation errors:",
-                        DateTime.Now, eve.Entry.Entity.GetType().Name, eve.Entry.State));
-
-                    foreach (var ve in eve.ValidationErrors)
-                    {
-                        outputLines.Add(string.Format(
-                            "- Property: \"{0}\", Error: \"{1}\"",
-                            ve.PropertyName, ve.ErrorMessage));
-                    }
-                }
-
-                System.IO.File.AppendAllLines(@"d:\errors.txt", outputLines);
-                
-                throw;
-            }
+            userManager.Create(parent, "password123");
+            userManager.Create(mentor, "password123");
         }
     }
 }

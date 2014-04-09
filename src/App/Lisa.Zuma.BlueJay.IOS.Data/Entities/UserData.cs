@@ -7,9 +7,9 @@ namespace Lisa.Zuma.BlueJay.IOS.Data
 	{
 		[PrimaryKey, AutoIncrement]
 		public int ID { get; set; }
-		public int Role { get; set; }
 		public string Name { get; set; }
-		public int LoggedIn { get; set; }
+		public string AccesToken { get; set; }
+		public string RefreshToken { get; set; }
 	}
 }
 

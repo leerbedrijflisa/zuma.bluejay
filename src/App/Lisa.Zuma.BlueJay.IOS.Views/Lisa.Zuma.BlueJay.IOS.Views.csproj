@@ -92,10 +92,12 @@
     <Reference Include="GCDiscreetNotification">
       <HintPath>..\Components\gcdiscreetnotification-1.0\lib\ios\GCDiscreetNotification.dll</HintPath>
     </Reference>
+    <Reference Include="MonoTouch.Dialog-1" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
     <Folder Include="Helpers\" />
+    <Folder Include="Classes\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Info.plist" />
@@ -103,7 +105,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Main.cs" />
-    <Compile Include="AppDelegate.cs" />
     <Compile Include="loginViewController.cs" />
     <Compile Include="loginViewController.designer.cs">
       <DependentUpon>loginViewController.cs</DependentUpon>
@@ -138,6 +139,18 @@
     <Compile Include="Helpers\PickerChangedEventArgs.cs" />
     <Compile Include="Helpers\HTMLTemplates.cs" />
     <Compile Include="Helpers\Camera.cs" />
+    <Compile Include="LockScreenViewController.cs" />
+    <Compile Include="LockScreenViewController.designer.cs">
+      <DependentUpon>LockScreenViewController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Helpers\AppDelegate.cs">
+      <DependentUpon>TableSource.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Classes\LoadingOverlay.cs" />
+    <Compile Include="MediaSummaryViewController.cs" />
+    <Compile Include="MediaSummaryViewController.designer.cs">
+      <DependentUpon>MediaSummaryViewController.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -157,9 +170,15 @@
     <InterfaceDefinition Include="NewNoteViewController.xib" />
     <InterfaceDefinition Include="ProfileViewController.xib" />
     <InterfaceDefinition Include="NewProfileItemViewController.xib" />
+    <InterfaceDefinition Include="LockScreenViewController.xib" />
+    <InterfaceDefinition Include="MediaSummaryViewController.xib" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\camera.png" />
+    <BundleResource Include="Resources\roundje.png" />
+    <BundleResource Include="Resources\ios_7_galaxy-wide.jpg" />
+    <BundleResource Include="Resources\number-insert.png" />
+    <BundleResource Include="Resources\number-emtpy.png" />
   </ItemGroup>
   <ItemGroup>
     <XamarinComponentReference Include="xamarin.mobile">

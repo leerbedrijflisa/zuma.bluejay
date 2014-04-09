@@ -2,6 +2,7 @@
 using Lisa.Zuma.BlueJay.Web.Data.Entities;
 using Lisa.Zuma.BlueJay.Web.Helpers;
 using Lisa.Zuma.BlueJay.Web.Models;
+using Lisa.Zuma.BlueJay.Web.Data.Extensions;
 using Microsoft.WindowsAzure;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Blob;
@@ -15,6 +16,7 @@ using System.Web.Http;
 
 namespace Lisa.Zuma.BlueJay.Web.Controllers
 {
+    [Authorize]
     public class NoteController : BaseApiController
     {
         /// <summary>
@@ -23,8 +25,8 @@ namespace Lisa.Zuma.BlueJay.Web.Controllers
         /// <param name="dossierId">The id of the dossier from which to retrieve the notes.</param>
         public IHttpActionResult Get(int dossierId)
         {
-            var dossier = Db.Dossiers.FirstOrDefault(d => d.Id == dossierId);
-            if (dossier == null)
+            var dossier = default(DossierData);
+            if (!CurrentUser.TryGetDossier(dossierId, out dossier))
             {
                 return NotFound();
             }
@@ -48,14 +50,14 @@ namespace Lisa.Zuma.BlueJay.Web.Controllers
         /// <returns></returns>
         public IHttpActionResult Get(int dossierId, int id)
         {
-            var dossier = Db.Dossiers.FirstOrDefault(d => d.Id == dossierId);
-            if (dossier == null)
+            var dossier = default(DossierData);
+            if (!CurrentUser.TryGetDossier(dossierId, out dossier))
             {
                 return NotFound();
             }
 
-            var note = dossier.Notes.FirstOrDefault(n => n.Id == id);
-            if (note == null)
+            var note = default(NoteData);
+            if (!dossier.TryGetNote(id, out note))
             {
                 return NotFound();
             }
@@ -72,8 +74,8 @@ namespace Lisa.Zuma.BlueJay.Web.Controllers
         /// <returns></returns>
         public IHttpActionResult Post(int dossierId, [FromBody] Note noteModel)
         {
-            var dossier = Db.Dossiers.Find(dossierId);
-            if (dossier == null)
+            var dossier = default(DossierData);
+            if (!CurrentUser.TryGetDossier(dossierId, out dossier))
             {
                 return NotFound();
             }
@@ -96,7 +98,7 @@ namespace Lisa.Zuma.BlueJay.Web.Controllers
             }
 
             dossier.Notes.Add(noteData);
-            Db.SaveChanges();
+            UoW.Save();
 
             var note = Converter.ToNote(noteData);
             
@@ -111,20 +113,20 @@ namespace Lisa.Zuma.BlueJay.Web.Controllers
         /// <returns></returns>
         public IHttpActionResult Put(int dossierId, [FromBody] Note noteModel)
         {
-            var dossier = Db.Dossiers.FirstOrDefault(d => d.Id == dossierId);
-            if (dossier == null)
+            var dossier = default(DossierData);
+            if (!CurrentUser.TryGetDossier(dossierId, out dossier))
             {
                 return NotFound();
             }
 
-            var note = dossier.Notes.FirstOrDefault(n => n.Id == noteModel.Id);
-            if (note == null)
+            var note = default(NoteData);
+            if (!dossier.TryGetNote(noteModel.Id, out note))
             {
                 return NotFound();
             }
 
             note.Text = noteModel.Text;
-            Db.SaveChanges();
+            UoW.Save();
 
             var result = Converter.ToNote(note);
             return Ok(result);
@@ -132,22 +134,20 @@ namespace Lisa.Zuma.BlueJay.Web.Controllers
 
         public IHttpActionResult Delete(int dossierId, int id)
         {
-            var dossier = Db.Dossiers.FirstOrDefault(d => d.Id == dossierId);
-            if (dossier == null)
+            var dossier = default(DossierData);
+            if (!CurrentUser.TryGetDossier(dossierId, out dossier))
             {
                 return NotFound();
             }
 
-            var note = dossier.Notes.FirstOrDefault(n => n.Id == id);
-            if (note == null)
+            var note = default(NoteData);
+            if (!dossier.TryGetNote(id, out note))
             {
                 return NotFound();
             }
 
-            // Remove note by calling Db.Notes.Remove(note), dossier.Notes.Remove(note) will crash after Db.SaveChanges()
-            // because it tries to set the relation to NULL to persist the entry in the database.
-            Db.Notes.Remove(note);
-            Db.SaveChanges();
+            UoW.NoteRepository.Delete(note);
+            UoW.Save();
 
             return Ok();
         }

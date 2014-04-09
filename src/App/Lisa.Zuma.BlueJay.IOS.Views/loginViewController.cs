@@ -18,23 +18,30 @@ namespace Lisa.Zuma.BlueJay.IOS.Views
 		{
 			base.ViewDidLoad ();
 
-			btnMoeder.TouchUpInside += (object sender, EventArgs e) => {
-				dataHelper.SignIn(1);
-				PushToSummaryController();
-			};
-
-			btnBegeleider.TouchUpInside += (object sender, EventArgs e) => {
-				dataHelper.SignIn(2);
-				PushToSummaryController();
-			};
+			btnSignIn.TouchUpInside += SignIn;
 		}
 
-		private void PushToSummaryController()
+		private void SignIn(Object sender, EventArgs args)
 		{
-			NavigationController.PushViewController (new SummaryViewController(), true);
+			loadingOverlay = new LoadingOverlay (UIScreen.MainScreen.Bounds);
+			View.Add (loadingOverlay);
+
+			dataHelper.SignIn (txtUsername.Text, txtPassword.Text, () =>{
+				InvokeOnMainThread (delegate { 
+					NavigationController.PushViewController (new SummaryViewController(), true);
+					loadingOverlay.Hide();
+				});
+			}, () => {
+				InvokeOnMainThread (delegate { 
+					loadingOverlay.Hide();
+					new UIAlertView("Verkeerde inlog", "De ingevoerde gegevens zijn onjuist"
+						, null, "probeer opniew...", null).Show();
+				});
+			});
 		}
 
 		private DataHelper dataHelper;
+		private LoadingOverlay loadingOverlay;
 	}
 }
 

@@ -7,6 +7,9 @@ using RestSharp;
 using Newtonsoft.Json;
 using System.Net.Http;
 using System.Linq;
+using System.Net;
+using Newtonsoft.Json.Linq;
+using MonoTouch.UIKit;
 
 namespace Lisa.Zuma.BlueJay.IOS.Models
 {
@@ -18,27 +21,50 @@ namespace Lisa.Zuma.BlueJay.IOS.Models
 			client = new RestClient ("http://zumabluejay-test.azurewebsites.net");
 		}
 
-		//Temporary class
-		public void SignIn(int id)
+		public void SignIn(string username, string password, Action SuccessFunction, Action FailFunction)
 		{
-			database.DummyLoggedIn (id);
+			client.Authenticator = new SimpleAuthenticator("username", username, "password", password);
+
+			var request = new RestRequest("token", Method.POST);
+			request.AddParameter ("grant_type", "password");
+			client.ExecuteAsync(request, response =>
+				{
+					if (response.StatusCode == HttpStatusCode.OK)
+					{
+						var jsonResponse = JsonConvert.DeserializeObject<signInRequestInformation>(response.Content);
+						database.Clear("UserData");
+						database.Insert(new UserData{ Name = jsonResponse.userName, AccesToken = jsonResponse.access_token });
+						SuccessFunction();
+					}
+					else
+					{
+						FailFunction();
+					}
+				});
 		}
 
 		public void SetNewNote (string text)
 		{
 			var note = new Note{Text = text, DateCreated = DateTime.Now, Media = GetAllDataElements()};
-			var user = database.GetCurrentUser ();
-			var request = new RestRequest (string.Format("api/dossier/{0}/Notes/", 1), Method.POST);
+			if (note.Media.Count > 0 || !string.IsNullOrEmpty (note.Text)) {
+				//var user = database.GetCurrentUser ();
+				var request = new RestRequest (string.Format ("api/dossier/{0}/Notes/", 1), Method.POST);
+				request.AddHeader ("Authorization", "bearer " + database.accessToken);
+				request.RequestFormat = DataFormat.Json;
+				request.AddBody (note);
 
-			request.RequestFormat = DataFormat.Json;
-			request.AddBody(note);
+				client.ExecuteAsync (request, response => {
+					Console.WriteLine ("klaar :" + response.Content);
+					var callback = JsonConvert.DeserializeObject<Note> (response.Content);
 
-			client.ExecuteAsync(request, response => {
-				Console.WriteLine("klaar :"+ response.Content);
-				var callback = JsonConvert.DeserializeObject<Note>(response.Content);
-
-				Store(callback,  () => { DeleteAllDataElements(); });
-			});
+					Store (callback, () => {
+						DeleteAllDataElements ();
+					});
+				});
+			} else {
+				new UIAlertView("Leeg bericht", "Je probeert een leeg bericht te plaatsen, dit is niet toegestaan !"
+					, null, "Begrepen !", null).Show();
+			}
 		}
 
 		private async void Store(Note note, Action AsynFunc) {
@@ -74,7 +100,8 @@ namespace Lisa.Zuma.BlueJay.IOS.Models
 							var request = new RestRequest("api/dossier/1/Notes/{noteId}/media/{id}", Method.PUT);
 							request.RequestFormat = DataFormat.Json;
 							request.AddUrlSegment("noteId", note.Id.ToString());
-							request.AddUrlSegment("id", media.Id.ToString());
+							request.AddUrlSegment("id", media.Id.ToString());		
+							request.AddHeader("Authorization", "bearer "+ database.accessToken);
 							request.AddBody(media);
 
 							var resp = client.Execute<NoteMedia>(request);
@@ -112,7 +139,7 @@ namespace Lisa.Zuma.BlueJay.IOS.Models
 			database.DeleteAllNotesForSync();
 
 			var request = new RestRequest (string.Format("api/dossier/{0}/Notes/", dosier), Method.GET);
-
+			request.AddHeader  ("Authorization", "bearer "+ database.accessToken);
 			client.ExecuteAsync (request, response => {
 
 				var callback = JsonConvert.DeserializeObject<List<Note>> (response.Content);
@@ -173,6 +200,16 @@ namespace Lisa.Zuma.BlueJay.IOS.Models
 			database.InsertProfileItem (new ProfileItemsData{Title = title, Content = content});
 		}
 
+		public List<TemporaryItemMediaData> GetSummaryOfMediaItems()
+		{
+			return database.ReturnAllTemporaryMediaItems ();
+		}
+
+		public int SummaryItemsCount()
+		{
+			return database.ReturnAllTemporaryMediaItems ()
+						   .Count;
+		}
 
 		private List<NoteMedia> GetAllDataElements()
 		{
@@ -184,6 +221,7 @@ namespace Lisa.Zuma.BlueJay.IOS.Models
 		
 			return MediaModel;
 		}
+
 
 		private Database database;
 		private RestClient client;

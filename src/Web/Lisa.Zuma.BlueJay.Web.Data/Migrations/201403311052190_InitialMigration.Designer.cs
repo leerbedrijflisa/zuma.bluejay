@@ -13,7 +13,7 @@ namespace Lisa.Zuma.BlueJay.Web.Data.Migrations
         
         string IMigrationMetadata.Id
         {
-            get { return "201402251327093_InitialMigration"; }
+            get { return "201403311052190_InitialMigration"; }
         }
         
         string IMigrationMetadata.Source

@@ -19,10 +19,8 @@ namespace Lisa.Zuma.BlueJay.IOS.Data
 		[Ignore]
 		public List<Media> Media { get; set; }
 
-		public string ParsedMedia 
-		{
-			 get
-			{ 
+		public string ParsedMedia {
+			get { 
 				string Result = "";
 
 				foreach (var Results in Media) {
@@ -32,12 +30,11 @@ namespace Lisa.Zuma.BlueJay.IOS.Data
 				return Result;
 			}
 
-			set
-			{
-				var SplitValue = value.Split (new char[]{'@'}, StringSplitOptions.RemoveEmptyEntries);
+			set {
+				var SplitValue = value.Split (new char[]{ '@' }, StringSplitOptions.RemoveEmptyEntries);
 
 				foreach (var x in SplitValue) {
-					var model = new Media {Location = x};
+					var model = new Media { Location = x };
 					Media.Add (model);
 				}
 			}
