@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
 VisualStudioVersion = 12.0.21005.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lisa.Zuma.BlueJay.Web", "Lisa.Zuma.BlueJay.Web\Lisa.Zuma.BlueJay.Web.csproj", "{AD6B21BF-6F5A-4E52-A6AF-F038DED3FE99}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lisa.Zuma.BlueJay.WebApi", "Lisa.Zuma.BlueJay.WebApi\Lisa.Zuma.BlueJay.WebApi.csproj", "{AD6B21BF-6F5A-4E52-A6AF-F038DED3FE99}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lisa.Zuma.BlueJay.Web.Data", "Lisa.Zuma.BlueJay.Web.Data\Lisa.Zuma.BlueJay.Web.Data.csproj", "{EF24823E-06FB-4AE8-8326-E76C629B93F9}"
 EndProject
