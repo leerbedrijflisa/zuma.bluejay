@@ -14,7 +14,6 @@ using System.Web.Mvc;
 
 namespace Lisa.Zuma.BlueJay.Web.Controllers
 {
-    [Authorize]
     public class AccountController : Controller
     {
         [AllowAnonymous]
