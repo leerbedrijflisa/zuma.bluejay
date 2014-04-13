@@ -1,4 +1,5 @@
 ﻿using Lisa.Zuma.BlueJay.Models;
+using Lisa.Zuma.BlueJay.Web.Helpers;
 using Lisa.Zuma.BlueJay.Web.Models;
 using Microsoft.AspNet.Identity;
 using Microsoft.Owin.Security;
@@ -26,7 +27,7 @@ namespace Lisa.Zuma.BlueJay.Web.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Login(LoginViewModel loginModel, string returnUrl)
+        public async Task<ActionResult> Login(LoginViewModel loginModel, string returnUrl = "/")
         {
             if (!ModelState.IsValid)
             {
@@ -35,56 +36,27 @@ namespace Lisa.Zuma.BlueJay.Web.Controllers
                 return View();
             }
 
-            var rest = new RestClient("http://localhost:14689");
-            var request = new RestRequest("/token", Method.POST);
-            request.AddHeader("Content-Type", "application/x-www-form-urlencoded")
-                    .AddParameter("grant_type", "password")
-                    .AddParameter("username", loginModel.Username)
-                    .AddParameter("password", loginModel.Password);
+            var apiHelper = new WebApiHelper("http://localhost:14689");
+            var loginResult = await apiHelper.LoginAsync(loginModel.Username, loginModel.Password);
 
-            var response = await rest.ExecuteTaskAsync(request);
-            if (response.StatusCode == HttpStatusCode.BadRequest)
+            if (loginResult.ContainsKey("error"))
             {
                 ModelState.Clear();
                 ModelState.AddModelError("", "The user name or password is incorrect!");
                 return View();
             }
 
-            var tokenResult = await JsonConvert.DeserializeObjectAsync<Dictionary<string, string>>(response.Content);
-            var accessToken = "";
-            if (tokenResult.TryGetValue("access_token", out accessToken))
+            var accessToken = loginResult["access_token"];
+            var accessTokenClaim = new Claim("http://leerbedrijflisa.nl/zuma/bluejay/token", accessToken, ClaimValueTypes.String);
+            var claims = await apiHelper.GetClaimsAsync(accessToken);
+            claims.Add(accessTokenClaim);
+
+            var identity = new ClaimsIdentity(claims, DefaultAuthenticationTypes.ApplicationCookie);
+            AuthenticationManager.SignIn(new AuthenticationProperties
             {
-                request = new RestRequest("/api/account/userclaims", Method.GET);
-                request.AddHeader("Authorization", string.Format("bearer {0}", accessToken));
-
-                var claimResponse = await rest.ExecuteTaskAsync<List<UserClaim>>(request);
-                var claims = claimResponse.Data
-                    .Select(uc =>
-                    {
-                        var claim = new Claim(uc.Type, uc.Value, uc.ValueType);
-                        claim.Properties.Concat(uc.Properties);
-
-                        return claim;
-                    })
-                    .ToList();
-
-                var accessTokenClaim = new Claim("http://leerbedrijflisa.nl/zuma/bluejay/token", accessToken);
-                claims.Add(accessTokenClaim);
-
-                var identity = new ClaimsIdentity(claims, DefaultAuthenticationTypes.ApplicationCookie);
-
-                AuthenticationManager.SignIn(new AuthenticationProperties
-                {
-                    IsPersistent = false,
-                    ExpiresUtc = DateTime.Parse(tokenResult[".expires"]).ToUniversalTime()
-                }, identity);
-            }
-            else
-            {
-                ModelState.Clear();
-                ModelState.AddModelError("", "Failed to login. Please, try again.");
-                return View();
-            }
+                IsPersistent = false,
+                ExpiresUtc = DateTime.Parse(loginResult[".expires"]).ToUniversalTime()
+            }, identity);
 
             return Redirect(returnUrl);
         }
