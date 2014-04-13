@@ -26,7 +26,7 @@ namespace Lisa.Zuma.BlueJay.Web.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Login(LoginViewModel loginModel)
+        public async Task<ActionResult> Login(LoginViewModel loginModel, string returnUrl)
         {
             if (!ModelState.IsValid)
             {
@@ -86,7 +86,7 @@ namespace Lisa.Zuma.BlueJay.Web.Controllers
                 return View();
             }
 
-            return RedirectToAction("Index", "Home");
+            return Redirect(returnUrl);
         }
 
         public ActionResult Logout()
