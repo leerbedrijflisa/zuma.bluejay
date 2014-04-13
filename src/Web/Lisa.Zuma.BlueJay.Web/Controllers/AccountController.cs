@@ -1,4 +1,5 @@
-﻿using Lisa.Zuma.BlueJay.Web.Models;
+﻿using Lisa.Zuma.BlueJay.Models;
+using Lisa.Zuma.BlueJay.Web.Models;
 using Microsoft.AspNet.Identity;
 using Microsoft.Owin.Security;
 using Newtonsoft.Json;
@@ -53,12 +54,24 @@ namespace Lisa.Zuma.BlueJay.Web.Controllers
             var accessToken = "";
             if (tokenResult.TryGetValue("access_token", out accessToken))
             {
-                var identity = new ClaimsIdentity(new[]
-                {
-                    new Claim("http://leerbedrijflisa.nl/zuma/bluejay/token", accessToken),
-                    new Claim(ClaimTypes.NameIdentifier, tokenResult["userName"]),
-                    new Claim(ClaimTypes.Name, tokenResult["userName"])
-                }, DefaultAuthenticationTypes.ApplicationCookie);
+                request = new RestRequest("/api/account/userclaims", Method.GET);
+                request.AddHeader("Authorization", string.Format("bearer {0}", accessToken));
+
+                var claimResponse = await rest.ExecuteTaskAsync<List<UserClaim>>(request);
+                var claims = claimResponse.Data
+                    .Select(uc =>
+                    {
+                        var claim = new Claim(uc.Type, uc.Value, uc.ValueType);
+                        claim.Properties.Concat(uc.Properties);
+
+                        return claim;
+                    })
+                    .ToList();
+
+                var accessTokenClaim = new Claim("http://leerbedrijflisa.nl/zuma/bluejay/token", accessToken);
+                claims.Add(accessTokenClaim);
+
+                var identity = new ClaimsIdentity(claims, DefaultAuthenticationTypes.ApplicationCookie);
 
                 AuthenticationManager.SignIn(new AuthenticationProperties
                 {
