@@ -3,6 +3,7 @@ using Lisa.Zuma.BlueJay.Web.Data.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 
 namespace Lisa.Zuma.BlueJay.WebApi.Helpers
 {
@@ -93,6 +94,25 @@ namespace Lisa.Zuma.BlueJay.WebApi.Helpers
             foreach (var detail in dossierDetails)
             {
                 yield return Converter.ToDossierDetail(detail);
+            }
+        }
+
+        public static UserClaim ToUserClaim(Claim claim)
+        {
+            return new UserClaim
+            {
+                Properties = claim.Properties.ToDictionary(kvp => kvp.Key, kvp => kvp.Value),
+                Type = claim.Type,
+                Value = claim.Value,
+                ValueType = claim.ValueType
+            };
+        }
+
+        public static IEnumerable<UserClaim> ToUserClaim(IEnumerable<Claim> claims)
+        {
+            foreach (var claim in claims)
+            {
+                yield return Converter.ToUserClaim(claim);
             }
         }
     }
