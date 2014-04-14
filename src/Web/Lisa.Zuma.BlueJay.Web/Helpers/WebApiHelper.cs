@@ -15,6 +15,7 @@ namespace Lisa.Zuma.BlueJay.Web.Helpers
         public WebApiHelper(Uri rootUri)
         {
             this.rootUri = rootUri;
+            client = new RestClient(rootUri.AbsoluteUri);
         }
 
         public WebApiHelper(string root)
@@ -41,7 +42,6 @@ namespace Lisa.Zuma.BlueJay.Web.Helpers
         /// <returns></returns>
         public async Task<WebApiLoginResult> LoginAsync(string username, string password)
         {
-            var client = new RestClient(rootUri.AbsoluteUri);
             var request = new RestRequest("/token", Method.POST);
             request.AddHeader("Content-Type", "application/x-www-form-urlencoded")
                 .AddParameter("grant_type", "password")
@@ -71,7 +71,6 @@ namespace Lisa.Zuma.BlueJay.Web.Helpers
         /// <returns></returns>
         public async Task<List<Claim>> GetClaimsAsync(string accessToken)
         {
-            var client = new RestClient(rootUri.AbsoluteUri);
             var request = new RestRequest("/api/account/userclaims", Method.GET);
             request.AddHeader("Authorization", string.Format("bearer {0}", accessToken));
 
@@ -130,6 +129,7 @@ namespace Lisa.Zuma.BlueJay.Web.Helpers
         }
 
         private Uri rootUri;
+        private RestClient client;
     }
 
     public class WebApiLoginResult
