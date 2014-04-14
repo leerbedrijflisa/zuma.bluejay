@@ -13,6 +13,7 @@ namespace Lisa.Zuma.BlueJay.Web.Controllers
             return View();
         }
 
+        [AllowAnonymous]
         public ActionResult About()
         {
             ViewBag.Message = "Your application description page.";

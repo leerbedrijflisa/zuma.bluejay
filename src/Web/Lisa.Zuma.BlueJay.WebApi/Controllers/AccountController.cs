@@ -17,6 +17,8 @@ using Lisa.Zuma.BlueJay.WebApi.Providers;
 using Lisa.Zuma.BlueJay.WebApi.Results;
 using Lisa.Zuma.BlueJay.Web.Data.Entities;
 using Lisa.Zuma.BlueJay.WebApi.Models;
+using Lisa.Zuma.BlueJay.Models;
+using Lisa.Zuma.BlueJay.WebApi.Helpers;
 
 namespace Lisa.Zuma.BlueJay.WebApi.Controllers
 {
@@ -384,6 +386,20 @@ namespace Lisa.Zuma.BlueJay.WebApi.Controllers
             }
 
             return Ok();
+        }
+
+        [HostAuthentication(DefaultAuthenticationTypes.ExternalBearer)]
+        [Route("UserClaims")]
+        public IHttpActionResult GetUserClaims()
+        {
+            var identity = User.Identity as ClaimsIdentity;
+            if (identity == null)
+            {
+                return InternalServerError();
+            }
+
+            var result = Converter.ToUserClaim(identity.Claims);
+            return Ok(result);
         }
 
         protected override void Dispose(bool disposing)
