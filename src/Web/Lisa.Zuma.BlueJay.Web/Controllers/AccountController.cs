@@ -40,13 +40,7 @@ namespace Lisa.Zuma.BlueJay.Web.Controllers
             if (!loginResult.Success)
             {
                 ModelState.Clear();
-                loginResult.Errors.ForEach(err =>
-                {
-                    if (!err.Contains("invalid_grant"))
-                    {
-                        ModelState.AddModelError("", err);
-                    }
-                });
+                ModelState.AddModelError("", loginResult.ErrorDescription);
 
                 return View();
             }

@@ -10,7 +10,7 @@ using System.Web;
 
 namespace Lisa.Zuma.BlueJay.Web.Helpers
 {
-    public sealed class WebApiHelper
+    public class WebApiHelper
     {
         public WebApiHelper(Uri rootUri)
         {
@@ -145,7 +145,9 @@ namespace Lisa.Zuma.BlueJay.Web.Helpers
         }
 
         public bool Success { get; set; }
-        public List<string> Errors { get; set; }
+        public string Error { get; set; }
+        public string ErrorDescription { get; set; }
+        public string ErrorUri { get; set; }
         public AccessTokenModel TokenResult { get; set; }
 
         private void Initialize(Dictionary<string, string> tokenResult)
@@ -153,11 +155,12 @@ namespace Lisa.Zuma.BlueJay.Web.Helpers
             if (tokenResult.ContainsKey("error"))
             {
                 Success = false;
-                Errors = new List<string>();
+                Error = tokenResult["error"];
+                ErrorDescription = tokenResult["error_description"];
 
-                foreach (var item in tokenResult)
+                if (tokenResult.ContainsKey("error_uri"))
                 {
-                    Errors.Add(item.Value);
+                    ErrorUri = tokenResult["error_uri"];
                 }
             }
             else
@@ -170,7 +173,9 @@ namespace Lisa.Zuma.BlueJay.Web.Helpers
         private void Initialize(WebApiLoginResult loginResult)
         {
             Success = loginResult.Success;
-            Errors = loginResult.Errors;
+            Error = loginResult.Error;
+            ErrorDescription = loginResult.ErrorDescription;
+            ErrorUri = loginResult.ErrorUri;
             TokenResult = loginResult.TokenResult;
         }
     }
