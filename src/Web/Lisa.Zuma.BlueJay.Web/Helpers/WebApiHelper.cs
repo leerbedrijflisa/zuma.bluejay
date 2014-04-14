@@ -10,11 +10,12 @@ using System.Web;
 
 namespace Lisa.Zuma.BlueJay.Web.Helpers
 {
-    public sealed class WebApiHelper
+    public class WebApiHelper
     {
         public WebApiHelper(Uri rootUri)
         {
             this.rootUri = rootUri;
+            client = new RestClient(rootUri.AbsoluteUri);
         }
 
         public WebApiHelper(string root)
@@ -28,7 +29,7 @@ namespace Lisa.Zuma.BlueJay.Web.Helpers
         /// <param name="username">The username</param>
         /// <param name="password">The password</param>
         /// <returns></returns>
-        public Dictionary<string, string> Login(string username, string password)
+        public WebApiLoginResult Login(string username, string password)
         {
             return LoginAsync(username, password).Result;
         }
@@ -39,17 +40,18 @@ namespace Lisa.Zuma.BlueJay.Web.Helpers
         /// <param name="username">The username</param>
         /// <param name="password">The password</param>
         /// <returns></returns>
-        public async Task<Dictionary<string, string>> LoginAsync(string username, string password)
+        public async Task<WebApiLoginResult> LoginAsync(string username, string password)
         {
-            var client = new RestClient(rootUri.AbsoluteUri);
             var request = new RestRequest("/token", Method.POST);
             request.AddHeader("Content-Type", "application/x-www-form-urlencoded")
                 .AddParameter("grant_type", "password")
                 .AddParameter("username", username)
                 .AddParameter("password", password);
 
-            var response = await client.ExecuteTaskAsync<Dictionary<string,string>>(request);
-            return response.Data;            
+            var response = await client.ExecuteTaskAsync<Dictionary<string, string>>(request);
+            var loginResult = new WebApiLoginResult(response.Data);
+
+            return loginResult;
         }
 
         /// <summary>
@@ -69,7 +71,6 @@ namespace Lisa.Zuma.BlueJay.Web.Helpers
         /// <returns></returns>
         public async Task<List<Claim>> GetClaimsAsync(string accessToken)
         {
-            var client = new RestClient(rootUri.AbsoluteUri);
             var request = new RestRequest("/api/account/userclaims", Method.GET);
             request.AddHeader("Authorization", string.Format("bearer {0}", accessToken));
 
@@ -94,7 +95,7 @@ namespace Lisa.Zuma.BlueJay.Web.Helpers
         /// <param name="password">The password</param>
         /// <param name="authenticationType">The authentication type used in the local application</param>
         /// <returns></returns>
-        public ClaimsIdentity LoginAndGetIdentity(string username, string password, string authenticationType)
+        public WebApiLoginIdentityResult LoginAndGetIdentity(string username, string password, string authenticationType)
         {
             return LoginAndGetIdentityAsync(username, password, authenticationType).Result;
         }
@@ -107,27 +108,110 @@ namespace Lisa.Zuma.BlueJay.Web.Helpers
         /// <param name="password">The password</param>
         /// <param name="authenticationType">The authentication type used in the local application</param>
         /// <returns></returns>
-        public async Task<ClaimsIdentity> LoginAndGetIdentityAsync(string username, string password, string authenticationType)
+        public async Task<WebApiLoginIdentityResult> LoginAndGetIdentityAsync(string username, string password, string authenticationType)
         {
             var loginResult = await LoginAsync(username, password);
-            if (loginResult.ContainsKey("error"))
+            var result = new WebApiLoginIdentityResult(loginResult);
+
+            if (!result.Success)
             {
-                return null;
+                return result;
             }
 
-            var accessToken = loginResult["access_token"];
-            var accessTokenClaim = new Claim("http://leerbedrijflisa.nl/zuma/bluejay/token", accessToken, ClaimValueTypes.String);
-            var claims = await GetClaimsAsync(accessToken);
+            var accessTokenClaim = new Claim("http://leerbedrijflisa.nl/zuma/bluejay/token", loginResult.TokenResult.AccessToken, ClaimValueTypes.String);
+            var claims = await GetClaimsAsync(loginResult.TokenResult.AccessToken);
 
             var identity = new ClaimsIdentity(claims, authenticationType);
             identity.AddClaim(accessTokenClaim);
 
-            var expireClaim = new Claim("http://leerbedrijflisa.nl/zuma/bluejay/expire", loginResult[".expires"], ClaimValueTypes.DateTime);
-            identity.AddClaim(expireClaim);
-
-            return identity;
+            result.Identity = identity;
+            return result;
         }
 
         private Uri rootUri;
+        private RestClient client;
+    }
+
+    public class WebApiLoginResult
+    {
+        public WebApiLoginResult(Dictionary<string, string> tokenResult)
+        {
+            Initialize(tokenResult);
+        }
+
+        public WebApiLoginResult(WebApiLoginResult loginResult)
+        {
+            Initialize(loginResult);
+        }
+
+        public bool Success { get; set; }
+        public string Error { get; set; }
+        public string ErrorDescription { get; set; }
+        public string ErrorUri { get; set; }
+        public AccessTokenModel TokenResult { get; set; }
+
+        private void Initialize(Dictionary<string, string> tokenResult)
+        {
+            if (tokenResult.ContainsKey("error"))
+            {
+                Success = false;
+                Error = tokenResult["error"];
+                ErrorDescription = tokenResult["error_description"];
+
+                if (tokenResult.ContainsKey("error_uri"))
+                {
+                    ErrorUri = tokenResult["error_uri"];
+                }
+            }
+            else
+            {
+                Success = true;
+                TokenResult = new AccessTokenModel(tokenResult);
+            }
+        }
+
+        private void Initialize(WebApiLoginResult loginResult)
+        {
+            Success = loginResult.Success;
+            Error = loginResult.Error;
+            ErrorDescription = loginResult.ErrorDescription;
+            ErrorUri = loginResult.ErrorUri;
+            TokenResult = loginResult.TokenResult;
+        }
+    }
+
+    public class WebApiLoginIdentityResult : WebApiLoginResult
+    {
+        public WebApiLoginIdentityResult(WebApiLoginResult loginResult)
+            : base(loginResult)
+        {
+        }
+
+        public ClaimsIdentity Identity { get; set; }
+    }
+
+    public class AccessTokenModel
+    {
+        public AccessTokenModel(Dictionary<string, string> tokenResult)
+        {
+            Initialize(tokenResult);
+        }
+
+        public DateTime Expires { get; private set; }
+        public DateTime Issued { get; private set; }
+        public string AccessToken { get; private set; }
+        public int ExpiresIn { get; private set; }
+        public string TokenType { get; private set; }
+        public string UserName { get; private set; }
+
+        private void Initialize(Dictionary<string, string> tokenResult)
+        {
+            Expires = DateTime.Parse(tokenResult[".expires"]);
+            Issued = DateTime.Parse(tokenResult[".issued"]);
+            AccessToken = tokenResult["access_token"];
+            ExpiresIn = int.Parse(tokenResult["expires_in"]);
+            TokenType = tokenResult["token_type"];
+            UserName = tokenResult["userName"];
+        }
     }
 }
