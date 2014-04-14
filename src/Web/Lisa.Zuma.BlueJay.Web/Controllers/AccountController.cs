@@ -37,26 +37,26 @@ namespace Lisa.Zuma.BlueJay.Web.Controllers
             }
 
             var apiHelper = new WebApiHelper("http://localhost:14689");
-            var identity = await apiHelper.LoginAndGetIdentityAsync(loginModel.Username, loginModel.Password, DefaultAuthenticationTypes.ApplicationCookie);
-            if (identity == null)
+            var loginResult = await apiHelper.LoginAndGetIdentityAsync(loginModel.Username, loginModel.Password, DefaultAuthenticationTypes.ApplicationCookie);
+            if (!loginResult.Success)
             {
                 ModelState.Clear();
-                ModelState.AddModelError("", "The user name or password is incorrect!");
+                loginResult.Errors.ForEach(err =>
+                {
+                    if (!err.Contains("invalid_grant"))
+                    {
+                        ModelState.AddModelError("", err);
+                    }
+                });
+
                 return View();
             }
-
-            // Find the expire claim that specifies the timestamp on which the access token will
-            // be invalid. Extract the date for use with the AuthenticationManager.SignIn() method,
-            // then delete the expireClaim.
-            var expireClaim = identity.FindFirst("http://leerbedrijflisa.nl/zuma/bluejay/expire");
-            var expireDate = DateTime.Parse(expireClaim.Value).ToUniversalTime();
-            identity.RemoveClaim(expireClaim);
 
             AuthenticationManager.SignIn(new AuthenticationProperties
             {
                 IsPersistent = false,
-                ExpiresUtc = expireDate
-            }, identity);
+                ExpiresUtc = loginResult.TokenResult.Expires
+            }, loginResult.Identity);
 
             return Redirect(returnUrl);
         }
