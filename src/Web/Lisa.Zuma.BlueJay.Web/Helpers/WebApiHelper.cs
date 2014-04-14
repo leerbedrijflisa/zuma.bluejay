@@ -1,4 +1,6 @@
 ﻿using Lisa.Zuma.BlueJay.Models;
+using Lisa.Zuma.BlueJay.Web.Models;
+using Newtonsoft.Json.Linq;
 using RestSharp;
 using System;
 using System.Collections.Generic;
@@ -128,6 +130,43 @@ namespace Lisa.Zuma.BlueJay.Web.Helpers
             return result;
         }
 
+        public RegisterUserResult RegisterUser(UserViewModel userModel)
+        {
+            return RegisterUserAsync(userModel).Result;
+        }
+
+        public async Task<RegisterUserResult> RegisterUserAsync(UserViewModel userModel)
+        {
+            var request = new RestRequest("/api/account/register", Method.POST);
+            request.RequestFormat = DataFormat.Json;
+            request.AddObject(userModel);
+
+            var result = new RegisterUserResult();
+
+            var response = await client.ExecuteTaskAsync(request);
+            if (response.StatusCode == HttpStatusCode.BadRequest)
+            {
+                // Deserialize to JObject for custom processing.
+                var obj = await Newtonsoft.Json.JsonConvert.DeserializeObjectAsync<JObject>(response.Content);
+
+                // Get the message property of the error result
+                result.Message = obj.Property("message").Value.Value<string>();
+
+                // Convert the modelState property to a JObject and convert it to a 
+                // Dictionary with one key with multiple values
+                result.Errors = ((JObject)obj.Property("modelState").Value)
+                                .ToObject<Dictionary<string, IList<string>>>();
+
+                result.Success = false;
+            }
+            else
+            {
+                result.Success = true;
+            }
+
+            return result;
+        }
+
         private Uri rootUri;
         private RestClient client;
     }
@@ -213,5 +252,12 @@ namespace Lisa.Zuma.BlueJay.Web.Helpers
             TokenType = tokenResult["token_type"];
             UserName = tokenResult["userName"];
         }
+    }
+
+    public class RegisterUserResult
+    {
+        public bool Success { get; set; }
+        public string Message { get; set; }
+        public Dictionary<string, IList<string>> Errors { get; set; }
     }
 }
