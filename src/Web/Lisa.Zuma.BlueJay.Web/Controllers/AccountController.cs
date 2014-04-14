@@ -16,7 +16,7 @@ using System.Web.Mvc;
 
 namespace Lisa.Zuma.BlueJay.Web.Controllers
 {
-    public class AccountController : Controller
+    public class AccountController : BaseController
     {
         [AllowAnonymous]
         public ActionResult Login()
@@ -35,9 +35,8 @@ namespace Lisa.Zuma.BlueJay.Web.Controllers
                 ModelState.AddModelError("", "User name or password is not set!");
                 return View();
             }
-
-            var apiHelper = new WebApiHelper("http://localhost:14689");
-            var loginResult = await apiHelper.LoginAndGetIdentityAsync(loginModel.Username, loginModel.Password, DefaultAuthenticationTypes.ApplicationCookie);
+            
+            var loginResult = await WebApiHelper.LoginAndGetIdentityAsync(loginModel.Username, loginModel.Password, DefaultAuthenticationTypes.ApplicationCookie);
             if (!loginResult.Success)
             {
                 ModelState.Clear();
