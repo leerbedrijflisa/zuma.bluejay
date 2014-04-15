@@ -1,6 +1,9 @@
-﻿using Lisa.Zuma.BlueJay.Web.Models;
+﻿using Lisa.Zuma.BlueJay.Models;
+using Lisa.Zuma.BlueJay.Web.Helpers;
+using Lisa.Zuma.BlueJay.Web.Models;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
@@ -18,6 +21,18 @@ namespace Lisa.Zuma.BlueJay.Web.Controllers
         public ActionResult Create()
         {
             return View();
+        }
+
+        public async Task<ActionResult> List()
+        {
+            return Json(await webApiUserHelper.GetAllAsync(), JsonRequestBehavior.AllowGet);
+        }
+
+        public async Task<ActionResult> AddToRole(string id, string role)
+        {
+            var result = await webApiUserHelper.AddToRoleAsync(id, "User");
+
+            return Json(result, JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost]
@@ -46,5 +61,7 @@ namespace Lisa.Zuma.BlueJay.Web.Controllers
 
             return RedirectToAction("Index");
         }
+
+        private WebApiUserHelper webApiUserHelper = new WebApiUserHelper(ConfigurationManager.AppSettings["WebApiBaseUrl"]);
 	}
 }
