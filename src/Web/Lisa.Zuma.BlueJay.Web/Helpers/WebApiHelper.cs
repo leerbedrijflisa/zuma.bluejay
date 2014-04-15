@@ -17,7 +17,6 @@ namespace Lisa.Zuma.BlueJay.Web.Helpers
         public WebApiHelper(Uri rootUri)
         {
             this.rootUri = rootUri;
-            client = new RestClient(rootUri.AbsoluteUri);
         }
 
         public WebApiHelper(string root)
@@ -50,7 +49,7 @@ namespace Lisa.Zuma.BlueJay.Web.Helpers
                 .AddParameter("username", username)
                 .AddParameter("password", password);
 
-            var response = await client.ExecuteTaskAsync<Dictionary<string, string>>(request);
+            var response = await Client.ExecuteTaskAsync<Dictionary<string, string>>(request);
             var loginResult = new WebApiLoginResult(response.Data);
 
             return loginResult;
@@ -76,7 +75,7 @@ namespace Lisa.Zuma.BlueJay.Web.Helpers
             var request = new RestRequest("/api/account/userclaims", Method.GET);
             request.AddHeader("Authorization", string.Format("bearer {0}", accessToken));
 
-            var response = await client.ExecuteTaskAsync<List<UserClaim>>(request);
+            var response = await Client.ExecuteTaskAsync<List<UserClaim>>(request);
             var claims = response.Data
                 .Select(uc =>
                 {
@@ -143,7 +142,7 @@ namespace Lisa.Zuma.BlueJay.Web.Helpers
 
             var result = new RegisterUserResult();
 
-            var response = await client.ExecuteTaskAsync(request);
+            var response = await Client.ExecuteTaskAsync(request);
             if (response.StatusCode == HttpStatusCode.BadRequest)
             {
                 // Deserialize to JObject for custom processing.
@@ -165,6 +164,46 @@ namespace Lisa.Zuma.BlueJay.Web.Helpers
             }
 
             return result;
+        }
+
+        protected Uri RootUri
+        {
+            get
+            {
+                return this.rootUri;
+            }
+        }
+
+        protected RestClient Client
+        {
+            get
+            {
+                if (client == null)
+                {
+                    client = new RestClient(this.rootUri.AbsoluteUri);
+                }
+
+                return client;
+            }
+        }
+
+        protected Parameter AuthorizationHeader
+        {
+            get
+            {
+                var principal = HttpContext.Current.User as ClaimsPrincipal;
+                if (principal == null && principal.HasClaim(c => c.Type == "http://leerbedrijflisa.nl/zuma/bluejay/token"))
+                {
+                    return null;
+                }
+
+                var parameter = new Parameter();
+                parameter.Type = ParameterType.HttpHeader;
+                parameter.Name = "Authorization";
+                parameter.Value = string.Format("bearer {0}", principal.FindFirst("http://leerbedrijflisa.nl/zuma/bluejay/token").Value);
+
+                return parameter;
+            }
         }
 
         private Uri rootUri;
