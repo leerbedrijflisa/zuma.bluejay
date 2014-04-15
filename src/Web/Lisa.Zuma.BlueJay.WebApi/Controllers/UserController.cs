@@ -13,7 +13,6 @@ namespace Lisa.Zuma.BlueJay.WebApi.Controllers
     [RoutePrefix("api/user")]
     public class UserController : BaseApiController
     {
-        [AllowAnonymous]
         [Route("")]
         public IHttpActionResult Get()
         {
@@ -33,6 +32,59 @@ namespace Lisa.Zuma.BlueJay.WebApi.Controllers
             .ToList();
 
             return Ok(result);
+        }
+
+        [Route("{id}")]
+        public async Task<IHttpActionResult> Get(string id)
+        {
+            var user = await UserManager.FindByIdAsync(id);
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            var result = new User
+            {
+                Id = user.Id,
+                Type = user.Type,
+                UserName = user.UserName,
+                Roles = user.Roles.Select(r => new UserRole
+                {
+                    Id = r.Role.Id,
+                    Name = r.Role.Name
+                })
+                .ToList()
+            };
+
+            return Ok(result);
+        }
+
+        [Route("addrole/{id}/{role}")]
+        [HttpPost]
+        public async Task<IHttpActionResult> AddToRole(string id, string role)
+        {
+            var user = await UserManager.FindByIdAsync(id);
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            if (!await RoleManager.RoleExistsAsync(role))
+            {
+                var roleResult = await RoleManager.CreateAsync(new IdentityRole(role));
+                if (!roleResult.Succeeded)
+                {
+                    return BadRequest(roleResult.ToString());
+                }
+            }
+
+            var result = await UserManager.AddToRoleAsync(id, role);
+            if (!result.Succeeded)
+            {
+                return BadRequest();
+            }
+
+            return Ok(await UserManager.GetRolesAsync(id));
         }
     }
 }
