@@ -1,4 +1,5 @@
 ﻿using Lisa.Zuma.BlueJay.Web.Data.Entities;
+using Lisa.Zuma.BlueJay.Web.Data.Managers;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using System;
@@ -68,7 +69,7 @@ namespace Lisa.Zuma.BlueJay.Web.Data
             }
         }        
 
-        public UserManager<UserData> UserManager
+        public ApplicationUserManager<UserData> UserManager
         {
             get
             {
@@ -76,10 +77,24 @@ namespace Lisa.Zuma.BlueJay.Web.Data
                 {
                     var store = CreateUserStore();
                     store.AutoSaveChanges = this.autoSaveStoreChanges;
-                    this.userManager = new UserManager<UserData>(store);
+                    this.userManager = new ApplicationUserManager<UserData>(store);
                 }
 
                 return userManager;
+            }
+        }
+
+        public RoleManager<IdentityRole> RoleManager
+        {
+            get
+            {
+                if (this.roleManager == null)
+                {
+                    var store = CreateRoleStore();
+                    this.roleManager = new RoleManager<IdentityRole>(store);
+                }
+
+                return roleManager;
             }
         }
 
@@ -109,8 +124,14 @@ namespace Lisa.Zuma.BlueJay.Web.Data
             return new UserStore<UserData>(context);
         }
 
+        private RoleStore<IdentityRole> CreateRoleStore()
+        {
+            return new RoleStore<IdentityRole>(context);
+        }
+
         private BlueJayContext context = new BlueJayContext("DefaultConnection");
-        private UserManager<UserData> userManager;
+        private ApplicationUserManager<UserData> userManager;
+        private RoleManager<IdentityRole> roleManager;
         private bool disposed = false;
         private bool autoSaveStoreChanges = false;
 
