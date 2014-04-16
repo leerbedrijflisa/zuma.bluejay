@@ -17,7 +17,7 @@ namespace Lisa.Zuma.BlueJay.Web.Data
         }
 
         public BlueJayContext(string connectionString)
-            : base(connectionString)
+            : base(connectionString, false)
         {
         }
 

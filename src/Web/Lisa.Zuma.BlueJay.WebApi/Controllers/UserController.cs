@@ -18,7 +18,7 @@ namespace Lisa.Zuma.BlueJay.WebApi.Controllers
         public IHttpActionResult Get()
         {
             var users = UserManager.GetAll();
-            var result = Converter.ToUser(users);
+            var result = Converter.ToUser(users, RoleManager.Roles);
 
             return Ok(result);
         }
@@ -32,7 +32,7 @@ namespace Lisa.Zuma.BlueJay.WebApi.Controllers
                 return NotFound();
             }
 
-            var result = Converter.ToUser(user);
+            var result = Converter.ToUser(user, RoleManager.Roles);
 
             return Ok(result);
         }
@@ -77,7 +77,7 @@ namespace Lisa.Zuma.BlueJay.WebApi.Controllers
             }
 
             var dbUser = await UserManager.FindByIdAsync(user.Id);
-            var result = Converter.ToUser(dbUser);
+            var result = Converter.ToUser(dbUser, RoleManager.Roles);
 
             return Ok(result);
         }
