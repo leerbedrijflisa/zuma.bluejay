@@ -155,5 +155,23 @@ namespace Lisa.Zuma.BlueJay.WebApi.Helpers
                 yield return Converter.ToUserRole(role, roles);
             }
         }
+
+        public static UserRole ToUserRole(IdentityRole role)
+        {
+            return new UserRole
+            {
+                Deleted = false,
+                Id = role.Id,
+                Name = role.Name
+            };
+        }
+
+        public static IEnumerable<UserRole> ToUserRole(IEnumerable<IdentityRole> roles)
+        {
+            foreach (var role in roles)
+            {
+                yield return Converter.ToUserRole(role);
+            }
+        }
     }
 }
