@@ -149,6 +149,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\HtmlPrefixScopeExtensions.cs" />
     <Compile Include="Helpers\WebApiHelper.cs" />
     <Compile Include="Helpers\WebApiUserHelper.cs" />
     <Compile Include="Models\LoginViewModel.cs" />
