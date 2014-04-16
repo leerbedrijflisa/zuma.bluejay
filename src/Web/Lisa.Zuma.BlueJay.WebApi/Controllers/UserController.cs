@@ -1,4 +1,5 @@
 ﻿using Lisa.Zuma.BlueJay.Models;
+using Lisa.Zuma.BlueJay.WebApi.Helpers;
 using Microsoft.AspNet.Identity.EntityFramework;
 using System;
 using System.Collections.Generic;
@@ -17,19 +18,7 @@ namespace Lisa.Zuma.BlueJay.WebApi.Controllers
         public IHttpActionResult Get()
         {
             var users = UserManager.GetAll();
-            var result = users.Select(u => new User
-            {
-                Id = u.Id,
-                Type = u.Type,
-                UserName = u.UserName,
-                Roles = u.Roles.Select(r => new UserRole
-                {
-                    Id = r.Role.Id,
-                    Name = r.Role.Name
-                })
-                .ToList()
-            })
-            .ToList();
+            var result = Converter.ToUser(users);
 
             return Ok(result);
         }
@@ -43,48 +32,54 @@ namespace Lisa.Zuma.BlueJay.WebApi.Controllers
                 return NotFound();
             }
 
-            var result = new User
-            {
-                Id = user.Id,
-                Type = user.Type,
-                UserName = user.UserName,
-                Roles = user.Roles.Select(r => new UserRole
-                {
-                    Id = r.Role.Id,
-                    Name = r.Role.Name
-                })
-                .ToList()
-            };
+            var result = Converter.ToUser(user);
 
             return Ok(result);
         }
 
-        [Route("addrole/{id}/{role}")]
-        [HttpPost]
-        public async Task<IHttpActionResult> AddToRole(string id, string role)
+        [Route("")]
+        [HttpPut]
+        public async Task<IHttpActionResult> Put([FromBody] User user)
         {
-            var user = await UserManager.FindByIdAsync(id);
-            if (user == null)
+            if (!UserManager.Exists(user.Id))
             {
                 return NotFound();
             }
 
-            if (!await RoleManager.RoleExistsAsync(role))
+            foreach (var role in user.Roles)
             {
-                var roleResult = await RoleManager.CreateAsync(new IdentityRole(role));
-                if (!roleResult.Succeeded)
+                if (role.Deleted)
                 {
-                    return BadRequest(roleResult.ToString());
+                    var removeRoleResult = await UserManager.RemoveFromRoleAsync(user.Id, role.Name);
+                    if (!removeRoleResult.Succeeded)
+                    {
+                        return BadRequest();
+                    }
+                }
+                else
+                {
+                    if (!await RoleManager.RoleExistsAsync(role.Name))
+                    {
+                        var roleResult = await RoleManager.CreateAsync(new IdentityRole(role.Name));
+                        if (!roleResult.Succeeded)
+                        {
+                            return BadRequest();
+                        }
+                    }
+
+                    var addToResult = await UserManager.AddToRoleAsync(user.Id, role.Name);
+                    if (!addToResult.Succeeded)
+                    {
+                        // TODO: Needs proper return type or iteration fix.
+                        continue;
+                    }
                 }
             }
 
-            var result = await UserManager.AddToRoleAsync(id, role);
-            if (!result.Succeeded)
-            {
-                return BadRequest();
-            }
+            var dbUser = await UserManager.FindByIdAsync(user.Id);
+            var result = Converter.ToUser(dbUser);
 
-            return Ok(await UserManager.GetRolesAsync(id));
+            return Ok(result);
         }
     }
 }
