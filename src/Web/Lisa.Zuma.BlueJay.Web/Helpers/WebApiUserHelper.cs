@@ -62,32 +62,30 @@ namespace Lisa.Zuma.BlueJay.Web.Helpers
             return response.Data;
         }
 
-
         /// <summary>
-        /// Adds the user to the given role and adds the role when it does not exist.
+        /// Updates the user and attached roles.
         /// </summary>
-        /// <param name="id">The user id</param>
-        /// <param name="role">The role to add the user to</param>
+        /// <param name="user">The user to update</param>
         /// <returns></returns>
-        public List<string> AddToRole(string id, string role)
+        public User UpdateUser(User user)
         {
-            return AddToRoleAsync(id, role).Result;
+            return UpdateUserAsync(user).Result;
         }
 
         /// <summary>
-        /// Adds the user to the given role and adds the role when it does not exist in an asynchronous manner.
+        /// Updates the user and attached roles.
+        /// This method runs asynchronous.
         /// </summary>
-        /// <param name="id">The user id</param>
-        /// <param name="role">The role to add the user to</param>
+        /// <param name="user">The user to update</param>
         /// <returns></returns>
-        public async Task<List<string>> AddToRoleAsync(string id, string role)
+        public async Task<User> UpdateUserAsync(User user)
         {
-            var request = new RestRequest("/api/user/addrole/{id}/{role}", Method.POST);
+            var request = new RestRequest("/api/user", Method.PUT);
+            request.RequestFormat = DataFormat.Json;
             request.AddParameter(AuthorizationHeader)
-                .AddUrlSegment("id", id)
-                .AddUrlSegment("role", role);
+                .AddBody(user);
 
-            var response = await Client.ExecuteTaskAsync<List<string>>(request);
+            var response = await Client.ExecuteTaskAsync<User>(request);
             return response.Data;
         }
     }

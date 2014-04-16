@@ -13,9 +13,11 @@ namespace Lisa.Zuma.BlueJay.Web.Controllers
 {
     public class UserController : BaseController
     {        
-        public ActionResult Index()
+        public async Task<ActionResult> Index()
         {
-            return View();
+            var users = await webApiUserHelper.GetAllAsync();
+
+            return View(users);
         }
 
         public ActionResult Create()
@@ -23,16 +25,23 @@ namespace Lisa.Zuma.BlueJay.Web.Controllers
             return View();
         }
 
-        public async Task<ActionResult> List()
+        public async Task<ActionResult> Details(string id)
         {
-            return Json(await webApiUserHelper.GetAllAsync(), JsonRequestBehavior.AllowGet);
+            var user = await webApiUserHelper.GetAsync(id);
+            return View(user);
         }
 
-        public async Task<ActionResult> AddToRole(string id, string role)
+        public async Task<ActionResult> Edit(string id)
         {
-            var result = await webApiUserHelper.AddToRoleAsync(id, "User");
+            var user = await webApiUserHelper.GetAsync(id);
+            return View(user);
+        }
 
-            return Json(result, JsonRequestBehavior.AllowGet);
+        [HttpPost]
+        public async Task<ActionResult> Edit(User user)
+        {
+            await webApiUserHelper.UpdateUserAsync(user);
+            return RedirectToAction("Details", new { id = user.Id });
         }
 
         [HttpPost]
@@ -60,6 +69,11 @@ namespace Lisa.Zuma.BlueJay.Web.Controllers
             }
 
             return RedirectToAction("Index");
+        }
+
+        public ActionResult BlankRoleRow()
+        {
+            return PartialView("_BlankRoleRow", new UserRole());
         }
 
         private WebApiUserHelper webApiUserHelper = new WebApiUserHelper(ConfigurationManager.AppSettings["WebApiBaseUrl"]);
