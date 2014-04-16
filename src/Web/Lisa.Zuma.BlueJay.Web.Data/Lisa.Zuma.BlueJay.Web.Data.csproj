@@ -61,6 +61,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Managers\ApplicationUserManager.cs" />
     <Compile Include="BlueJayContext.cs" />
     <Compile Include="Entities\DossierData.cs" />
     <Compile Include="Entities\DossierDetailData.cs" />

@@ -1,4 +1,6 @@
 ﻿using Lisa.Zuma.BlueJay.Models;
+using Lisa.Zuma.BlueJay.Web.Models;
+using Newtonsoft.Json.Linq;
 using RestSharp;
 using System;
 using System.Collections.Generic;
@@ -15,7 +17,6 @@ namespace Lisa.Zuma.BlueJay.Web.Helpers
         public WebApiHelper(Uri rootUri)
         {
             this.rootUri = rootUri;
-            client = new RestClient(rootUri.AbsoluteUri);
         }
 
         public WebApiHelper(string root)
@@ -48,7 +49,7 @@ namespace Lisa.Zuma.BlueJay.Web.Helpers
                 .AddParameter("username", username)
                 .AddParameter("password", password);
 
-            var response = await client.ExecuteTaskAsync<Dictionary<string, string>>(request);
+            var response = await Client.ExecuteTaskAsync<Dictionary<string, string>>(request);
             var loginResult = new WebApiLoginResult(response.Data);
 
             return loginResult;
@@ -74,7 +75,7 @@ namespace Lisa.Zuma.BlueJay.Web.Helpers
             var request = new RestRequest("/api/account/userclaims", Method.GET);
             request.AddHeader("Authorization", string.Format("bearer {0}", accessToken));
 
-            var response = await client.ExecuteTaskAsync<List<UserClaim>>(request);
+            var response = await Client.ExecuteTaskAsync<List<UserClaim>>(request);
             var claims = response.Data
                 .Select(uc =>
                 {
@@ -126,6 +127,83 @@ namespace Lisa.Zuma.BlueJay.Web.Helpers
 
             result.Identity = identity;
             return result;
+        }
+
+        public RegisterUserResult RegisterUser(UserViewModel userModel)
+        {
+            return RegisterUserAsync(userModel).Result;
+        }
+
+        public async Task<RegisterUserResult> RegisterUserAsync(UserViewModel userModel)
+        {
+            var request = new RestRequest("/api/account/register", Method.POST);
+            request.RequestFormat = DataFormat.Json;
+            request.AddObject(userModel);
+
+            var result = new RegisterUserResult();
+
+            var response = await Client.ExecuteTaskAsync(request);
+            if (response.StatusCode == HttpStatusCode.BadRequest)
+            {
+                // Deserialize to JObject for custom processing.
+                var obj = await Newtonsoft.Json.JsonConvert.DeserializeObjectAsync<JObject>(response.Content);
+
+                // Get the message property of the error result
+                result.Message = obj.Property("message").Value.Value<string>();
+
+                // Convert the modelState property to a JObject and convert it to a 
+                // Dictionary with one key with multiple values
+                result.Errors = ((JObject)obj.Property("modelState").Value)
+                                .ToObject<Dictionary<string, IList<string>>>();
+
+                result.Success = false;
+            }
+            else
+            {
+                result.Success = true;
+            }
+
+            return result;
+        }
+
+        protected Uri RootUri
+        {
+            get
+            {
+                return this.rootUri;
+            }
+        }
+
+        protected RestClient Client
+        {
+            get
+            {
+                if (client == null)
+                {
+                    client = new RestClient(this.rootUri.AbsoluteUri);
+                }
+
+                return client;
+            }
+        }
+
+        protected Parameter AuthorizationHeader
+        {
+            get
+            {
+                var principal = HttpContext.Current.User as ClaimsPrincipal;
+                if (principal == null && principal.HasClaim(c => c.Type == "http://leerbedrijflisa.nl/zuma/bluejay/token"))
+                {
+                    return null;
+                }
+
+                var parameter = new Parameter();
+                parameter.Type = ParameterType.HttpHeader;
+                parameter.Name = "Authorization";
+                parameter.Value = string.Format("bearer {0}", principal.FindFirst("http://leerbedrijflisa.nl/zuma/bluejay/token").Value);
+
+                return parameter;
+            }
         }
 
         private Uri rootUri;
@@ -213,5 +291,12 @@ namespace Lisa.Zuma.BlueJay.Web.Helpers
             TokenType = tokenResult["token_type"];
             UserName = tokenResult["userName"];
         }
+    }
+
+    public class RegisterUserResult
+    {
+        public bool Success { get; set; }
+        public string Message { get; set; }
+        public Dictionary<string, IList<string>> Errors { get; set; }
     }
 }

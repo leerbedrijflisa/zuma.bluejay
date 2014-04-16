@@ -1,7 +1,9 @@
 ﻿using Lisa.Zuma.BlueJay.Web.Data;
 using Lisa.Zuma.BlueJay.Web.Data.Entities;
+using Lisa.Zuma.BlueJay.Web.Data.Managers;
 using Lisa.Zuma.BlueJay.WebApi.Extensions;
 using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,11 +32,19 @@ namespace Lisa.Zuma.BlueJay.WebApi.Controllers
             }
         }
 
-        protected UserManager<UserData> UserManager
+        protected ApplicationUserManager<UserData> UserManager
         {
             get
             {
                 return UoW.UserManager;
+            }
+        }
+
+        protected RoleManager<IdentityRole> RoleManager
+        {
+            get
+            {
+                return UoW.RoleManager;
             }
         }
 

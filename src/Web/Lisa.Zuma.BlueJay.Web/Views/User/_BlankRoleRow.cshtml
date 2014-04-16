@@ -1,0 +1,16 @@
+﻿@model UserRole
+@using Lisa.Zuma.BlueJay.Web.Helpers
+
+<div class="form-group roleRow">
+    @using (Html.BeginCollectionItem("Roles"))
+    {
+        @Html.HiddenFor(model => model.Id)
+        @Html.HiddenFor(model => model.Deleted, new { @class = "roleDeleted" })
+        @Html.LabelFor(model => model.Name, new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Name)
+            <a href="#" class="deleteRole">X</a>
+            @Html.ValidationMessageFor(model => model.Name)
+        </div>
+    }    
+</div>
