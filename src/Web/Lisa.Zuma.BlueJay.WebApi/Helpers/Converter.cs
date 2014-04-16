@@ -1,5 +1,6 @@
 ﻿using Lisa.Zuma.BlueJay.Models;
 using Lisa.Zuma.BlueJay.Web.Data.Entities;
+using Microsoft.AspNet.Identity.EntityFramework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -113,6 +114,43 @@ namespace Lisa.Zuma.BlueJay.WebApi.Helpers
             foreach (var claim in claims)
             {
                 yield return Converter.ToUserClaim(claim);
+            }
+        }
+
+        public static User ToUser(UserData userData) 
+        {
+            return new User
+            {
+                Id = userData.Id,
+                UserName = userData.UserName,
+                Type = userData.Type,
+                Roles = Converter.ToUserRole(userData.Roles).ToList()
+            };
+        }
+
+        public static IEnumerable<User> ToUser(IEnumerable<UserData> users)
+        {
+            foreach (var user in users)
+            {
+                yield return Converter.ToUser(user);
+            }
+        }
+
+        public static UserRole ToUserRole(IdentityUserRole identityRole)
+        {
+            return new UserRole
+            {
+                Deleted = false,
+                Id = identityRole.Role.Id,
+                Name = identityRole.Role.Name,
+            };
+        }
+
+        public static IEnumerable<UserRole> ToUserRole(IEnumerable<IdentityUserRole> identityRoles)
+        {
+            foreach (var role in identityRoles)
+            {
+                yield return Converter.ToUserRole(role);
             }
         }
     }
