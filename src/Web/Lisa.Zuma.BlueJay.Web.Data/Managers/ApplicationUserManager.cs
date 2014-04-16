@@ -26,6 +26,11 @@ namespace Lisa.Zuma.BlueJay.Web.Data.Managers
             return context.Set<TUser>().AsEnumerable();
         }
 
+        public bool Exists(string id)
+        {
+            return context.Set<TUser>().Count(u => u.Id == id) > 0;
+        }
+
         private DbContext context;
     }
 }
