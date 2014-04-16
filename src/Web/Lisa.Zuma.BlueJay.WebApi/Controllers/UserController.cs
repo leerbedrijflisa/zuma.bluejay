@@ -50,27 +50,19 @@ namespace Lisa.Zuma.BlueJay.WebApi.Controllers
             {
                 if (role.Deleted)
                 {
+                    // TODO: Make extension to delete by role id.
                     var removeRoleResult = await UserManager.RemoveFromRoleAsync(user.Id, role.Name);
                     if (!removeRoleResult.Succeeded)
                     {
                         return BadRequest();
                     }
                 }
-                else
+                else if (!await UserManager.IsInRoleAsync(user.Id, role.Name))
                 {
-                    if (!await RoleManager.RoleExistsAsync(role.Name))
+                    var addToRoleResult = await UserManager.AddToRoleAsync(user.Id, role.Name);
+                    if (!addToRoleResult.Succeeded)
                     {
-                        var roleResult = await RoleManager.CreateAsync(new IdentityRole(role.Name));
-                        if (!roleResult.Succeeded)
-                        {
-                            return BadRequest();
-                        }
-                    }
-
-                    var addToResult = await UserManager.AddToRoleAsync(user.Id, role.Name);
-                    if (!addToResult.Succeeded)
-                    {
-                        // TODO: Needs proper return type or iteration fix.
+                        // TODO: Create proper error.
                         continue;
                     }
                 }
