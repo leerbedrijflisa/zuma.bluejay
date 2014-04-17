@@ -3,6 +3,25 @@
 @{
     ViewBag.Title = "Aanmaken gebruiker";
 }
+@section Scripts {
+
+    <script type="text/javascript">
+        
+        $('.dossier-parent').on('change', function () {
+
+            var $dossierProps = $('.dossier-properties');
+            if ($(this).is(':checked')) {
+                
+                $dossierProps.show();
+            }
+            else
+            {
+                $dossierProps.hide();
+            }
+        });
+
+    </script>
+}
 
 <h2>Gebruiker aanmaken</h2>
 
@@ -41,8 +60,16 @@
         <div class="form-group">
             @Html.LabelFor(model => model.IsParent, new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.CheckBoxFor(model => model.IsParent, new { @class = "form-control" })
+                @Html.CheckBoxFor(model => model.IsParent, new { @class = "form-control dossier-parent" })
                 @Html.ValidationMessageFor(model => model.IsParent)
+            </div>
+        </div>
+
+        <div class="form-group dossier-properties" style="display:none;">
+            @Html.LabelFor(model => model.DossierName, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(model => model.DossierName, new { @class = "form-control dossier-name" })
+                @Html.ValidationMessageFor(model => model.DossierName)
             </div>
         </div>
 
