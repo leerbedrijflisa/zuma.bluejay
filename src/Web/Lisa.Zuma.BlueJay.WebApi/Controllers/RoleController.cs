@@ -25,18 +25,20 @@ namespace Lisa.Zuma.BlueJay.WebApi.Controllers
 
         [Route("")]
         [HttpPost]
-        public async Task<IHttpActionResult> Post(UserRole role)
+        public async Task<IHttpActionResult> Post([FromBody]UserRole role)
         {
             if (!await RoleManager.RoleExistsAsync(role.Name))
             {
                 // TODO: Add error checking
                 await RoleManager.CreateAsync(new IdentityRole(role.Name));
+
+                var addedRole = await RoleManager.FindByNameAsync(role.Name);
+                var result = Converter.ToUserRole(addedRole);
+
+                return Created(Request.RequestUri, result);
             }
 
-            var addedRole = await RoleManager.FindByNameAsync(role.Name);
-            var result = Converter.ToUserRole(addedRole);
-
-            return Created("api/role", addedRole);
+            return Ok();
         }
     }
 }
