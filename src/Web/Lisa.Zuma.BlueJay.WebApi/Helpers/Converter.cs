@@ -117,38 +117,58 @@ namespace Lisa.Zuma.BlueJay.WebApi.Helpers
             }
         }
 
-        public static User ToUser(UserData userData) 
+        public static User ToUser(UserData userData, IEnumerable<IdentityRole> roles) 
         {
             return new User
             {
                 Id = userData.Id,
                 UserName = userData.UserName,
                 Type = userData.Type,
-                Roles = Converter.ToUserRole(userData.Roles).ToList()
+                Roles = Converter.ToUserRole(userData.Roles, roles).ToList()
             };
         }
 
-        public static IEnumerable<User> ToUser(IEnumerable<UserData> users)
+        public static IEnumerable<User> ToUser(IEnumerable<UserData> users, IEnumerable<IdentityRole> roles)
         {
             foreach (var user in users)
             {
-                yield return Converter.ToUser(user);
+                yield return Converter.ToUser(user, roles);
             }
         }
 
-        public static UserRole ToUserRole(IdentityUserRole identityRole)
+        public static UserRole ToUserRole(IdentityUserRole identityRole, IEnumerable<IdentityRole> roles)
+        {
+            var role = roles.Single(r => r.Id == identityRole.RoleId);
+
+            return new UserRole
+            {
+                Deleted = false,
+                Id = role.Id,
+                Name = role.Name,
+            };
+        }
+
+        public static IEnumerable<UserRole> ToUserRole(IEnumerable<IdentityUserRole> identityRoles, IEnumerable<IdentityRole> roles)
+        {
+            foreach (var role in identityRoles)
+            {
+                yield return Converter.ToUserRole(role, roles);
+            }
+        }
+
+        public static UserRole ToUserRole(IdentityRole role)
         {
             return new UserRole
             {
                 Deleted = false,
-                Id = identityRole.Role.Id,
-                Name = identityRole.Role.Name,
+                Id = role.Id,
+                Name = role.Name
             };
         }
 
-        public static IEnumerable<UserRole> ToUserRole(IEnumerable<IdentityUserRole> identityRoles)
+        public static IEnumerable<UserRole> ToUserRole(IEnumerable<IdentityRole> roles)
         {
-            foreach (var role in identityRoles)
+            foreach (var role in roles)
             {
                 yield return Converter.ToUserRole(role);
             }

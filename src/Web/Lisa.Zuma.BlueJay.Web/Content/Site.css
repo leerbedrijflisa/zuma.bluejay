@@ -40,3 +40,8 @@ input[type="checkbox"].input-validation-error {
 .validation-summary-valid {
     display: none;
 }
+
+/* Overrides */
+.form-control {
+    display: inline-block !important;
+}

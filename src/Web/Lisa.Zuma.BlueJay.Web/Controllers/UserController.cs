@@ -34,6 +34,8 @@ namespace Lisa.Zuma.BlueJay.Web.Controllers
         public async Task<ActionResult> Edit(string id)
         {
             var user = await webApiUserHelper.GetAsync(id);
+            ViewBag.RoleSelect = await GetRoleSelectListAsync();
+
             return View(user);
         }
 
@@ -71,11 +73,19 @@ namespace Lisa.Zuma.BlueJay.Web.Controllers
             return RedirectToAction("Index");
         }
 
-        public ActionResult BlankRoleRow()
+        public async Task<ActionResult> BlankRoleRow()
         {
+            ViewBag.RoleSelect = await GetRoleSelectListAsync();
             return PartialView("_BlankRoleRow", new UserRole());
         }
 
+        private async Task<SelectList> GetRoleSelectListAsync()
+        {
+            var roles = await webApiRoleHelper.GetRolesAsync();
+            return new SelectList(roles, "Name", "Name");
+        }
+
         private WebApiUserHelper webApiUserHelper = new WebApiUserHelper(ConfigurationManager.AppSettings["WebApiBaseUrl"]);
+        private WebApiRoleHelper webApiRoleHelper = new WebApiRoleHelper(ConfigurationManager.AppSettings["WebApiBaseUrl"]);
 	}
 }

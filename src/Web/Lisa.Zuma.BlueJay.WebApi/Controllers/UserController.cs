@@ -18,7 +18,7 @@ namespace Lisa.Zuma.BlueJay.WebApi.Controllers
         public IHttpActionResult Get()
         {
             var users = UserManager.GetAll();
-            var result = Converter.ToUser(users);
+            var result = Converter.ToUser(users, RoleManager.Roles);
 
             return Ok(result);
         }
@@ -32,7 +32,7 @@ namespace Lisa.Zuma.BlueJay.WebApi.Controllers
                 return NotFound();
             }
 
-            var result = Converter.ToUser(user);
+            var result = Converter.ToUser(user, RoleManager.Roles);
 
             return Ok(result);
         }
@@ -50,34 +50,26 @@ namespace Lisa.Zuma.BlueJay.WebApi.Controllers
             {
                 if (role.Deleted)
                 {
+                    // TODO: Make extension to delete by role id.
                     var removeRoleResult = await UserManager.RemoveFromRoleAsync(user.Id, role.Name);
                     if (!removeRoleResult.Succeeded)
                     {
                         return BadRequest();
                     }
                 }
-                else
+                else if (!await UserManager.IsInRoleAsync(user.Id, role.Name))
                 {
-                    if (!await RoleManager.RoleExistsAsync(role.Name))
+                    var addToRoleResult = await UserManager.AddToRoleAsync(user.Id, role.Name);
+                    if (!addToRoleResult.Succeeded)
                     {
-                        var roleResult = await RoleManager.CreateAsync(new IdentityRole(role.Name));
-                        if (!roleResult.Succeeded)
-                        {
-                            return BadRequest();
-                        }
-                    }
-
-                    var addToResult = await UserManager.AddToRoleAsync(user.Id, role.Name);
-                    if (!addToResult.Succeeded)
-                    {
-                        // TODO: Needs proper return type or iteration fix.
+                        // TODO: Create proper error.
                         continue;
                     }
                 }
             }
 
             var dbUser = await UserManager.FindByIdAsync(user.Id);
-            var result = Converter.ToUser(dbUser);
+            var result = Converter.ToUser(dbUser, RoleManager.Roles);
 
             return Ok(result);
         }
