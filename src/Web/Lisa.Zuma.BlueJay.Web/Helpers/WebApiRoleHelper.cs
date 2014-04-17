@@ -45,6 +45,23 @@ namespace Lisa.Zuma.BlueJay.Web.Helpers
             return result.Data;
         }
 
+        public List<UserRole> AddRoles(IEnumerable<UserRole> roles)
+        {
+            return AddRolesAsync(roles).Result;
+        }
+
+        public async Task<List<UserRole>> AddRolesAsync(IEnumerable<UserRole> roles)
+        {
+            var result = new List<UserRole>();
+
+            foreach (var role in roles)
+            {
+                result.Add(await AddRoleAsync(role));
+            }
+
+            return result;
+        }
+
         private const string roleUri = "/api/role";
     }
 }
