@@ -331,16 +331,39 @@ namespace Lisa.Zuma.BlueJay.WebApi.Controllers
                 return BadRequest(ModelState);
             }
 
+            var userRole = await RoleManager.FindByNameAsync("User");
             var user = new UserData
             {
                 UserName = model.UserName,
-                Type = "PARENT",
+                Type = model.IsParent ? "PARENT" : "OTHER",
                 Dossiers = new List<DossierData>()
             };
-            
+
             IdentityResult result = await Manager.CreateAsync(user, model.Password);
             IHttpActionResult errorResult = GetErrorResult(result);            
 
+            if (errorResult != null)
+            {
+                return errorResult;
+            }
+
+            if (model.IsParent)
+            {
+                result = await Manager.AddToRoleAsync(user.Id, "Parent");
+            }
+            else
+            {
+                result = await Manager.AddToRoleAsync(user.Id, "Begeleider");
+            }
+
+            errorResult = GetErrorResult(result);
+            if (errorResult != null)
+            {
+                return errorResult;
+            }
+
+            result = await Manager.AddToRoleAsync(user.Id, "User");
+            errorResult = GetErrorResult(result);
             if (errorResult != null)
             {
                 return errorResult;

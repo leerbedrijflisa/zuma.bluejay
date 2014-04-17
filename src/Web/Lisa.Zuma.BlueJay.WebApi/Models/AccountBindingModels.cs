@@ -48,6 +48,14 @@ namespace Lisa.Zuma.BlueJay.WebApi.Models
         [Display(Name = "Confirm password")]
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
+
+        #region Custom register properties
+
+        [Required]
+        [Display(Name = "Parent")]
+        public bool IsParent { get; set; }
+
+        #endregion
     }
 
     public class RegisterExternalBindingModel
