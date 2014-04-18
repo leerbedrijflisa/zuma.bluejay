@@ -8,6 +8,7 @@ namespace Lisa.Zuma.BlueJay.Models
         public int Id { get; set; }
         public List<DossierDetail> Details { get; set; }
         public List<Note> Notes { get; set; }
+        public List<User> Watchers { get; set; }
         public string Name { get; set; }
     }
 }

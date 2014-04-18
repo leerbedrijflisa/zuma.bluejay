@@ -10,13 +10,15 @@ namespace Lisa.Zuma.BlueJay.WebApi.Helpers
 {
     public static class Converter
     {
-        public static Dossier ToDossier(DossierData dossier)
+        public static Dossier ToDossier(DossierData dossier, IEnumerable<IdentityRole> roles = null)
         {
             var model = new Dossier
             {
                 Id = dossier.Id,
+                Name = dossier.Name,
                 Notes = new List<Note>(),
-                Details = new List<DossierDetail>()
+                Details = new List<DossierDetail>(),
+                Watchers = new List<User>()
             };
 
             if (dossier.Details != null)
@@ -31,14 +33,20 @@ namespace Lisa.Zuma.BlueJay.WebApi.Helpers
                                 .ToList();
             }
 
+            if (roles != null)
+            {
+                model.Watchers = Converter.ToUser(dossier.Watchers, roles)
+                                .ToList();
+            }
+
             return model;
         }
 
-        public static IEnumerable<Dossier> ToDossier(IEnumerable<DossierData> dossiers)
+        public static IEnumerable<Dossier> ToDossier(IEnumerable<DossierData> dossiers, IEnumerable<IdentityRole> roles = null)
         {
             foreach (var dossier in dossiers)
             {
-                yield return Converter.ToDossier(dossier);
+                yield return Converter.ToDossier(dossier, roles);
             }
         }
 
