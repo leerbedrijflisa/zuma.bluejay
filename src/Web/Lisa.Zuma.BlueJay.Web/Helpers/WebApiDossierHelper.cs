@@ -14,17 +14,7 @@ namespace Lisa.Zuma.BlueJay.Web.Helpers
             : base(rootUri)
         {
         }
-
-        /// <summary>
-        /// Gets all the dossier associated with the currently logged in user.
-        /// This method executes asynchronous.
-        /// </summary>
-        /// <returns></returns>
-        public IEnumerable<Dossier> GetAll()
-        {
-            return GetAllAsync().Result;
-        }
-
+        
         /// <summary>
         /// Gets all the dossier associated with the currently logged in user.
         /// This method executes asynchronous.
@@ -39,11 +29,6 @@ namespace Lisa.Zuma.BlueJay.Web.Helpers
             return response.Data;
         }
 
-        public Dossier Get(int id)
-        {
-            return GetAsync(id).Result;
-        }
-
         public async Task<Dossier> GetAsync(int id)
         {
             var request = new RestRequest(dossierUri + "{id}");
@@ -54,16 +39,23 @@ namespace Lisa.Zuma.BlueJay.Web.Helpers
             return response.Data;
         }
 
-        public Dossier Create(string userId, Dossier dossier)
-        {
-            return CreateAsync(userId, dossier).Result;
-        }
-
         public async Task<Dossier> CreateAsync(string userId, Dossier dossier)
         {
             var request = new RestRequest(dossierUri + "{userId}", Method.POST);
             request.AddParameter(AuthorizationHeader).RequestFormat = DataFormat.Json;
             request.AddUrlSegment("userId", userId)
+                .AddBody(dossier);
+
+            var response = await Client.ExecuteTaskAsync<Dossier>(request);
+            return response.Data;
+        }
+
+        public async Task<Dossier> UpdateAsync(Dossier dossier)
+        {
+            var request = new RestRequest(dossierUri + "{id}", Method.PUT);
+            request.RequestFormat = DataFormat.Json;
+            request.AddParameter(AuthorizationHeader)
+                .AddUrlSegment("id", dossier.Id.ToString())
                 .AddBody(dossier);
 
             var response = await Client.ExecuteTaskAsync<Dossier>(request);
