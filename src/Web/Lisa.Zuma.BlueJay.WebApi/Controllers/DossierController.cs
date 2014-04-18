@@ -66,5 +66,48 @@ namespace Lisa.Zuma.BlueJay.WebApi.Controllers
 
             return Created(Request.RequestUri, result);
         }
+
+        [Route("{id}")]
+        [HttpPut]
+        public async Task<IHttpActionResult> Put(int id, [FromBody] Dossier dossier)
+        {
+            var dossierData = UoW.DossierRepository.GetById(id);
+            if (dossierData == null)
+            {
+                return NotFound();
+            }
+
+            if (dossierData.Name != dossier.Name)
+            {
+                dossierData.Name = dossier.Name;
+            }
+
+            foreach (var watcher in dossier.Watchers)
+            {
+                if (watcher.Deleted)
+                {
+                    var dossierWatcher = dossierData.Watchers.FirstOrDefault(u => u.Id == watcher.Id);
+                    if (dossierWatcher != null)
+                    {
+                        dossierData.Watchers.Remove(dossierWatcher);
+                    }
+                }
+                else
+                {
+                    if (dossierData.Watchers.Count(u => u.Id == watcher.Id) == 0)
+                    {
+                        var user = await UserManager.FindByIdAsync(watcher.Id);
+                        if (user != null)
+                        {
+                            dossierData.Watchers.Add(user);
+                        }
+                    }
+                }
+            }
+
+            UoW.Save();
+
+            return Ok(dossier);
+        }
     }
 }
