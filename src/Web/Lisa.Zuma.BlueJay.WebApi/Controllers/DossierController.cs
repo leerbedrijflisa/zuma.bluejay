@@ -27,7 +27,7 @@ namespace Lisa.Zuma.BlueJay.WebApi.Controllers
                 return NotFound();
             }
                         
-            var dossierModel = Converter.ToDossier(dossier);
+            var dossierModel = Converter.ToDossier(dossier, RoleManager.Roles);
 
             return Ok(dossierModel);
         }
@@ -35,7 +35,9 @@ namespace Lisa.Zuma.BlueJay.WebApi.Controllers
         [Route("")]
         public IHttpActionResult Get()
         {
-            var dossierModels = Converter.ToDossier(CurrentUser.Dossiers);
+            // TODO: Fix problem with context issue when using CurrentUser property in BaseApiController.
+            var u = UoW.UserManager.FindById(User.Identity.GetUserId());
+            var dossierModels = Converter.ToDossier(u.Dossiers, RoleManager.Roles);
 
             return Ok(dossierModels);
         }

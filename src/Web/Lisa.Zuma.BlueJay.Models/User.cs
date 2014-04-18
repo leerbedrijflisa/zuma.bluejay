@@ -17,6 +17,11 @@ namespace Lisa.Zuma.BlueJay.Models
         public string UserName { get; set; }
         public string Type { get; set; }
         public List<UserRole> Roles { get; set; }
+
+        public override string ToString()
+        {
+            return string.Format("{0},{1},{2}", Id, UserName, Type);
+        }
     }
 
     public class UserRole 
