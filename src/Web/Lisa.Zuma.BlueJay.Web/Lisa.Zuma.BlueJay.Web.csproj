@@ -145,6 +145,7 @@
     <Compile Include="Attributes\RequiredIfAttribute.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
+    <Compile Include="Controllers\DossierController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Global.asax.cs">
@@ -205,6 +206,10 @@
     <Content Include="Views\User\_BlankRoleRow.cshtml" />
     <Content Include="Views\User\Index.cshtml" />
     <Content Include="Views\User\Details.cshtml" />
+    <Content Include="Views\Dossier\Index.cshtml" />
+    <Content Include="Views\Dossier\Details.cshtml" />
+    <Content Include="Views\Dossier\Edit.cshtml" />
+    <Content Include="Views\Dossier\_BlankWatcherRow.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Lisa.Zuma.BlueJay.Models\Lisa.Zuma.BlueJay.Models.csproj">
