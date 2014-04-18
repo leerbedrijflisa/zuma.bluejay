@@ -70,6 +70,16 @@ namespace Lisa.Zuma.BlueJay.Web.Controllers
                 return View();
             }
 
+            if (userModel.IsParent)
+            {
+                var dossier = new Dossier 
+                {
+                    Name = userModel.DossierName
+                };
+
+                var dossierResult = await webApiDossierHelper.CreateAsync(result.User.Id, dossier);
+            }
+
             return RedirectToAction("Index");
         }
 
@@ -87,5 +97,6 @@ namespace Lisa.Zuma.BlueJay.Web.Controllers
 
         private WebApiUserHelper webApiUserHelper = new WebApiUserHelper(ConfigurationManager.AppSettings["WebApiBaseUrl"]);
         private WebApiRoleHelper webApiRoleHelper = new WebApiRoleHelper(ConfigurationManager.AppSettings["WebApiBaseUrl"]);
+        private WebApiDossierHelper webApiDossierHelper = new WebApiDossierHelper(ConfigurationManager.AppSettings["WebApiBaseUrl"]);
 	}
 }
