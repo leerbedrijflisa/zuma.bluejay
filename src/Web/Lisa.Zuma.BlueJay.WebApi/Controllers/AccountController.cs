@@ -369,7 +369,7 @@ namespace Lisa.Zuma.BlueJay.WebApi.Controllers
                 return errorResult;
             }
 
-            return Ok();
+            return Ok(Converter.ToUser(user, RoleManager.Roles));
         }
 
         // POST api/Account/RegisterExternal
