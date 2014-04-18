@@ -19,11 +19,17 @@ namespace Lisa.Zuma.BlueJay.WebApi.Helpers
                 Details = new List<DossierDetail>()
             };
 
-            model.Details = Converter.ToDossierDetail(dossier.Details)
-                                        .ToList();
+            if (dossier.Details != null)
+            {
+                model.Details = Converter.ToDossierDetail(dossier.Details)
+                                    .ToList();
+            }
 
-            model.Notes = Converter.ToNote(dossier.Notes)
-                                        .ToList();
+            if (dossier.Notes != null)
+            {
+                model.Notes = Converter.ToNote(dossier.Notes)
+                                .ToList();
+            }
 
             return model;
         }
@@ -46,8 +52,11 @@ namespace Lisa.Zuma.BlueJay.WebApi.Helpers
                 Media = new List<NoteMedia>()
             };
 
-            model.Media = Converter.ToNoteMedia(note.Media)
-                                        .ToList();
+            if (note.Media != null)
+            {
+                model.Media = Converter.ToNoteMedia(note.Media)
+                                .ToList();
+            }
 
             return model;
         }
