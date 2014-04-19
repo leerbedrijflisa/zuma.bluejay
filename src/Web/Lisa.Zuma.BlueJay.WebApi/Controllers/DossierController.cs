@@ -55,6 +55,7 @@ namespace Lisa.Zuma.BlueJay.WebApi.Controllers
             var dossierData = new DossierData()
             {
                 Name = dossier.Name,
+                OwnerId = user.Id,
                 Watchers = new List<UserData>()
             };
             dossierData.Watchers.Add(user);
@@ -84,7 +85,7 @@ namespace Lisa.Zuma.BlueJay.WebApi.Controllers
 
             foreach (var watcher in dossier.Watchers)
             {
-                if (watcher.Deleted)
+                if (watcher.Deleted && watcher.Id != dossier.OwnerId)
                 {
                     var dossierWatcher = dossierData.Watchers.FirstOrDefault(u => u.Id == watcher.Id);
                     if (dossierWatcher != null)

@@ -10,5 +10,6 @@ namespace Lisa.Zuma.BlueJay.Models
         public List<Note> Notes { get; set; }
         public List<User> Watchers { get; set; }
         public string Name { get; set; }
+        public string OwnerId { get; set; }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using Lisa.Zuma.BlueJay.Models;
 using Lisa.Zuma.BlueJay.Web.Helpers;
 using Lisa.Zuma.BlueJay.Web.Models;
+using Microsoft.AspNet.Identity;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -20,6 +21,7 @@ namespace Lisa.Zuma.BlueJay.Web.Controllers
             return View(users);
         }
 
+        [AllowAnonymous]
         public ActionResult Create()
         {
             return View();
@@ -47,6 +49,7 @@ namespace Lisa.Zuma.BlueJay.Web.Controllers
         }
 
         [HttpPost]
+        [AllowAnonymous]
         public async Task<ActionResult> Create(UserViewModel userModel)
         {
             if (!ModelState.IsValid)
@@ -70,11 +73,25 @@ namespace Lisa.Zuma.BlueJay.Web.Controllers
                 return View();
             }
 
+            // TODO: Refactor to basecontroller or something like that.
+            var loginResult = await WebApiHelper.LoginAndGetIdentityAsync(userModel.UserName, userModel.Password, DefaultAuthenticationTypes.ApplicationCookie);
+            if (!loginResult.Success)
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
+            HttpContext.GetOwinContext().Authentication.SignIn(new Microsoft.Owin.Security.AuthenticationProperties
+            {
+                IsPersistent = false,
+                ExpiresUtc = loginResult.TokenResult.Expires
+            }, loginResult.Identity);
+
             if (userModel.IsParent)
             {
                 var dossier = new Dossier 
                 {
-                    Name = userModel.DossierName
+                    Name = userModel.DossierName,
+                    OwnerId = result.User.Id
                 };
 
                 var dossierResult = await webApiDossierHelper.CreateAsync(result.User.Id, dossier);

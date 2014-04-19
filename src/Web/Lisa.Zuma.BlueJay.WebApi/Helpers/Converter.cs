@@ -16,6 +16,7 @@ namespace Lisa.Zuma.BlueJay.WebApi.Helpers
             {
                 Id = dossier.Id,
                 Name = dossier.Name,
+                OwnerId = dossier.OwnerId,
                 Notes = new List<Note>(),
                 Details = new List<DossierDetail>(),
                 Watchers = new List<User>()
