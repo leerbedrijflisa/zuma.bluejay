@@ -29,7 +29,7 @@
         <div id="watchers">
             @foreach (var user in Model.Watchers)
             {
-                Html.RenderPartial("_BlankWatcherRow", user);
+                Html.RenderPartial("_BlankWatcherRow", user, new ViewDataDictionary { { "OwnerId", Model.OwnerId } });
             }
         </div>
 

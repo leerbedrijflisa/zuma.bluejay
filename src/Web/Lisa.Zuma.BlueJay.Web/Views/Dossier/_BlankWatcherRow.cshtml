@@ -22,7 +22,11 @@
             {
                 @Html.DropDownList("DummyUserName", watcherSelect, "Select a user", new { @class = "form-control watcherSelect" })
             }
-            <a href="#" class="deleteWatcher">X</a>
+
+            @if (ViewData["OwnerId"] == null || (Model.Id != ViewData["OwnerId"].ToString()))
+            {
+                <a href="#" class="deleteWatcher">X</a>
+            }
             @Html.ValidationMessageFor(model => model.UserName)
         </div>
     }
