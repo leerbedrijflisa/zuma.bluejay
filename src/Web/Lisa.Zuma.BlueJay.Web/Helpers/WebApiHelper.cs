@@ -160,6 +160,7 @@ namespace Lisa.Zuma.BlueJay.Web.Helpers
             }
             else
             {
+                result.User = await Newtonsoft.Json.JsonConvert.DeserializeObjectAsync<User>(response.Content);
                 result.Success = true;
             }
 
@@ -298,5 +299,6 @@ namespace Lisa.Zuma.BlueJay.Web.Helpers
         public bool Success { get; set; }
         public string Message { get; set; }
         public Dictionary<string, IList<string>> Errors { get; set; }
+        public User User { get; set; }
     }
 }

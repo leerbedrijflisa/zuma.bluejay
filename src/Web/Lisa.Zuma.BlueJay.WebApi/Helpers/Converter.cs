@@ -10,29 +10,44 @@ namespace Lisa.Zuma.BlueJay.WebApi.Helpers
 {
     public static class Converter
     {
-        public static Dossier ToDossier(DossierData dossier)
+        public static Dossier ToDossier(DossierData dossier, IEnumerable<IdentityRole> roles = null)
         {
             var model = new Dossier
             {
                 Id = dossier.Id,
+                Name = dossier.Name,
+                OwnerId = dossier.OwnerId,
                 Notes = new List<Note>(),
-                Details = new List<DossierDetail>()
+                Details = new List<DossierDetail>(),
+                Watchers = new List<User>()
             };
 
-            model.Details = Converter.ToDossierDetail(dossier.Details)
-                                        .ToList();
+            if (dossier.Details != null)
+            {
+                model.Details = Converter.ToDossierDetail(dossier.Details)
+                                    .ToList();
+            }
 
-            model.Notes = Converter.ToNote(dossier.Notes)
-                                        .ToList();
+            if (dossier.Notes != null)
+            {
+                model.Notes = Converter.ToNote(dossier.Notes)
+                                .ToList();
+            }
+
+            if (roles != null)
+            {
+                model.Watchers = Converter.ToUser(dossier.Watchers, roles)
+                                .ToList();
+            }
 
             return model;
         }
 
-        public static IEnumerable<Dossier> ToDossier(IEnumerable<DossierData> dossiers)
+        public static IEnumerable<Dossier> ToDossier(IEnumerable<DossierData> dossiers, IEnumerable<IdentityRole> roles = null)
         {
             foreach (var dossier in dossiers)
             {
-                yield return Converter.ToDossier(dossier);
+                yield return Converter.ToDossier(dossier, roles);
             }
         }
 
@@ -46,8 +61,11 @@ namespace Lisa.Zuma.BlueJay.WebApi.Helpers
                 Media = new List<NoteMedia>()
             };
 
-            model.Media = Converter.ToNoteMedia(note.Media)
-                                        .ToList();
+            if (note.Media != null)
+            {
+                model.Media = Converter.ToNoteMedia(note.Media)
+                                .ToList();
+            }
 
             return model;
         }
