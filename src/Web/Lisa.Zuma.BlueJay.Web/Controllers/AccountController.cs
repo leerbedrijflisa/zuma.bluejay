@@ -7,6 +7,7 @@ using Newtonsoft.Json;
 using RestSharp;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Net;
 using System.Security.Claims;
@@ -54,6 +55,66 @@ namespace Lisa.Zuma.BlueJay.Web.Controllers
             return Redirect(returnUrl);
         }
 
+        [AllowAnonymous]
+        [HttpGet]
+        public ActionResult Register()
+        {
+            return View();
+        }
+
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        [HttpPost]
+        public async Task<ActionResult> Register(RegisterUserViewModel userModel)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View();
+            }
+
+            var registerResult = await WebApiHelper.RegisterUserAsync(userModel);
+            if (!registerResult.Success)
+            {
+                ModelState.Clear();
+
+                foreach (var error in registerResult.Errors)
+                {
+                    foreach (var message in error.Value)
+                    {
+                        ModelState.AddModelError(error.Key, message);
+                    }
+                }
+
+                return View();
+            }
+
+            var loginModel = new LoginViewModel 
+            {
+                Username = userModel.UserName,
+                Password = userModel.Password
+            };
+            
+            var loginResult = await Login(loginModel, Url.Action("Index", "Home"));
+            // Return when login failed
+            if (loginResult is ViewResult)
+            {
+                return loginResult;
+            }
+
+            if (userModel.IsParent)
+            {
+                var dossier = new Dossier
+                {
+                    Name = userModel.DossierName,
+                    OwnerId = registerResult.User.Id
+                };
+
+                var dossierResult = await webApiDossierHelper.CreateAsync(registerResult.User.Id, dossier);
+            }
+
+            return RedirectToAction("Index", "Home");
+        }
+
         public ActionResult Logout()
         {
             AuthenticationManager.SignOut(User.Identity.AuthenticationType);
@@ -68,5 +129,7 @@ namespace Lisa.Zuma.BlueJay.Web.Controllers
                 return HttpContext.GetOwinContext().Authentication;
             }
         }
+
+        private WebApiDossierHelper webApiDossierHelper = new WebApiDossierHelper(ConfigurationManager.AppSettings["WebApiBaseUrl"]);
 	}
 }
