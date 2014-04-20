@@ -7,7 +7,7 @@ using System.Web;
 
 namespace Lisa.Zuma.BlueJay.Web.Models
 {
-    public class UserViewModel
+    public class RegisterUserViewModel
     {
         [Required]
         [Display(Name = "User name")]
