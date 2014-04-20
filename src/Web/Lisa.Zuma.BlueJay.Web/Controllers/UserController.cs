@@ -12,6 +12,7 @@ using System.Web.Mvc;
 
 namespace Lisa.Zuma.BlueJay.Web.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class UserController : BaseController
     {        
         public async Task<ActionResult> Index()
