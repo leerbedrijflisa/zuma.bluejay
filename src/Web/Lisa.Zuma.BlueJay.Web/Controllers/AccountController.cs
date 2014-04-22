@@ -108,8 +108,17 @@ namespace Lisa.Zuma.BlueJay.Web.Controllers
                     Name = userModel.DossierName,
                     OwnerId = registerResult.User.Id
                 };
-
-                var dossierResult = await webApiDossierHelper.CreateAsync(registerResult.User.Id, dossier);
+                
+                //var dossierResult = await webApiDossierHelper.CreateAsync(registerResult.User.Id, dossier);
+                
+                // Redirect to a temporary method to create a dossier. This temporary fix is used because the user
+                // is not yet authorized after logging in. A new request must be made to validate the identity as 
+                // logged in.
+                return RedirectToAction("CreateDossier", new
+                {
+                    userId = registerResult.User.Id,
+                    dossierName = userModel.DossierName
+                });
             }
 
             return RedirectToAction("Index", "Home");
@@ -120,6 +129,18 @@ namespace Lisa.Zuma.BlueJay.Web.Controllers
             AuthenticationManager.SignOut(User.Identity.AuthenticationType);
 
             return RedirectToAction("About", "Home");
+        }
+
+        // TODO: THIS NEEDS TO BE MOVED TO A SAVE LOCATION!
+        public async Task<ActionResult> CreateDossier(string userId, string dossierName)
+        {
+            var dossierResult = await webApiDossierHelper.CreateAsync(userId, new Dossier
+            {
+                Name = dossierName,
+                OwnerId = userId
+            });
+
+            return RedirectToAction("Index", "Home");
         }
 
         protected IAuthenticationManager AuthenticationManager
