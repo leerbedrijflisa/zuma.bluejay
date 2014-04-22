@@ -35,11 +35,7 @@ namespace Lisa.Zuma.BlueJay.Web.Data.Migrations
             var parent = new UserData
             {
                 Type = "PARENT",
-                UserName = "Bert",
-                Dossiers = new List<DossierData>()
-                {
-                    dossier
-                }
+                UserName = "Bert"
             };
 
             var mentor = new UserData
@@ -67,6 +63,14 @@ namespace Lisa.Zuma.BlueJay.Web.Data.Migrations
 
                 userManager.AddToRole(mentor.Id, "User");
                 userManager.AddToRole(mentor.Id, "Begeleider");
+
+                dossier.OwnerId = parent.Id;
+                parent.Dossiers = new List<DossierData>()
+                {
+                    dossier
+                };
+
+                context.SaveChanges();
             }
             catch { }
         }
