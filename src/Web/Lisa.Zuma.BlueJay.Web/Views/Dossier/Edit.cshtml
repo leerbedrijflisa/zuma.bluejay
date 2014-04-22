@@ -1,10 +1,10 @@
 ﻿@model Dossier
 
 @{
-    ViewBag.Title = "Edit";
+    ViewBag.Title = "Bewerken";
 }
 
-<h2>Edit</h2>
+<h2>Bewerken</h2>
 
 
 @using (Html.BeginForm())
@@ -35,14 +35,14 @@
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Save" class="btn btn-default" />
+                <input type="submit" value="Opslaan" class="btn btn-default" />
             </div>
         </div>
     </div>
 }
 
 <div>
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Terug naar overzicht", "Index")
 </div>
 
 @section Scripts {
