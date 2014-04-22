@@ -1,5 +1,5 @@
 ﻿@model IEnumerable<Dossier>
-
+@using Microsoft.AspNet.Identity
 @{
     ViewBag.Title = "Index";
 }
@@ -20,7 +20,11 @@
             @Html.DisplayFor(modelItem => item.Name)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
+            @if (User.Identity.GetUserId() == item.OwnerId)
+            {
+                @Html.ActionLink("Edit", "Edit", new { id = item.Id }) 
+                @Html.Raw(" |");
+            }
             @Html.ActionLink("Details", "Details", new { id=item.Id })
         </td>
     </tr>

@@ -23,6 +23,16 @@
                     <li>@Html.ActionLink("Home", "Index", "Home")</li>
                     <li>@Html.ActionLink("About", "About", "Home")</li>
                     <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
+                    <!-- TEMPORARY MENU ITEMS -->
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <li>@Html.ActionLink("Dossiers", "Index", "Dossier")</li>
+                    }
+
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <li>@Html.ActionLink("Gebruikers", "Index", "User")</li>
+                    }                    
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                     @if (User.Identity.IsAuthenticated)
@@ -32,6 +42,7 @@
                     else
                     {
                         <li>@Html.ActionLink("Login", "Login", "Account")</li>
+                        <li>@Html.ActionLink("Register", "Register", "Account")</li>
                     }
                 </ul>
             </div>

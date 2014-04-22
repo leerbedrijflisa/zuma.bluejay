@@ -1,5 +1,5 @@
 ﻿@model Dossier
-
+@using Microsoft.AspNet.Identity
 @{
     ViewBag.Title = "Details";
 }
@@ -35,6 +35,10 @@
     </dl>
 </div>
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+    @if (Model.OwnerId == User.Identity.GetUserId())
+    {
+        @Html.ActionLink("Edit", "Edit", new { id = Model.Id });
+        @Html.Raw(" |");
+    }    
     @Html.ActionLink("Back to List", "Index")
 </p>

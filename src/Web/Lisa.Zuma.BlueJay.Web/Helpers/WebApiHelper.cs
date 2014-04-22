@@ -129,12 +129,12 @@ namespace Lisa.Zuma.BlueJay.Web.Helpers
             return result;
         }
 
-        public RegisterUserResult RegisterUser(UserViewModel userModel)
+        public RegisterUserResult RegisterUser(RegisterUserViewModel userModel)
         {
             return RegisterUserAsync(userModel).Result;
         }
 
-        public async Task<RegisterUserResult> RegisterUserAsync(UserViewModel userModel)
+        public async Task<RegisterUserResult> RegisterUserAsync(RegisterUserViewModel userModel)
         {
             var request = new RestRequest("/api/account/register", Method.POST);
             request.RequestFormat = DataFormat.Json;
