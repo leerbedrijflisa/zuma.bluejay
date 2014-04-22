@@ -70,7 +70,6 @@ namespace Lisa.Zuma.BlueJay.IOS.Views
 		{
 			camera.PickPhotoAsync (() => {
 				UpdateButtonNumber ();
-				Console.WriteLine("refresh");
 			});
 
 		}
@@ -78,7 +77,6 @@ namespace Lisa.Zuma.BlueJay.IOS.Views
 		private void PickVideo(Object sender, EventArgs args)
 		{
 			camera.PickVideoAsync(() => UpdateButtonNumber ());
-
 		}
 
 		public void UpdateButtonNumber()
@@ -93,8 +91,7 @@ namespace Lisa.Zuma.BlueJay.IOS.Views
 		{
 			UpdateButtonNumber ();
 		}
-
-		private TimelineViewController timeLineViewController;
+			
 		private TimelineViewController parentView;
 		private DataHelper dataHelper;
 		private UITextView txtInput;

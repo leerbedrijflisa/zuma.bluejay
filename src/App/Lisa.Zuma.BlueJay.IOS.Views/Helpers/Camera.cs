@@ -19,7 +19,6 @@ namespace Lisa.Zuma.BlueJay.IOS.Views
 		public Camera ()
 		{
 			dataHelper = new DataHelper ();
-			mediaSummary = new MediaSummaryViewController ();
 		}
 
 		public void CaptureVideo(string date, Action Ready){
@@ -40,7 +39,7 @@ namespace Lisa.Zuma.BlueJay.IOS.Views
 			var picker = new MediaPicker ();
 		
 			picker.TakePhotoAsync (new StoreCameraMediaOptions {
-				Name = date+".png",
+				Name = String.Format("{0}.png", date),
 				Directory = "TemporaryFiles"
 			}).ContinueWith (t => {
 				var Image = UIImage.FromFile(t.Result.Path);
@@ -81,7 +80,6 @@ namespace Lisa.Zuma.BlueJay.IOS.Views
 		}
 
 		private DataHelper dataHelper;
-		private MediaSummaryViewController mediaSummary;
 	}
 }
 
