@@ -19,10 +19,10 @@ namespace Lisa.Zuma.BlueJay.IOS.Views
 		public Camera ()
 		{
 			dataHelper = new DataHelper ();
-			mediaSummary = new MediaSummaryViewController ();
 		}
 
-		public void CaptureVideo(string date){
+		public void CaptureVideo(string date, Action Ready){
+
 			var picker = new MediaPicker ();
 				picker.TakeVideoAsync (new StoreVideoOptions {
 					Name = date+".mp4",
@@ -30,19 +30,21 @@ namespace Lisa.Zuma.BlueJay.IOS.Views
 				}).ContinueWith (t => {
 					ALAssetsLibrary library = new ALAssetsLibrary();                   
 					library.WriteVideoToSavedPhotosAlbum (new NSUrl(t.Result.Path), (assetUrl, error) =>{});
+				SaveFileToMedialibrary(t.Result, ".mp4", () => Ready());
 				}, TaskScheduler.FromCurrentSynchronizationContext());
 		}
 
-		public void CapturePhoto(string date){
+		public void CapturePhoto(string date, Action Ready){
 		
 			var picker = new MediaPicker ();
 		
 			picker.TakePhotoAsync (new StoreCameraMediaOptions {
-				Name = date+".png",
+				Name = String.Format("{0}.png", date),
 				Directory = "TemporaryFiles"
 			}).ContinueWith (t => {
 				var Image = UIImage.FromFile(t.Result.Path);
 				Image.SaveToPhotosAlbum((image, error) => {});
+				SaveFileToMedialibrary(t.Result, ".png", () => Ready());
 			}, TaskScheduler.FromCurrentSynchronizationContext());
 		}
 
@@ -78,7 +80,6 @@ namespace Lisa.Zuma.BlueJay.IOS.Views
 		}
 
 		private DataHelper dataHelper;
-		private MediaSummaryViewController mediaSummary;
 	}
 }
 
