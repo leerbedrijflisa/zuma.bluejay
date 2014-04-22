@@ -10,26 +10,27 @@ namespace Lisa.Zuma.BlueJay.Web.Models
     public class RegisterUserViewModel
     {
         [Required]
-        [Display(Name = "User name")]
+        [Display(Name = "Gebruikersnaam")]
         public string UserName { get; set; }
 
         [Required]
-        [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]
+        [StringLength(100, ErrorMessage = "Het wachtwoord moet minstens bestaan uit {2} karakters.", MinimumLength = 6)]
         [DataType(DataType.Password)]
-        [Display(Name = "Password")]
+        [Display(Name = "Wachtwoord")]
         public string Password { get; set; }
 
         [Required]
-        [Display(Name = "Confirm password")]
+        [Display(Name = "Bevestig wachtwoord")]
         [DataType(DataType.Password)]
-        [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
+        [Compare("Password", ErrorMessage = "Het wachtwoord en de bevestiging komen niet overeen.")]
         public string ConfirmPassword { get; set; }
 
         [Required]
-        [Display(Name = "Parent")]
+        [Display(Name = "Ouder (j/n)")]
         public bool IsParent { get; set; }
 
-        [RequiredIf("IsParent", true, ErrorMessage="The name of the child must be filled")]
+        [RequiredIf("IsParent", true, ErrorMessage="De naam van het kind is verplicht.")]
+        [Display(Name = "Naam kind")]
         public string DossierName { get; set; }
     }
 }

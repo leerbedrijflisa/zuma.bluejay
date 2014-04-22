@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,8 +14,11 @@ namespace Lisa.Zuma.BlueJay.Models
             Roles = new List<UserRole>();
         }
 
+        [Display(Name = "Id")]
         public string Id { get; set; }
+        [Display(Name = "Gebruikersnaam")]
         public string UserName { get; set; }
+        [Display(Name = "Type")]
         public string Type { get; set; }
         public bool Deleted { get; set; }
         public List<UserRole> Roles { get; set; }
@@ -27,7 +31,9 @@ namespace Lisa.Zuma.BlueJay.Models
 
     public class UserRole 
     {
+        [Display(Name = "Id")]
         public string Id { get; set; }
+        [Display(Name = "Rol")]
         public string Name { get; set; }
         public bool Deleted { get; set; }
     }

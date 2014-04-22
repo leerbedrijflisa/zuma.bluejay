@@ -7,11 +7,11 @@ namespace Lisa.Zuma.BlueJay.Web.Models
     public class LoginViewModel
     {
         [Required]
-        [Display(Name = "User name")]
+        [Display(Name = "Gebruikersnaam")]
         public string Username { get; set; }
 
         [Required]
-        [Display(Name = "Password")]
+        [Display(Name = "Wachtwoord")]
         public string Password { get; set; }
     }
 }
