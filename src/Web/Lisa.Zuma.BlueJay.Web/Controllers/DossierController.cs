@@ -1,39 +1,77 @@
-﻿using Lisa.Zuma.BlueJay.Web.Data;
-using Lisa.Zuma.BlueJay.Web.Data.Entities;
-using Lisa.Zuma.BlueJay.Web.Data.Extensions;
+﻿using Lisa.Zuma.BlueJay.Models;
 using Lisa.Zuma.BlueJay.Web.Helpers;
-using Lisa.Zuma.BlueJay.Web.Models;
-using Microsoft.AspNet.Identity;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Web.Http;
+using System.Threading.Tasks;
+using System.Web;
+using System.Web.Mvc;
 
 namespace Lisa.Zuma.BlueJay.Web.Controllers
 {
-    [Authorize]
-    public class DossierController : BaseApiController
+    public class DossierController : Controller
     {
-        public IHttpActionResult Get(int id)
+        public async Task<ActionResult> Index()
         {
-            var dossier = default(DossierData);
-            if (!CurrentUser.TryGetDossier(id, out dossier))
+            var dossiers = await webApiDossierHelper.GetAllAsync();
+            
+            return View(dossiers);
+        }
+
+        public async Task<ActionResult> Details(int id)
+        {
+            var dossier = await webApiDossierHelper.GetAsync(id);
+
+            return View(dossier);
+        }
+
+        public async Task<ActionResult> Edit(int id)
+        {
+            var dossier = await webApiDossierHelper.GetAsync(id);
+
+            return View(dossier);
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> Edit(Dossier dossier)
+        {
+            if (!ModelState.IsValid)
             {
-                return NotFound();
+                ModelState.AddModelError("", "One or more fields are not valid");
+                return View(dossier);
             }
-                        
-            var dossierModel = Converter.ToDossier(dossier);
 
-            return Ok(dossierModel);
+            await webApiDossierHelper.UpdateAsync(dossier);
+
+            return RedirectToAction("Details", new { id = dossier.Id });
         }
 
-        public IHttpActionResult Get()
+        public async Task<ActionResult> BlankWatcherRow()
         {
-            var dossierModels = Converter.ToDossier(CurrentUser.Dossiers);
+            ViewBag.WatcherSelect = await GetUserSelectList();
 
-            return Ok(dossierModels);
+            return PartialView("_BlankWatcherRow", new User());
         }
-    }
+
+        public async Task<SelectList> GetUserSelectList()
+        {
+            var items = new List<SelectListItem>();
+            var users = await webApiUserHelper.GetAllAsync();
+
+            foreach (var user in users)
+            {
+                items.Add(new SelectListItem()
+                {
+                    Text = user.UserName,
+                    Value = user.ToString()
+                });
+            }
+
+            return new SelectList(items, "Value", "Text");
+        }
+
+        private WebApiDossierHelper webApiDossierHelper = new WebApiDossierHelper(ConfigurationManager.AppSettings["WebApiBaseUrl"]);
+        private WebApiUserHelper webApiUserHelper = new WebApiUserHelper(ConfigurationManager.AppSettings["WebApiBaseUrl"]);
+	}
 }

@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.21005.1
+VisualStudioVersion = 12.0.30110.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lisa.Zuma.BlueJay.Web", "Lisa.Zuma.BlueJay.Web\Lisa.Zuma.BlueJay.Web.csproj", "{AD6B21BF-6F5A-4E52-A6AF-F038DED3FE99}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lisa.Zuma.BlueJay.WebApi", "Lisa.Zuma.BlueJay.WebApi\Lisa.Zuma.BlueJay.WebApi.csproj", "{AD6B21BF-6F5A-4E52-A6AF-F038DED3FE99}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lisa.Zuma.BlueJay.Web.Data", "Lisa.Zuma.BlueJay.Web.Data\Lisa.Zuma.BlueJay.Web.Data.csproj", "{EF24823E-06FB-4AE8-8326-E76C629B93F9}"
 EndProject
@@ -12,6 +12,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lisa.Zuma.BlueJay.Web.Test", "Lisa.Zuma.BlueJay.Web.Test\Lisa.Zuma.BlueJay.Web.Test.csproj", "{2A9559CA-0080-4228-996D-BFBEFE01E668}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lisa.Zuma.BlueJay.Models", "Lisa.Zuma.BlueJay.Models\Lisa.Zuma.BlueJay.Models.csproj", "{B0A0D8C1-6B80-4FBB-BCAA-AEAB19337B81}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lisa.Zuma.BlueJay.Web", "Lisa.Zuma.BlueJay.Web\Lisa.Zuma.BlueJay.Web.csproj", "{11714E44-219D-4A87-BE7F-2E6508713291}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -49,6 +51,12 @@ Global
 		{B0A0D8C1-6B80-4FBB-BCAA-AEAB19337B81}.Release|Any CPU.Build.0 = Release|Any CPU
 		{B0A0D8C1-6B80-4FBB-BCAA-AEAB19337B81}.Test|Any CPU.ActiveCfg = Release|Any CPU
 		{B0A0D8C1-6B80-4FBB-BCAA-AEAB19337B81}.Test|Any CPU.Build.0 = Release|Any CPU
+		{11714E44-219D-4A87-BE7F-2E6508713291}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{11714E44-219D-4A87-BE7F-2E6508713291}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{11714E44-219D-4A87-BE7F-2E6508713291}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{11714E44-219D-4A87-BE7F-2E6508713291}.Release|Any CPU.Build.0 = Release|Any CPU
+		{11714E44-219D-4A87-BE7F-2E6508713291}.Test|Any CPU.ActiveCfg = Test|Any CPU
+		{11714E44-219D-4A87-BE7F-2E6508713291}.Test|Any CPU.Build.0 = Test|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

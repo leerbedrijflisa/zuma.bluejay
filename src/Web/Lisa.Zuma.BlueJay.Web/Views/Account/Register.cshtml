@@ -1,0 +1,82 @@
+﻿@model RegisterUserViewModel
+
+@{
+    ViewBag.Title = "Registreren";
+}
+@section Scripts {
+
+    <script type="text/javascript">
+        
+        $('.dossier-parent').on('change', function () {
+
+            var $dossierProps = $('.dossier-properties');
+            if ($(this).is(':checked')) {
+                
+                $dossierProps.show();
+            }
+            else
+            {
+                $dossierProps.hide();
+            }
+        });
+
+    </script>
+}
+
+<h2>Registreren</h2>
+
+@using (Html.BeginForm()) 
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+        <hr />
+        @Html.ValidationSummary(true)
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.UserName, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(model => model.UserName, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.UserName)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Password, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.PasswordFor(model => model.Password, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.Password)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.ConfirmPassword, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.PasswordFor(model => model.ConfirmPassword, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.ConfirmPassword)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.IsParent, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.CheckBoxFor(model => model.IsParent, new { @class = "form-control dossier-parent" })
+                @Html.ValidationMessageFor(model => model.IsParent)
+            </div>
+        </div>
+
+        <div class="form-group dossier-properties" style="display:none;">
+            @Html.LabelFor(model => model.DossierName, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(model => model.DossierName, new { @class = "form-control dossier-name" })
+                @Html.ValidationMessageFor(model => model.DossierName)
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Registreer" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}

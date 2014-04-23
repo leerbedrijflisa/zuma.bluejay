@@ -1,0 +1,27 @@
+﻿@model UserRole
+@using Lisa.Zuma.BlueJay.Web.Helpers
+@{
+    SelectList roleSelect = ViewBag.RoleSelect;
+}
+
+<div class="form-group roleRow">
+    @using (Html.BeginCollectionItem("Roles"))
+    {
+        @Html.HiddenFor(model => model.Id)
+        @Html.HiddenFor(model => model.Deleted, new { @class = "roleDeleted" })
+        @Html.LabelFor(model => model.Name, new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @if (Model.Id == null)
+            {
+                @Html.DropDownListFor(model => model.Name, roleSelect, new { @class = "form-control" })
+            }
+            else
+            {
+                @Html.HiddenFor(model => model.Name)
+                @Html.DropDownListFor(model => model.Name, roleSelect, new { @class = "form-control", @disabled = "disabled" })
+            }            
+            <a href="#" class="deleteRole">X</a>
+            @Html.ValidationMessageFor(model => model.Name)
+        </div>
+    }    
+</div>

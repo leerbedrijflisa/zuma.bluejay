@@ -1,0 +1,33 @@
+﻿@model User
+@using Lisa.Zuma.BlueJay.Web.Helpers
+@{
+    SelectList watcherSelect = ViewBag.WatcherSelect as SelectList;
+}
+
+<div class="form-group watcherRow">
+    @using (Html.BeginCollectionItem("Watchers"))
+    {
+        @Html.LabelFor(model => model.UserName, new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.HiddenFor(model => model.Id, new { @class = "watcherId" })
+            @Html.HiddenFor(model => model.Type, new { @class = "watcherType" })
+            @Html.HiddenFor(model => model.UserName, new { @class = "watcherName" })
+            @Html.HiddenFor(model => model.Deleted, new { @class = "watcherDeleted" })
+
+            @if (!string.IsNullOrEmpty(Model.Id))
+            {
+                @Html.DisplayFor(model => model.UserName)
+            }
+            else
+            {
+                @Html.DropDownList("DummyUserName", watcherSelect, "Selecteer een gebruiker", new { @class = "form-control watcherSelect" })
+            }
+
+            @if (ViewData["OwnerId"] == null || (Model.Id != ViewData["OwnerId"].ToString()))
+            {
+                <a href="#" class="deleteWatcher">X</a>
+            }
+            @Html.ValidationMessageFor(model => model.UserName)
+        </div>
+    }
+</div>

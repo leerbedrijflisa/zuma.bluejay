@@ -1,0 +1,43 @@
+﻿@model Dossier
+@using Microsoft.AspNet.Identity
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+	<hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+
+    </dl>
+    <h4>Gebruikers</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        @for (var i = 0; i < Model.Watchers.Count; i++)
+        {
+            <dt>
+                @Html.DisplayNameFor(model => model.Watchers[i].UserName)
+            </dt>
+            
+            <dd>
+                @Html.DisplayFor(model => model.Watchers[i].UserName)
+            </dd>
+        }
+    </dl>
+</div>
+<p>
+    @if (Model.OwnerId == User.Identity.GetUserId())
+    {
+        @Html.ActionLink("Bewerken", "Edit", new { id = Model.Id });
+        @Html.Raw(" |");
+    }    
+    @Html.ActionLink("Terug naar overzicht", "Index")
+</p>
