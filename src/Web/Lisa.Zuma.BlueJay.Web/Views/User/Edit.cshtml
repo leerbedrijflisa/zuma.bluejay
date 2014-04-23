@@ -23,16 +23,13 @@
             return false;
         });
 
-        $(function () {
+        $(document).on('click', 'a.deleteRole', function () {
 
-            $(document).on('click', 'a.deleteRole', function () {
+            var $parent = $(this).parents('div.roleRow:first');
+            $parent.find('.roleDeleted').val('True');
+            $parent.hide();
 
-                var $parent = $(this).parents('div.roleRow:first');
-                $parent.find('.roleDeleted').val('True');
-                $parent.hide();
-
-                return false;
-            });
+            return false;
         });
 
     </script>
