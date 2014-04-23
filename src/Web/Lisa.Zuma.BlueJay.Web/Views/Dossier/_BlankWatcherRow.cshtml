@@ -20,7 +20,7 @@
             }
             else
             {
-                @Html.DropDownList("DummyUserName", watcherSelect, "Select a user", new { @class = "form-control watcherSelect" })
+                @Html.DropDownList("DummyUserName", watcherSelect, "Selecteer een gebruiker", new { @class = "form-control watcherSelect" })
             }
 
             @if (ViewData["OwnerId"] == null || (Model.Id != ViewData["OwnerId"].ToString()))

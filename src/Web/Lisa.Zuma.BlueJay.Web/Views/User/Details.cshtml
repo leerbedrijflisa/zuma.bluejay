@@ -7,7 +7,7 @@
 <h2>Details</h2>
 
 <div>
-    <h4>User</h4>
+    <h4>Gebruiker</h4>
 	<hr />
     <dl class="dl-horizontal">
         <dt>
@@ -27,10 +27,10 @@
         </dd>
 
     </dl>
-    <h4>Roles</h4>
+    <h4>Rollen</h4>
     <hr />
     <dl class="dl-horizontal">
-        <dt>Role</dt>
+        <dt>Rol</dt>
 
         @foreach (var role in Model.Roles)
         {
@@ -39,6 +39,6 @@
     </dl>
 </div>
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Bewerken", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Terug naar overzicht", "Index")
 </p>

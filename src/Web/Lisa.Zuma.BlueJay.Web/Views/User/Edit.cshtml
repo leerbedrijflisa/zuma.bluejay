@@ -1,7 +1,7 @@
 ﻿@model User
 
 @{
-    ViewBag.Title = "Edit - " + Model.UserName;
+    ViewBag.Title = "Bewerken - " + Model.UserName;
 }
 
 @section scripts {
@@ -23,16 +23,13 @@
             return false;
         });
 
-        $(function () {
+        $(document).on('click', 'a.deleteRole', function () {
 
-            $(document).on('click', 'a.deleteRole', function () {
+            var $parent = $(this).parents('div.roleRow:first');
+            $parent.find('.roleDeleted').val('True');
+            $parent.hide();
 
-                var $parent = $(this).parents('div.roleRow:first');
-                $parent.find('.roleDeleted').val('True');
-                $parent.hide();
-
-                return false;
-            });
+            return false;
         });
 
     </script>
@@ -68,7 +65,7 @@
         </div>
 
         <hr />
-        <h4>Roles @Html.ActionLink("+", "BlankRoleRow", null, new { id = "addRole" })</h4>
+        <h4>Rollen @Html.ActionLink("+", "BlankRoleRow", null, new { id = "addRole" })</h4>
         <div id="userRoles">
             @foreach (var role in Model.Roles)
             {
@@ -79,7 +76,7 @@
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Save" class="btn btn-default" />
+                <input type="submit" value="Opslaan" class="btn btn-default" />
             </div>
         </div>
     </div>
