@@ -51,7 +51,7 @@ namespace Lisa.Zuma.BlueJay.WebApi.Controllers
                 if (role.Deleted)
                 {
                     // TODO: Make extension to delete by role id.
-                    var removeRoleResult = await UserManager.RemoveFromRoleAsync(user.Id, role.Name);
+                    var removeRoleResult = await UserManager.RemoveFromRoleByIdAsync(user.Id, role.Id);
                     if (!removeRoleResult.Succeeded)
                     {
                         return BadRequest();
