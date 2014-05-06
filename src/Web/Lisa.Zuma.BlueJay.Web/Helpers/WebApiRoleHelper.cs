@@ -15,11 +15,6 @@ namespace Lisa.Zuma.BlueJay.Web.Helpers
         {
         }
 
-        public List<UserRole> GetRoles()
-        {
-            return GetRolesAsync().Result;
-        }
-
         public async Task<List<UserRole>> GetRolesAsync()
         {
             var request = new RestRequest(roleUri, Method.GET);
@@ -27,11 +22,6 @@ namespace Lisa.Zuma.BlueJay.Web.Helpers
 
             var result = await Client.ExecuteTaskAsync<List<UserRole>>(request);
             return result.Data;
-        }
-
-        public UserRole AddRole(UserRole role)
-        {
-            return AddRoleAsync(role).Result;
         }
 
         public async Task<UserRole> AddRoleAsync(UserRole role)
@@ -43,11 +33,6 @@ namespace Lisa.Zuma.BlueJay.Web.Helpers
 
             var result = await Client.ExecuteTaskAsync<UserRole>(request);
             return result.Data;
-        }
-
-        public List<UserRole> AddRoles(IEnumerable<UserRole> roles)
-        {
-            return AddRolesAsync(roles).Result;
         }
 
         public async Task<List<UserRole>> AddRolesAsync(IEnumerable<UserRole> roles)
