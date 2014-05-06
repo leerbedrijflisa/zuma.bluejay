@@ -17,15 +17,6 @@ namespace Lisa.Zuma.BlueJay.Web.Data.Managers
             context = ((UserStore<TUser>)base.Store).Context;
         }
 
-        /// <summary>
-        /// Gets all the users available in the database.
-        /// </summary>
-        /// <returns></returns>
-        public IEnumerable<TUser> GetAll()
-        {
-            return context.Set<TUser>().AsEnumerable();
-        }
-
         public bool Exists(string id)
         {
             return context.Set<TUser>().Count(u => u.Id == id) > 0;

@@ -17,7 +17,7 @@ namespace Lisa.Zuma.BlueJay.WebApi.Controllers
         [Route("")]
         public IHttpActionResult Get()
         {
-            var users = UserManager.GetAll();
+            var users = UserManager.Users;
             var result = Converter.ToUser(users, RoleManager.Roles);
 
             return Ok(result);
