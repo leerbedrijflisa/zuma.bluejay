@@ -2,6 +2,7 @@
 using Lisa.Zuma.BlueJay.Web.Data.Entities;
 using Lisa.Zuma.BlueJay.Web.Data.Managers;
 using Lisa.Zuma.BlueJay.WebApi.Extensions;
+using Lisa.Zuma.BlueJay.WebApi.Helpers;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using System;
@@ -48,6 +49,19 @@ namespace Lisa.Zuma.BlueJay.WebApi.Controllers
             }
         }
 
+        protected StorageHelper StorageHelper
+        {
+            get
+            {
+                if (storageHelper == null)
+                {
+                    storageHelper = new StorageHelper("ZumaBlueJayStorageConnectionString", "bluejay");
+                }
+
+                return storageHelper;
+            }
+        }
+
         /// <summary>
         /// Gets the currently logged-in user for this request.
         /// When used in a controller action which does not require authorization,
@@ -72,5 +86,6 @@ namespace Lisa.Zuma.BlueJay.WebApi.Controllers
         }
 
         private UnitOfWork uow;
+        private StorageHelper storageHelper;
     }
 }

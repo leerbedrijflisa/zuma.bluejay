@@ -154,9 +154,8 @@ namespace Lisa.Zuma.BlueJay.WebApi.Controllers
         public string GetStorageUri(string file)
         {
             var fileName = Guid.NewGuid().ToString() + Path.GetExtension(file);
-            var storageHelper = new StorageHelper("ZumaBlueJayStorageConnectionString", "bluejay");
 
-            return storageHelper.GetWriteableSasUri(fileName, new TimeSpan(0, 2, 0)).AbsoluteUri;
+            return StorageHelper.GetWriteableSasUri(fileName, new TimeSpan(0, 2, 0)).AbsoluteUri;
         }
     }
 }
