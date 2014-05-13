@@ -97,7 +97,7 @@ namespace Lisa.Zuma.BlueJay.WebApi.Controllers
             base.Dispose(disposing);
         }
 
-        private UnitOfWork uow;
+        private IUnitOfWork uow;
         private StorageHelper storageHelper;
     }
 }
