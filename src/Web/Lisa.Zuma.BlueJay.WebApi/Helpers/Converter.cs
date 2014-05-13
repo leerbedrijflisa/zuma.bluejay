@@ -8,6 +8,10 @@ using System.Security.Claims;
 
 namespace Lisa.Zuma.BlueJay.WebApi.Helpers
 {
+    /// <summary>
+    /// Provides helper methods to convert to various models, used for transmitting data between server
+    /// and client.
+    /// </summary>
     public static class Converter
     {
         public static Dossier ToDossier(DossierData dossier, IEnumerable<IdentityRole> roles = null)
