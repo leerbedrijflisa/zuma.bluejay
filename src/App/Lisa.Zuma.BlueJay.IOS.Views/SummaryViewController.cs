@@ -23,21 +23,42 @@ namespace Lisa.Zuma.BlueJay.IOS.Views
 			base.DidReceiveMemoryWarning ();
 		}
 
-		public void RowClicked_handler (object sender, RowClickedEventArgs e){
+		public void RowClicked_handler (object sender, RowClickedEventArgs e)
+		{
 			TimelineViewController timeLineViewController = new TimelineViewController ();
+			dataHelper.insertNewCurrentDossier (e.ClickedItem.Id);
 			this.NavigationController.PushViewController (timeLineViewController, true);
 		}
 
 		public override void ViewDidLoad ()
 		{
 			base.ViewDidLoad ();
-			this.NavigationItem.SetHidesBackButton (true, false);
+			NavigationItem.SetHidesBackButton (true, false);
 			var dosiers = dataHelper.GetDosierDatas();
 
 			var sourceFromTablehelper = tableHelper.CreateSource(dosiers, d => d.ID, d => d.Name);
 
 			sourceFromTablehelper.RowClicked += RowClicked_handler;
 			tblCell.Source = sourceFromTablehelper;
+
+			UIPopoverController myPopOver = new UIPopoverController(new LockScreenSettings()); 
+
+//			btnLockScreenSettings.TouchUpInside += (sender, e) => {
+//				myPopOver.PopoverContentSize = new SizeF (View.Frame.Width - 30f, View.Frame.Height - 10f);
+//				myPopOver.PresentFromRect (btnLockScreenSettings.Frame, this.View, UIPopoverArrowDirection.Up, true);
+//			};   
+		}
+
+		public void NewCombinationDelegate()
+		{
+			NavigationController.PushViewController (new LockScreenViewController (1), true);
+		}
+
+		public override void ViewDidAppear (bool animated)
+		{
+			Reachability.getStatus ();
+
+			this.NavigationController.SetNavigationBarHidden (true, true);
 
 		}
 

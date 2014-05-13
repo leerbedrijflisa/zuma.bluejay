@@ -35,9 +35,10 @@ namespace Lisa.Zuma.BlueJay.IOS.Data
 			db.CreateTable<UserData> ();
 			//db.DropTable<TemporaryItemMedia> ();
 			db.CreateTable<TemporaryItemMediaData> ();
+			db.CreateTable<LockScreenData> ();
+			db.CreateTable<CurrentDossier> ();
 
-
-			CreateDummyInfo ();
+			//CreateDummyInfo ();
 			AccessToken ();
 		}
 
@@ -57,6 +58,18 @@ namespace Lisa.Zuma.BlueJay.IOS.Data
 			foreach (var accesstoken in token) {
 				accessToken = accesstoken.AccesToken;
 			}
+		}
+
+		public void setCurrentDossier(int id)
+		{
+			db.Insert (new CurrentDossier{currentDossier = id});
+		}
+
+		public int getCurrentDossier()
+		{
+			var result = db.Query<CurrentDossier> ("SELECT * FROM CurrentDossier ORDER BY Id DESC LIMIT 1");
+
+			return result.First ().currentDossier;
 		}
 
 		public void DummyLoggedIn(int id)
@@ -177,6 +190,11 @@ namespace Lisa.Zuma.BlueJay.IOS.Data
 		public void DeleteAllTemporaryMediaItems ()
 		{
 			db.Query<TemporaryItemMediaData> ("DELETE FROM TemporaryItemMediaData");
+		}
+
+		public void ClearLockScreenInformation ()
+		{
+			db.Query<LockScreenData> ("DELETE FROM LockScreenData");
 		}
 
 		public List<TemporaryItemMediaData> ReturnAllTemporaryMediaItems ()

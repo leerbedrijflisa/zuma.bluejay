@@ -33,6 +33,7 @@ namespace Lisa.Zuma.BlueJay.IOS.Views
 			RootNavigationController.PushViewController (new LockScreenViewController(), true);
 
 			this.window.RootViewController = RootNavigationController;
+
 		}
 
 		public override UIViewController GetViewController (UIApplication application, string[] restorationIdentifierComponents, NSCoder coder)

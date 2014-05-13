@@ -58,12 +58,20 @@ namespace Lisa.Zuma.BlueJay.IOS.Views
 
 		private void TakeVideo(Object sender, EventArgs args)
 		{
+<<<<<<< Updated upstream
 			camera.CaptureVideo(String.Format("{0:d-M-yyyy-HH-mm-ss}", DateTime.Now), () => UpdateButtonNumber ());
+=======
+			camera.CaptureVideo(String.Format("{0:d-M-yyyy-HH-mm-ss}", DateTime.Now), () => {UpdateButtonNumber();});
+>>>>>>> Stashed changes
 		}
 
 		private void TakePhoto(Object sender, EventArgs args)
 		{
+<<<<<<< Updated upstream
 			camera.CapturePhoto(String.Format("{0:d-M-yyyy-HH-mm-ss}", DateTime.Now), () => UpdateButtonNumber ());
+=======
+			camera.CapturePhoto(String.Format("{0:d-M-yyyy-HH-mm-ss}", DateTime.Now), () => {UpdateButtonNumber();});
+>>>>>>> Stashed changes
 		}
 
 		private void PickImage(Object sender, EventArgs args)

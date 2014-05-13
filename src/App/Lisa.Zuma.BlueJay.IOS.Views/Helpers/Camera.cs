@@ -21,8 +21,12 @@ namespace Lisa.Zuma.BlueJay.IOS.Views
 			dataHelper = new DataHelper ();
 		}
 
+<<<<<<< Updated upstream
 		public void CaptureVideo(string date, Action Ready){
 
+=======
+		public void CaptureVideo(string date, Action ActionFunc){
+>>>>>>> Stashed changes
 			var picker = new MediaPicker ();
 				picker.TakeVideoAsync (new StoreVideoOptions {
 					Name = date+".mp4",
@@ -30,11 +34,20 @@ namespace Lisa.Zuma.BlueJay.IOS.Views
 				}).ContinueWith (t => {
 					ALAssetsLibrary library = new ALAssetsLibrary();                   
 					library.WriteVideoToSavedPhotosAlbum (new NSUrl(t.Result.Path), (assetUrl, error) =>{});
+<<<<<<< Updated upstream
 				SaveFileToMedialibrary(t.Result, ".mp4", () => Ready());
 				}, TaskScheduler.FromCurrentSynchronizationContext());
 		}
 
 		public void CapturePhoto(string date, Action Ready){
+=======
+					SaveFileToMedialibrary(t.Result, ".mp4", () => ActionFunc());
+
+				}, TaskScheduler.FromCurrentSynchronizationContext());
+		}
+
+		public void CapturePhoto(string date, Action ActionFunc){
+>>>>>>> Stashed changes
 		
 			var picker = new MediaPicker ();
 		
@@ -44,7 +57,11 @@ namespace Lisa.Zuma.BlueJay.IOS.Views
 			}).ContinueWith (t => {
 				var Image = UIImage.FromFile(t.Result.Path);
 				Image.SaveToPhotosAlbum((image, error) => {});
+<<<<<<< Updated upstream
 				SaveFileToMedialibrary(t.Result, ".png", () => Ready());
+=======
+				SaveFileToMedialibrary(t.Result, ".png", () => ActionFunc());
+>>>>>>> Stashed changes
 			}, TaskScheduler.FromCurrentSynchronizationContext());
 		}
 

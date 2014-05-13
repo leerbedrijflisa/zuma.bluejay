@@ -19,6 +19,7 @@ namespace Lisa.Zuma.BlueJay.IOS.Views
 			eventHandlers = new EventHandlers (this);
 			backgroundColor = new UIButton ();
 			OverlayView = new UIView ();
+			DossierID = dataHelper.getCurrentDossier();
 		}
 
 		public override void ViewDidLoad ()
@@ -31,12 +32,12 @@ namespace Lisa.Zuma.BlueJay.IOS.Views
 			btnEditProfile.TouchUpInside += eventHandlers.CreatePush<ProfileViewController>();
 			btnRefresh.TouchUpInside += eventHandlers.Create(UpdateList);
 
-			dataHelper.SyncNotesDataByID (1, UpdateList);
+			dataHelper.SyncNotesDataByID (DossierID, UpdateList);
 		}
 
 		public void UpdateList()
 		{
-			var parsedHTML = templateParser.ParseTimeLine(1);
+			var parsedHTML = templateParser.ParseTimeLine(DossierID);
 			string contentDirectoryPath = Path.Combine (NSBundle.MainBundle.BundlePath, "HTML/");
 
 			InvokeOnMainThread (() => {
@@ -90,6 +91,7 @@ namespace Lisa.Zuma.BlueJay.IOS.Views
 		private NewNoteViewController newNoteViewController;
 		private EventHandlers eventHandlers;
 		private UIView OverlayView;
+		public int DossierID;
 
 
 	}

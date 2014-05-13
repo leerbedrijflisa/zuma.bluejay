@@ -2,7 +2,6 @@ using System;
 using Lisa.Zuma.BlueJay.IOS.Data;
 using System.Collections.Generic;
 using System.IO;
-using Lisa.Zuma.BlueJay.Models;
 using RestSharp;
 using Newtonsoft.Json;
 using System.Net.Http;
@@ -10,6 +9,7 @@ using System.Linq;
 using System.Net;
 using Newtonsoft.Json.Linq;
 using MonoTouch.UIKit;
+using Lisa.Zuma.BlueJay.Models;
 
 namespace Lisa.Zuma.BlueJay.IOS.Models
 {
@@ -35,6 +35,7 @@ namespace Lisa.Zuma.BlueJay.IOS.Models
 						database.Clear("UserData");
 						database.Insert(new UserData{ Name = jsonResponse.userName, AccesToken = jsonResponse.access_token });
 						SuccessFunction();
+						SyncDossiers();
 					}
 					else
 					{
@@ -113,8 +114,6 @@ namespace Lisa.Zuma.BlueJay.IOS.Models
 
 							dbNote.Media.Add (noteMedia);
 							database.Update(dbNote);
-
-
 						}
 					}
 				}
@@ -131,6 +130,25 @@ namespace Lisa.Zuma.BlueJay.IOS.Models
 		{
 			SyncAllNotesDataFromDosierData(id, ()=>{
 					DoSomething();
+			});
+		}
+
+		public void SyncDossiers()
+		{
+			var request = new RestRequest ("api/dossier/", Method.GET);
+			request.AddHeader  ("Authorization", "bearer "+ database.accessToken);
+			client.ExecuteAsync (request, response => {
+
+				var callback = JsonConvert.DeserializeObject<List<Dossier>> (response.Content);
+
+				foreach(var dossiers in callback )
+				{
+					foreach(var dossierDetail in dossiers.Details)
+					{
+						database.Insert(new DosierData{Name = dossierDetail.Contents});
+					}
+				}
+
 			});
 		}
 
@@ -184,6 +202,16 @@ namespace Lisa.Zuma.BlueJay.IOS.Models
 		{
 			return database.GetAllDosierDatas ();
 		}
+
+		public void insertNewCurrentDossier(int id)
+		{
+			database.setCurrentDossier (id);
+		}
+
+		public int getCurrentDossier()
+		{
+			return database.getCurrentDossier ();
+		}
 	
 		public List<ProfileItemsData> GetProfileItems()
 		{
@@ -209,6 +237,11 @@ namespace Lisa.Zuma.BlueJay.IOS.Models
 		{
 			return database.ReturnAllTemporaryMediaItems ()
 						   .Count;
+		}
+
+		public void newCombination(string combination)
+		{
+			database.Update (new LockScreenData { IsActive = 1, SecurityCode = int.Parse (combination) });
 		}
 
 		private List<NoteMedia> GetAllDataElements()
