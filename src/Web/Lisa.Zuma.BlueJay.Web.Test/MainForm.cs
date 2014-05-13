@@ -966,10 +966,25 @@ namespace Lisa.Zuma.BlueJay.Web.Test
 #elif TRACE
             restClient = new RestClient(productionUrl);
 #endif
+            var loginRequest = new RestRequest("/token", Method.POST);
+            loginRequest.AddHeader("Content-Type", "application/x-www-form-urlencoded")
+                .AddParameter("grant_type", "password")
+                .AddParameter("username", "Bert")
+                .AddParameter("password", "password123");
 
+            var loginResponse = restClient.Execute<Dictionary<string, string>>(loginRequest);
+            var token = loginResponse.Data["access_token"];
 
-            var request = new RestRequest("api/dossier/1/notes/", Method.POST);
+            var dossierRequest = new RestRequest("/api/dossier", Method.GET);
+            dossierRequest.AddHeader("Authorization", string.Format("bearer {0}", token));
+
+            var dossierResponse = restClient.Execute<List<Dossier>>(dossierRequest);
+            var dossier = dossierResponse.Data.First();
+            
+            var request = new RestRequest("api/dossier/{id}/notes/", Method.POST);
             request.RequestFormat = DataFormat.Json;
+            request.AddHeader("Authorization", string.Format("bearer {0}", token));
+            request.AddUrlSegment("id", dossier.Id.ToString());
             request.AddBody(model);
 
             var response = restClient.Execute<Note>(request);
@@ -983,11 +998,11 @@ namespace Lisa.Zuma.BlueJay.Web.Test
                     continue;
                 }
 
-                Store(media, path, response.Data.Id);
+                Store(media, path, response.Data.Id, string.Format("bearer {0}", token), dossier);
             }
         }
 
-        private async void Store(NoteMedia media, string path, int noteId)
+        private async void Store(NoteMedia media, string path, int noteId, string authorizeHeader, Dossier dossier)
         {
             var extension = Path.GetExtension(path);
             if (extension.StartsWith("."))
@@ -1015,8 +1030,10 @@ namespace Lisa.Zuma.BlueJay.Web.Test
                         restClient = new RestClient(productionUrl);
 #endif
 
-                        var request = new RestRequest("api/dossier/1/notes/{noteId}/media/{id}", Method.PUT);
+                        var request = new RestRequest("api/dossier/{dossierId}/notes/{noteId}/media/{id}", Method.PUT);
+                        request.AddHeader("Authorization", authorizeHeader);
                         request.RequestFormat = DataFormat.Json;
+                        request.AddUrlSegment("dossierId", dossier.Id.ToString());
                         request.AddUrlSegment("noteId", noteId.ToString());
                         request.AddUrlSegment("id", media.Id.ToString());
                         request.AddBody(media);

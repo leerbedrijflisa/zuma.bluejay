@@ -33,10 +33,10 @@ namespace Lisa.Zuma.BlueJay.WebApi.Controllers
         }
 
         [Route("")]
-        public IHttpActionResult Get()
+        public async Task<IHttpActionResult> Get()
         {
             // TODO: Fix problem with context issue when using CurrentUser property in BaseApiController.
-            var u = UoW.UserManager.FindById(User.Identity.GetUserId());
+            var u = await UoW.UserManager.FindByIdAsync(User.Identity.GetUserId());
             var dossierModels = Converter.ToDossier(u.Dossiers, RoleManager.Roles);
 
             return Ok(dossierModels);
