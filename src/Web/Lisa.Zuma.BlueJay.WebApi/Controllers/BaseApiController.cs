@@ -16,6 +16,9 @@ namespace Lisa.Zuma.BlueJay.WebApi.Controllers
 {
     public class BaseApiController : ApiController
     {
+        /// <summary>
+        /// Gives access to all entities in the database.
+        /// </summary>
         protected IUnitOfWork UoW
         {
             get
@@ -33,6 +36,9 @@ namespace Lisa.Zuma.BlueJay.WebApi.Controllers
             }
         }
 
+        /// <summary>
+        /// Provides access to the built-in UserManager.
+        /// </summary>
         protected ApplicationUserManager<UserData> UserManager
         {
             get
@@ -41,6 +47,9 @@ namespace Lisa.Zuma.BlueJay.WebApi.Controllers
             }
         }
 
+        /// <summary>
+        /// Provides access to the built-in RoleManager.
+        /// </summary>
         protected RoleManager<IdentityRole> RoleManager
         {
             get
@@ -49,6 +58,9 @@ namespace Lisa.Zuma.BlueJay.WebApi.Controllers
             }
         }
 
+        /// <summary>
+        /// Provides access to the StorageHelper.
+        /// </summary>
         protected StorageHelper StorageHelper
         {
             get
