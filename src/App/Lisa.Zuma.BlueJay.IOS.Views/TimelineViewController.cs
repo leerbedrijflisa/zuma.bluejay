@@ -64,6 +64,9 @@ namespace Lisa.Zuma.BlueJay.IOS.Views
 			base.ViewWillAppear (animated);
 			this.NavigationController.SetNavigationBarHidden (true, true);
 			UpdateList ();
+
+			lblTitle.Text = dataHelper.GetCurrentDossierDataName();
+
 		}
 
 		private void InitializeNewNoteUI()

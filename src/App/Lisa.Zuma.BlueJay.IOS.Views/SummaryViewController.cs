@@ -26,7 +26,6 @@ namespace Lisa.Zuma.BlueJay.IOS.Views
 		public void RowClicked_handler (object sender, RowClickedEventArgs e)
 		{
 			TimelineViewController timeLineViewController = new TimelineViewController ();
-			dataHelper.insertNewCurrentDossier (e.ClickedItem.Id);
 			this.NavigationController.PushViewController (timeLineViewController, true);
 		}
 

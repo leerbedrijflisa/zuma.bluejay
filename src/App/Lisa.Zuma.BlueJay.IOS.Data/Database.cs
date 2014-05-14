@@ -62,14 +62,30 @@ namespace Lisa.Zuma.BlueJay.IOS.Data
 
 		public void setCurrentDossier(int id)
 		{
-			db.Insert (new CurrentDossier{currentDossier = id});
+			db.Query<CurrentDossier> ("DELETE FROM CurrentDossier");
+
+			var result = db.Query<DosierData>("SELECT * FROM DosierData WHERE Id =" + id + " LIMIT 1");
+
+			foreach (var res in result) {
+				db.Insert (new CurrentDossier{ currentDossier = res.DossierId });
+			}
 		}
+
+		int ReturnInt;
 
 		public int getCurrentDossier()
 		{
-			var result = db.Query<CurrentDossier> ("SELECT * FROM CurrentDossier ORDER BY Id DESC LIMIT 1");
 
-			return result.First ().currentDossier;
+
+			var result = db.Query<CurrentDossier> ("SELECT * FROM CurrentDossier ORDER BY Id DESC LIMIT 1");
+	
+			foreach(var value in result)
+			{
+				ReturnInt = value.currentDossier;
+			}
+
+			return ReturnInt;
+
 		}
 
 		public void DummyLoggedIn(int id)
@@ -105,6 +121,11 @@ namespace Lisa.Zuma.BlueJay.IOS.Data
 			return Result;
 		}
 
+		public void deleteDossiers()
+		{
+			db.Query<DosierData> ("DELETE FROM DosierData");
+		}
+
 		public UserData GetUserById(int id)
 		{
 			var Result = db.Query<UserData>("SELECT * FROM UserData WHERE ID='"+id+"'");
@@ -115,6 +136,23 @@ namespace Lisa.Zuma.BlueJay.IOS.Data
 
 			return ReturnUser;
 		}
+
+		DosierData dossierData;
+
+		public DosierData GetCurrentDossier()
+		{
+			var result = db.Query<DosierData> ("SELECT * FROM DosierData WHERE DossierId = " + getCurrentDossier());
+
+			dossierData = new DosierData ();
+
+			foreach (var res in result) {
+				dossierData.Name = res.Name;
+				dossierData.DossierId = res.DossierId;
+			}
+
+			return dossierData;
+		}
+
 		public UserData GetCurrentUser()
 		{
 			var Result = db.Query<UserData>("SELECT * FROM UserData WHERE LoggedIn=1");

@@ -21,47 +21,30 @@ namespace Lisa.Zuma.BlueJay.IOS.Views
 			dataHelper = new DataHelper ();
 		}
 
-<<<<<<< Updated upstream
 		public void CaptureVideo(string date, Action Ready){
 
-=======
-		public void CaptureVideo(string date, Action ActionFunc){
->>>>>>> Stashed changes
 			var picker = new MediaPicker ();
-				picker.TakeVideoAsync (new StoreVideoOptions {
-					Name = date+".mp4",
-					Directory = "TemporaryFiles"
-				}).ContinueWith (t => {
-					ALAssetsLibrary library = new ALAssetsLibrary();                   
-					library.WriteVideoToSavedPhotosAlbum (new NSUrl(t.Result.Path), (assetUrl, error) =>{});
-<<<<<<< Updated upstream
+			picker.TakeVideoAsync (new StoreVideoOptions {
+				Name = date+".mp4",
+				Directory = "TemporaryFiles"
+			}).ContinueWith (t => {
+				ALAssetsLibrary library = new ALAssetsLibrary();                   
+				library.WriteVideoToSavedPhotosAlbum (new NSUrl(t.Result.Path), (assetUrl, error) =>{});
 				SaveFileToMedialibrary(t.Result, ".mp4", () => Ready());
-				}, TaskScheduler.FromCurrentSynchronizationContext());
+			}, TaskScheduler.FromCurrentSynchronizationContext());
 		}
 
 		public void CapturePhoto(string date, Action Ready){
-=======
-					SaveFileToMedialibrary(t.Result, ".mp4", () => ActionFunc());
 
-				}, TaskScheduler.FromCurrentSynchronizationContext());
-		}
-
-		public void CapturePhoto(string date, Action ActionFunc){
->>>>>>> Stashed changes
-		
 			var picker = new MediaPicker ();
-		
+
 			picker.TakePhotoAsync (new StoreCameraMediaOptions {
 				Name = String.Format("{0}.png", date),
 				Directory = "TemporaryFiles"
 			}).ContinueWith (t => {
 				var Image = UIImage.FromFile(t.Result.Path);
 				Image.SaveToPhotosAlbum((image, error) => {});
-<<<<<<< Updated upstream
 				SaveFileToMedialibrary(t.Result, ".png", () => Ready());
-=======
-				SaveFileToMedialibrary(t.Result, ".png", () => ActionFunc());
->>>>>>> Stashed changes
 			}, TaskScheduler.FromCurrentSynchronizationContext());
 		}
 
@@ -99,4 +82,3 @@ namespace Lisa.Zuma.BlueJay.IOS.Views
 		private DataHelper dataHelper;
 	}
 }
-

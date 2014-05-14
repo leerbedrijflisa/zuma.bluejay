@@ -99,6 +99,9 @@
       <HintPath>..\Components\json.net-4.5.11\lib\ios\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System.Net.Http" />
+    <Reference Include="Lisa.Zuma.BlueJay.Models">
+      <HintPath>..\..\Web\Lisa.Zuma.BlueJay.Models\bin\Debug\Lisa.Zuma.BlueJay.Models.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
