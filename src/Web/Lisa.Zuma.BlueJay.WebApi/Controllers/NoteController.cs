@@ -82,7 +82,8 @@ namespace Lisa.Zuma.BlueJay.WebApi.Controllers
             var noteData = new NoteData
             {
                 Text = noteModel.Text,
-                DateCreated = noteModel.DateCreated
+                DateCreated = noteModel.DateCreated,
+                PosterId = CurrentUser.Id
             };
 
             foreach (var media in noteModel.Media)

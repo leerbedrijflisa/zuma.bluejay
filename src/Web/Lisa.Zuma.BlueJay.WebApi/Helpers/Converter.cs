@@ -60,6 +60,7 @@ namespace Lisa.Zuma.BlueJay.WebApi.Helpers
             var model = new Note
             {
                 Id = note.Id,
+                PosterId = note.PosterId, 
                 Text = note.Text,
                 DateCreated = note.DateCreated,
                 Media = new List<NoteMedia>()
