@@ -19,8 +19,7 @@ namespace Lisa.Zuma.BlueJay.IOS.Views
 			base.ViewDidLoad ();
 
 			btnSignIn.TouchUpInside += SignIn;
-			txtUsername.Text = "bert";
-			txtPassword.Text = "password123";
+
 		}
 
 		private void SignIn(Object sender, EventArgs args)
