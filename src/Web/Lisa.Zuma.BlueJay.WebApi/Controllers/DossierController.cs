@@ -28,6 +28,14 @@ namespace Lisa.Zuma.BlueJay.WebApi.Controllers
             }
                         
             var dossierModel = Converter.ToDossier(dossier, RoleManager.Roles);
+            foreach (var note in dossierModel.Notes)
+            {
+                foreach (var media in note.Media)
+                {
+                    var filename = StorageHelper.GetFileNameFromSasUri(media.Location);
+                    media.Location = StorageHelper.GetReadableSasUri(filename, new TimeSpan(0, 2, 0)).AbsoluteUri;
+                }
+            }
 
             return Ok(dossierModel);
         }
