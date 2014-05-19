@@ -35,8 +35,8 @@ namespace Lisa.Zuma.BlueJay.IOS.Models
 						database.Clear("UserData");
 						database.Insert(new UserData{ Name = jsonResponse.userName, AccesToken = jsonResponse.access_token });
 						SuccessFunction();
-						database.deleteDossiers();
-						SyncDossiers();
+						//
+						SyncDossiers(()=>{database.deleteDossiers();});
 					}
 					else
 					{
@@ -110,8 +110,10 @@ namespace Lisa.Zuma.BlueJay.IOS.Models
 							var resp = client.Execute<NoteMedia>(request);
 							var noteMedia = new Media 
 							{
+								mediaId = resp.Data.Id,
 								Name = resp.Data.Name,
 								Location = resp.Data.Location
+								
 							};
 
 							dbNote.Media.Add (noteMedia);
@@ -135,19 +137,23 @@ namespace Lisa.Zuma.BlueJay.IOS.Models
 			});
 		}
 
-		public void SyncDossiers()
+		public void SyncDossiers(Action DoFunc)
 		{
+//			database.deleteDossiers ();
+
 			var request = new RestRequest ("api/dossier/", Method.GET);
 			request.AddHeader  ("Authorization", "bearer "+ database.accessToken);
 			client.ExecuteAsync (request, response => {
 
 				var callback = JsonConvert.DeserializeObject<List<Dossier>> (response.Content);
 
+				DoFunc();
 
 				foreach(var dossiers in callback )
 				{
 					database.Insert(new DosierData{Name = dossiers.Name, DossierId = dossiers.Id});
 				}
+
 
 			});
 		}
@@ -167,11 +173,13 @@ namespace Lisa.Zuma.BlueJay.IOS.Models
 						DosierDataID = dosier, 
 						OwnerID = 1, 
 						Text = n.Text, 
+						noteId = n.Id,
 						Date = n.DateCreated,
 						Media = n.Media
 						
 									.Select (m => new Media () { 
-							Name = m.Name, 
+									mediaId = m.Id,
+									Name = m.Name, 
 							Location = m.Location 
 						})
 									.ToList ()
@@ -250,6 +258,11 @@ namespace Lisa.Zuma.BlueJay.IOS.Models
 		public void newCombination(string combination)
 		{
 			database.Update (new LockScreenData { IsActive = 1, SecurityCode = int.Parse (combination) });
+		}
+
+		public string token()
+		{
+			return database.accessToken;
 		}
 
 		private List<NoteMedia> GetAllDataElements()

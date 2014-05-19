@@ -64,7 +64,7 @@ namespace Lisa.Zuma.BlueJay.IOS.Data
 		{
 			db.Query<CurrentDossier> ("DELETE FROM CurrentDossier");
 
-			var result = db.Query<DosierData>("SELECT * FROM DosierData WHERE Id =" + id + " LIMIT 1");
+			var result = db.Query<DosierData>("SELECT * FROM DosierData WHERE DossierId =" + id + " LIMIT 1");
 
 			foreach (var res in result) {
 				db.Insert (new CurrentDossier{ currentDossier = res.DossierId });

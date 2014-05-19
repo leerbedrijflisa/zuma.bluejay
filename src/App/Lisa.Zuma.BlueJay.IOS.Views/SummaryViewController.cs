@@ -35,7 +35,7 @@ namespace Lisa.Zuma.BlueJay.IOS.Views
 			NavigationItem.SetHidesBackButton (true, false);
 			var dosiers = dataHelper.GetDosierDatas();
 
-			var sourceFromTablehelper = tableHelper.CreateSource(dosiers, d => d.ID, d => d.Name);
+			var sourceFromTablehelper = tableHelper.CreateSource(dosiers, d => d.DossierId, d => d.Name);
 
 			sourceFromTablehelper.RowClicked += RowClicked_handler;
 			tblCell.Source = sourceFromTablehelper;
