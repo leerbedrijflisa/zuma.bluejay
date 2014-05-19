@@ -56,11 +56,11 @@ namespace Lisa.Zuma.BlueJay.WebApi.Helpers
         }
 
         /// <summary>
-        /// Gets a writable sas uri. This uri can be written until <paramref name="expire"/>.
+        /// Gets a readable sas uri. This uri can be read until <paramref name="expire"/>.
         /// </summary>
         /// <param name="fileName">The filename to create the uri for.</param>
         /// <param name="expire">The time until the uri invalidates.</param>
-        /// <returns>The writable sas uri.</returns>
+        /// <returns>The readable sas uri.</returns>
         public Uri GetReadableSasUri(string fileName, TimeSpan expire)
         {
             return GetSASUri(SharedAccessBlobPermissions.Read, fileName, expire);
