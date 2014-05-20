@@ -35,9 +35,9 @@ namespace Lisa.Zuma.BlueJay.IOS.Models
 						database.Clear("UserData");
 						database.Insert(new UserData{ Name = jsonResponse.userName, AccesToken = jsonResponse.access_token });
 						database.AccessToken();
-						SuccessFunction();
+
 						//
-						SyncDossiers(()=>{database.deleteDossiers();});
+						SyncDossiers(SuccessFunction);
 					}
 					else
 					{
@@ -148,13 +148,14 @@ namespace Lisa.Zuma.BlueJay.IOS.Models
 
 				var callback = JsonConvert.DeserializeObject<List<Dossier>> (response.Content);
 
-				DoFunc();
+				database.deleteDossiers();
 
 				foreach(var dossiers in callback )
 				{
 					database.Insert(new DosierData{Name = dossiers.Name, DossierId = dossiers.Id});
 				}
 
+				DoFunc();
 
 			});
 		}
