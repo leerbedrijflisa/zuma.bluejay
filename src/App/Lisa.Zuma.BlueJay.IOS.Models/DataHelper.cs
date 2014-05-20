@@ -34,6 +34,7 @@ namespace Lisa.Zuma.BlueJay.IOS.Models
 						var jsonResponse = JsonConvert.DeserializeObject<signInRequestInformation>(response.Content);
 						database.Clear("UserData");
 						database.Insert(new UserData{ Name = jsonResponse.userName, AccesToken = jsonResponse.access_token });
+						database.AccessToken();
 						SuccessFunction();
 						//
 						SyncDossiers(()=>{database.deleteDossiers();});
