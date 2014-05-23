@@ -148,5 +148,21 @@ public static class Reachability {
 		}
 		return NetworkStatus.NotReachable;
 	}
+
+		public static void getStatus()
+		{
+			NetworkStatus internetStatus = Reachability.InternetConnectionStatus();
+
+			switch (internetStatus) {
+			case NetworkStatus.NotReachable:
+				new UIAlertView("Geen internet", "Er is geen werkende internetverbinding gevonden, de app toont mogelijk verouderde informatie", null, "ok", null).Show(); 
+				break;
+
+			case NetworkStatus.ReachableViaCarrierDataNetwork:
+				new UIAlertView("Mobiel netwerk", "Deze iPad maakt gebruik van een mobiel netwerk, het is aan te raden alleen op een wifi netwerk filmpjes en foto's te plaatsen", null, "ok", null).Show(); 
+				break;
+			}
+		}
+	}
 }
-}
+

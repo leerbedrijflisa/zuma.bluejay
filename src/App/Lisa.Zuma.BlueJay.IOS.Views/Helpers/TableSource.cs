@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.IO;
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
+using Lisa.Zuma.BlueJay.IOS.Models;
 
-namespace Lisa.Zuma.BlueJay.IOS
+namespace Lisa.Zuma.BlueJay.IOS.Views
 {
 
 	public delegate void RowClickedEventHandler(object sender, RowClickedEventArgs e);
@@ -12,10 +13,12 @@ namespace Lisa.Zuma.BlueJay.IOS
 	public class TableSource : UITableViewSource {
 		List<TableItem> tableItems;
 		string cellIdentifier = "TableCell";
+		DataHelper dataHelper;
 
 		public TableSource (List<TableItem> items)
 		{
 			tableItems = items;
+
 		}
 
 		/// <summary>
@@ -41,8 +44,11 @@ namespace Lisa.Zuma.BlueJay.IOS
 
 		protected void OnRowClicked(RowClickedEventArgs e)
 		{
+			DataHelper dataHelper = new DataHelper();
+
 			if (RowClicked != null) 
 			{
+				dataHelper.insertNewCurrentDossier (e.ClickedItem.Id);
 				RowClicked (this, e);
 			}
 		}

@@ -53,47 +53,15 @@ namespace Lisa.Zuma.BlueJay.IOS.Views
 
 		[Outlet]
 		MonoTouch.UIKit.UIImageView imvInputTwo { get; set; }
+
+		[Outlet]
+		MonoTouch.UIKit.UILabel lblTitle { get; set; }
 		
 		void ReleaseDesignerOutlets ()
 		{
-			if (imvInputOne != null) {
-				imvInputOne.Dispose ();
-				imvInputOne = null;
-			}
-
-			if (imvInputTwo != null) {
-				imvInputTwo.Dispose ();
-				imvInputTwo = null;
-			}
-
-			if (imvInputThree != null) {
-				imvInputThree.Dispose ();
-				imvInputThree = null;
-			}
-
-			if (imvInputFour != null) {
-				imvInputFour.Dispose ();
-				imvInputFour = null;
-			}
-
-			if (btnNumberOne != null) {
-				btnNumberOne.Dispose ();
-				btnNumberOne = null;
-			}
-
-			if (btnNumberTwo != null) {
-				btnNumberTwo.Dispose ();
-				btnNumberTwo = null;
-			}
-
-			if (btnNumberThree != null) {
-				btnNumberThree.Dispose ();
-				btnNumberThree = null;
-			}
-
-			if (btnNumberFour != null) {
-				btnNumberFour.Dispose ();
-				btnNumberFour = null;
+			if (btnNumberEight != null) {
+				btnNumberEight.Dispose ();
+				btnNumberEight = null;
 			}
 
 			if (btnNumberFive != null) {
@@ -101,19 +69,9 @@ namespace Lisa.Zuma.BlueJay.IOS.Views
 				btnNumberFive = null;
 			}
 
-			if (btnNumberSix != null) {
-				btnNumberSix.Dispose ();
-				btnNumberSix = null;
-			}
-
-			if (btnNumberSeven != null) {
-				btnNumberSeven.Dispose ();
-				btnNumberSeven = null;
-			}
-
-			if (btnNumberEight != null) {
-				btnNumberEight.Dispose ();
-				btnNumberEight = null;
+			if (btnNumberFour != null) {
+				btnNumberFour.Dispose ();
+				btnNumberFour = null;
 			}
 
 			if (btnNumberNine != null) {
@@ -121,9 +79,59 @@ namespace Lisa.Zuma.BlueJay.IOS.Views
 				btnNumberNine = null;
 			}
 
+			if (btnNumberOne != null) {
+				btnNumberOne.Dispose ();
+				btnNumberOne = null;
+			}
+
+			if (btnNumberSeven != null) {
+				btnNumberSeven.Dispose ();
+				btnNumberSeven = null;
+			}
+
+			if (btnNumberSix != null) {
+				btnNumberSix.Dispose ();
+				btnNumberSix = null;
+			}
+
+			if (btnNumberThree != null) {
+				btnNumberThree.Dispose ();
+				btnNumberThree = null;
+			}
+
+			if (btnNumberTwo != null) {
+				btnNumberTwo.Dispose ();
+				btnNumberTwo = null;
+			}
+
 			if (btnNumberZero != null) {
 				btnNumberZero.Dispose ();
 				btnNumberZero = null;
+			}
+
+			if (imvInputFour != null) {
+				imvInputFour.Dispose ();
+				imvInputFour = null;
+			}
+
+			if (imvInputOne != null) {
+				imvInputOne.Dispose ();
+				imvInputOne = null;
+			}
+
+			if (imvInputThree != null) {
+				imvInputThree.Dispose ();
+				imvInputThree = null;
+			}
+
+			if (imvInputTwo != null) {
+				imvInputTwo.Dispose ();
+				imvInputTwo = null;
+			}
+
+			if (lblTitle != null) {
+				lblTitle.Dispose ();
+				lblTitle = null;
 			}
 		}
 	}

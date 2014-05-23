@@ -4,7 +4,7 @@ using MonoTouch.UIKit;
 using System.Collections.Generic;
 using System.Collections;
 
-namespace Lisa.Zuma.BlueJay.IOS
+namespace Lisa.Zuma.BlueJay.IOS.Views
 {
 	public class TableHelper
 	{

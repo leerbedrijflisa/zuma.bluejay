@@ -9,25 +9,25 @@ using System.CodeDom.Compiler;
 
 namespace Lisa.Zuma.BlueJay.IOS.Views
 {
-	[Register ("SummaryViewController")]
-	partial class SummaryViewController
+	[Register ("LockScreenSettings")]
+	partial class LockScreenSettings
 	{
 		[Outlet]
-		MonoTouch.UIKit.UIButton btnLockScreenSettings { get; set; }
+		MonoTouch.UIKit.UIButton btnSetNewLockscreen { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UITableView tblCell { get; set; }
+		MonoTouch.UIKit.UISwitch swLockScreen { get; set; }
 		
 		void ReleaseDesignerOutlets ()
 		{
-			if (tblCell != null) {
-				tblCell.Dispose ();
-				tblCell = null;
+			if (swLockScreen != null) {
+				swLockScreen.Dispose ();
+				swLockScreen = null;
 			}
 
-			if (btnLockScreenSettings != null) {
-				btnLockScreenSettings.Dispose ();
-				btnLockScreenSettings = null;
+			if (btnSetNewLockscreen != null) {
+				btnSetNewLockscreen.Dispose ();
+				btnSetNewLockscreen = null;
 			}
 		}
 	}

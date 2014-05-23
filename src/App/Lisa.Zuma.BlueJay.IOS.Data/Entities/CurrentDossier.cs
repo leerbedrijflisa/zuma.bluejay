@@ -1,13 +1,14 @@
+﻿using SQLite;
 using System;
-using SQLite;
 
 namespace Lisa.Zuma.BlueJay.IOS.Data
 {
-	public class DosierData
+	public class CurrentDossier
 	{
 		[PrimaryKey, AutoIncrement]
-		public int ID { get; set; }
-		public string Name { get; set;}
+		public int Id { get; set; }
 		public int DossierId { get; set; }
+		public int currentDossier { get; set; }
 	}
 }
+

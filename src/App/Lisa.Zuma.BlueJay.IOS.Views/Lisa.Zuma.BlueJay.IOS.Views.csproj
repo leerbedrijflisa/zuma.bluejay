@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">iPhoneSimulator</Platform>
-    <ProductVersion>10.0.0</ProductVersion>
+    <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{EC12A1E5-641A-407E-9669-25D16E30B36A}</ProjectGuid>
     <ProjectTypeGuids>{6BC8ED88-2882-458C-8E55-DFD12B67127B};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -98,10 +98,7 @@
     <Folder Include="Resources\" />
     <Folder Include="Helpers\" />
     <Folder Include="Classes\" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Info.plist" />
-    <None Include="Entitlements.plist" />
+    <Folder Include="HTML\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Main.cs" />
@@ -143,13 +140,15 @@
     <Compile Include="LockScreenViewController.designer.cs">
       <DependentUpon>LockScreenViewController.cs</DependentUpon>
     </Compile>
-    <Compile Include="Helpers\AppDelegate.cs">
-      <DependentUpon>TableSource.cs</DependentUpon>
-    </Compile>
     <Compile Include="Classes\LoadingOverlay.cs" />
     <Compile Include="MediaSummaryViewController.cs" />
     <Compile Include="MediaSummaryViewController.designer.cs">
       <DependentUpon>MediaSummaryViewController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AppDelegate.cs" />
+    <Compile Include="LockScreenSettings.cs" />
+    <Compile Include="LockScreenSettings.designer.cs">
+      <DependentUpon>LockScreenSettings.cs</DependentUpon>
     </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
@@ -164,21 +163,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <InterfaceDefinition Include="loginViewController.xib" />
-    <InterfaceDefinition Include="SummaryViewController.xib" />
-    <InterfaceDefinition Include="TimelineViewController.xib" />
-    <InterfaceDefinition Include="NewNoteViewController.xib" />
-    <InterfaceDefinition Include="ProfileViewController.xib" />
-    <InterfaceDefinition Include="NewProfileItemViewController.xib" />
-    <InterfaceDefinition Include="LockScreenViewController.xib" />
-    <InterfaceDefinition Include="MediaSummaryViewController.xib" />
-  </ItemGroup>
-  <ItemGroup>
-    <BundleResource Include="Resources\camera.png" />
-    <BundleResource Include="Resources\roundje.png" />
-    <BundleResource Include="Resources\ios_7_galaxy-wide.jpg" />
-    <BundleResource Include="Resources\number-insert.png" />
-    <BundleResource Include="Resources\number-emtpy.png" />
+    <BundleResource Include="Info.plist" />
+    <BundleResource Include="Resources\arrow.png" />
   </ItemGroup>
   <ItemGroup>
     <XamarinComponentReference Include="xamarin.mobile">
@@ -189,5 +175,35 @@
       <Version>1.0</Version>
       <Visible>False</Visible>
     </XamarinComponentReference>
+  </ItemGroup>
+  <ItemGroup>
+    <InterfaceDefinition Include="LockScreenSettings.xib" />
+    <InterfaceDefinition Include="MediaSummaryViewController.xib" />
+    <InterfaceDefinition Include="loginViewController.xib" />
+    <InterfaceDefinition Include="NewNoteViewController.xib" />
+    <InterfaceDefinition Include="LockScreenViewController.xib" />
+    <InterfaceDefinition Include="TimelineViewController.xib" />
+    <InterfaceDefinition Include="ProfileViewController.xib" />
+    <InterfaceDefinition Include="NewProfileItemViewController.xib" />
+    <InterfaceDefinition Include="SummaryViewController.xib" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="HTML\images\active-unit.png" />
+    <Content Include="HTML\images\icons.png" />
+    <Content Include="HTML\images\icons-2.png" />
+    <Content Include="HTML\images\icons-3.png" />
+    <Content Include="HTML\images\icons-4.png" />
+    <Content Include="HTML\images\icons-5.png" />
+    <Content Include="HTML\images\line.png" />
+    <Content Include="HTML\images\pagericon.png" />
+    <Content Include="HTML\images\play.png" />
+    <Content Include="HTML\javascripts\all.js" />
+    <Content Include="HTML\javascripts\jquery.excoloSlider.js" />
+    <Content Include="HTML\javascripts\jquery.excoloSlider.min.js" />
+    <Content Include="HTML\javascripts\jquery-1.9.1.min.js" />
+    <Content Include="HTML\stylesheets\all.css" />
+    <Content Include="HTML\stylesheets\jquery.excoloSlider.css" />
+    <Content Include="HTML\stylesheets\timeline.css" />
+    <Content Include="HTML\images\loader.gif" />
   </ItemGroup>
 </Project>
