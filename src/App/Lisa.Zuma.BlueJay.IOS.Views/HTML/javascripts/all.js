@@ -5,6 +5,7 @@
 
             console.log(token);
 
+            /*
             $(".sliderDiv").excoloSlider({
               repeat: false,
               autoPlay: false,
@@ -14,6 +15,7 @@
               width: 434,
               height: 240
             });
+*/
 
             function kaas(){
 				if($(".noteImage .replaced").lenght == $(".noteImage").lenght){
@@ -58,7 +60,11 @@
 
 
             $("span.play").bind("touchstart tap", function(){
-             console.log('klaas');
+
+              /*$(this).bind("canplay", function() {
+              	alert('hello');
+              });*/
+             
               var videoFrontDiv = $(this).parent();
 			  var splitted = $(videoFrontDiv).attr("class").split(' ');
 
