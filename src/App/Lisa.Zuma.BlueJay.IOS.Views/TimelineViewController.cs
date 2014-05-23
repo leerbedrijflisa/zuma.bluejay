@@ -30,9 +30,15 @@ namespace Lisa.Zuma.BlueJay.IOS.Views
 
 			btnNewNote.TouchUpInside += eventHandlers.Create(CreateNote);
 			btnEditProfile.TouchUpInside += eventHandlers.CreatePush<ProfileViewController>();
-			btnRefresh.TouchUpInside += eventHandlers.Create(UpdateList);
+//			btnRefresh.TouchUpInside += eventHandlers.Create(UpdateList);
+			btnRefresh.TouchUpInside += eventHandlers.Create (RefreshButtonUpdateList);
 
-			dataHelper.SyncNotesDataByID (DossierID, UpdateList);
+//			dataHelper.SyncNotesDataByID (DossierID, UpdateList);
+		}
+
+		public void RefreshButtonUpdateList() {
+		
+			this.ViewWillAppear (false);
 		}
 
 		public void UpdateList()
@@ -63,7 +69,8 @@ namespace Lisa.Zuma.BlueJay.IOS.Views
 		{
 			base.ViewWillAppear (animated);
 			this.NavigationController.SetNavigationBarHidden (true, true);
-			UpdateList ();
+			dataHelper.SyncNotesDataByID (DossierID, UpdateList);
+			//UpdateList ();
 
 			lblTitle.Text = dataHelper.GetCurrentDossierDataName();
 
