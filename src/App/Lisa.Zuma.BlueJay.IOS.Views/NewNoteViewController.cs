@@ -52,7 +52,10 @@ namespace Lisa.Zuma.BlueJay.IOS.Views
 
 		private void SaveNoteData(Object sender, EventArgs args)
 		{
-			parentView.NavigationController.PushViewController(new TimelineViewController(), false);
+//			parentView.NavigationController.PushViewController(new TimelineViewController(), false);
+			dataHelper.OnNotePosted += () => {
+				parentView.NavigationController.PushViewController(new TimelineViewController(), false);
+			};
 			dataHelper.SetNewNote (txtInput.Text);
 		}
 
