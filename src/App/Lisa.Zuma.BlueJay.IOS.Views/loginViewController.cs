@@ -22,6 +22,15 @@ namespace Lisa.Zuma.BlueJay.IOS.Views
 
 		}
 
+		public override void ViewWillAppear (bool animated)
+		{
+			base.ViewWillAppear (animated);
+
+			this.NavigationController.SetNavigationBarHidden (true, true);
+		}
+
+
+
 		private void SignIn(Object sender, EventArgs args)
 		{
 			loadingOverlay = new LoadingOverlay (UIScreen.MainScreen.Bounds);
@@ -39,6 +48,11 @@ namespace Lisa.Zuma.BlueJay.IOS.Views
 						, null, "probeer opniew...", null).Show();
 				});
 			});
+
+			this.txtPassword.ShouldReturn += (textField) => { 
+				textField.ResignFirstResponder();
+				return true; 
+			};
 		}
 
 		private DataHelper dataHelper;

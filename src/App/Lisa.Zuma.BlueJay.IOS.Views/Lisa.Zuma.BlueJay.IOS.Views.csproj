@@ -165,6 +165,9 @@
   <ItemGroup>
     <BundleResource Include="Info.plist" />
     <BundleResource Include="Resources\arrow.png" />
+    <BundleResource Include="Resources\password.png" />
+    <BundleResource Include="Resources\unknown.png" />
+    <BundleResource Include="Resources\username.png" />
   </ItemGroup>
   <ItemGroup>
     <XamarinComponentReference Include="xamarin.mobile">

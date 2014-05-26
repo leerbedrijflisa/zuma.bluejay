@@ -3,6 +3,7 @@ using System.Drawing;
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
 using Lisa.Zuma.BlueJay.IOS.Models;
+using System.Linq;
 
 namespace Lisa.Zuma.BlueJay.IOS.Views
 {
@@ -37,7 +38,8 @@ namespace Lisa.Zuma.BlueJay.IOS.Views
 
 			jumpToNextView = (dosiers.Count == 1);
 			if (jumpToNextView) {
-			
+
+				dataHelper.insertNewCurrentDossier (dosiers.First().DossierId);
 				// Return to prevent table from being filled! 
 				return;
 			}
