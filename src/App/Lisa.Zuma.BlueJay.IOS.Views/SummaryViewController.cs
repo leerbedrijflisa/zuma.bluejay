@@ -26,17 +26,22 @@ namespace Lisa.Zuma.BlueJay.IOS.Views
 		public void RowClicked_handler (object sender, RowClickedEventArgs e)
 		{
 			TimelineViewController timeLineViewController = new TimelineViewController ();
-			dataHelper.insertNewCurrentDossier (e.ClickedItem.Id);
 			this.NavigationController.PushViewController (timeLineViewController, true);
 		}
-
+			
 		public override void ViewDidLoad ()
 		{
 			base.ViewDidLoad ();
 			NavigationItem.SetHidesBackButton (true, false);
 			var dosiers = dataHelper.GetDosierDatas();
 
-			var sourceFromTablehelper = tableHelper.CreateSource(dosiers, d => d.ID, d => d.Name);
+			jumpToNextView = (dosiers.Count == 1);
+			if (jumpToNextView) {
+			
+				// Return to prevent table from being filled! 
+				return;
+			}
+			var sourceFromTablehelper = tableHelper.CreateSource(dosiers, d => d.DossierId, d => d.Name);
 
 			sourceFromTablehelper.RowClicked += RowClicked_handler;
 			tblCell.Source = sourceFromTablehelper;
@@ -60,9 +65,14 @@ namespace Lisa.Zuma.BlueJay.IOS.Views
 
 			this.NavigationController.SetNavigationBarHidden (true, true);
 
+			// If jumpToNextView == true, only one dossier is available so open the timeline directly.
+			if (jumpToNextView) {
+			
+				NavigationController.PushViewController (new TimelineViewController (), false);
+			}
 		}
 
-
+		private bool jumpToNextView = false;
 	}
 }
 

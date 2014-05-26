@@ -34,8 +34,10 @@ namespace Lisa.Zuma.BlueJay.IOS.Models
 						var jsonResponse = JsonConvert.DeserializeObject<signInRequestInformation>(response.Content);
 						database.Clear("UserData");
 						database.Insert(new UserData{ Name = jsonResponse.userName, AccesToken = jsonResponse.access_token });
-						SuccessFunction();
-						SyncDossiers();
+						database.AccessToken();
+
+						//
+						SyncDossiers(SuccessFunction);
 					}
 					else
 					{
@@ -49,7 +51,7 @@ namespace Lisa.Zuma.BlueJay.IOS.Models
 			var note = new Note{Text = text, DateCreated = DateTime.Now, Media = GetAllDataElements()};
 			if (note.Media.Count > 0 || !string.IsNullOrEmpty (note.Text)) {
 				//var user = database.GetCurrentUser ();
-				var request = new RestRequest (string.Format ("api/dossier/{0}/Notes/", 1), Method.POST);
+				var request = new RestRequest (string.Format ("api/dossier/{0}/Notes/", database.getCurrentDossier()), Method.POST);
 				request.AddHeader ("Authorization", "bearer " + database.accessToken);
 				request.RequestFormat = DataFormat.Json;
 				request.AddBody (note);
@@ -98,9 +100,10 @@ namespace Lisa.Zuma.BlueJay.IOS.Models
 						using (var uploadResponse = await httpClient.PutAsync(media.Location, content))
 						{
 
-							var request = new RestRequest("api/dossier/1/Notes/{noteId}/media/{id}", Method.PUT);
+							var request = new RestRequest("api/dossier/{dosierId}/Notes/{noteId}/media/{id}", Method.PUT);
 							request.RequestFormat = DataFormat.Json;
 							request.AddUrlSegment("noteId", note.Id.ToString());
+							request.AddUrlSegment("dosierId", database.getCurrentDossier().ToString());
 							request.AddUrlSegment("id", media.Id.ToString());		
 							request.AddHeader("Authorization", "bearer "+ database.accessToken);
 							request.AddBody(media);
@@ -108,8 +111,10 @@ namespace Lisa.Zuma.BlueJay.IOS.Models
 							var resp = client.Execute<NoteMedia>(request);
 							var noteMedia = new Media 
 							{
+								mediaId = resp.Data.Id,
 								Name = resp.Data.Name,
 								Location = resp.Data.Location
+								
 							};
 
 							dbNote.Media.Add (noteMedia);
@@ -133,21 +138,24 @@ namespace Lisa.Zuma.BlueJay.IOS.Models
 			});
 		}
 
-		public void SyncDossiers()
+		public void SyncDossiers(Action DoFunc)
 		{
+//			database.deleteDossiers ();
+
 			var request = new RestRequest ("api/dossier/", Method.GET);
 			request.AddHeader  ("Authorization", "bearer "+ database.accessToken);
 			client.ExecuteAsync (request, response => {
 
 				var callback = JsonConvert.DeserializeObject<List<Dossier>> (response.Content);
 
+				database.deleteDossiers();
+
 				foreach(var dossiers in callback )
 				{
-					foreach(var dossierDetail in dossiers.Details)
-					{
-						database.Insert(new DosierData{Name = dossierDetail.Contents});
-					}
+					database.Insert(new DosierData{Name = dossiers.Name, DossierId = dossiers.Id});
 				}
+
+				DoFunc();
 
 			});
 		}
@@ -156,30 +164,33 @@ namespace Lisa.Zuma.BlueJay.IOS.Models
 
 			database.DeleteAllNotesForSync();
 
-			var request = new RestRequest (string.Format("api/dossier/{0}/Notes/", dosier), Method.GET);
+			var request = new RestRequest (string.Format("api/dossier/{0}/Notes/", getCurrentDossier()), Method.GET);
 			request.AddHeader  ("Authorization", "bearer "+ database.accessToken);
 			client.ExecuteAsync (request, response => {
 
 				var callback = JsonConvert.DeserializeObject<List<Note>> (response.Content);
-
-				callback
-					.Select (n => new NotesData () {
-					DosierDataID = dosier, 
-					OwnerID = 1, 
-					Text = n.Text, 
-					Date = n.DateCreated,
-					Media = n.Media
-					
-								.Select (m => new Media () { 
-						Name = m.Name, 
-						Location = m.Location 
+				if(callback != null){
+					callback
+						.Select (n => new NotesData () {
+						DosierDataID = dosier, 
+						OwnerID = 1, 
+						Text = n.Text, 
+						noteId = n.Id,
+						Date = n.DateCreated,
+						Media = n.Media
+						
+									.Select (m => new Media () { 
+									mediaId = m.Id,
+									Name = m.Name, 
+							Location = m.Location 
+						})
+									.ToList ()
 					})
-								.ToList ()
-				})
-					.ToList ()
-					.ForEach (n => {
-					database.Insert (n);
-				});
+						.ToList ()
+						.ForEach (n => {
+						database.Insert (n);
+					});
+				}
 				AsyncFunc ();
 
 			});
@@ -218,6 +229,13 @@ namespace Lisa.Zuma.BlueJay.IOS.Models
 			return database.GetProfileItemsByProfileID (1);
 		}
 
+		public string GetCurrentDossierDataName()
+		{
+			DosierData value =  database.GetCurrentDossier();
+
+			return value.Name;
+		}
+
 		public void DeleteAllDataElements()
 		{
 			database.DeleteAllTemporaryMediaItems();
@@ -242,6 +260,11 @@ namespace Lisa.Zuma.BlueJay.IOS.Models
 		public void newCombination(string combination)
 		{
 			database.Update (new LockScreenData { IsActive = 1, SecurityCode = int.Parse (combination) });
+		}
+
+		public string token()
+		{
+			return database.accessToken;
 		}
 
 		private List<NoteMedia> GetAllDataElements()
