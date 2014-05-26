@@ -150,6 +150,7 @@
     <Compile Include="LockScreenSettings.designer.cs">
       <DependentUpon>LockScreenSettings.cs</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\ProfileTableSource.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

@@ -10,11 +10,15 @@ using System.Net;
 using Newtonsoft.Json.Linq;
 using MonoTouch.UIKit;
 using Lisa.Zuma.BlueJay.Models;
+using System.Threading;
 
 namespace Lisa.Zuma.BlueJay.IOS.Models
 {
 	public class DataHelper
 	{
+		public delegate void NotePostedEventHandler();
+		public event NotePostedEventHandler OnNotePosted;
+
 		public DataHelper ()
 		{
 			database = new Database ();
@@ -46,6 +50,7 @@ namespace Lisa.Zuma.BlueJay.IOS.Models
 				});
 		}
 
+		private ManualResetEvent resetEvent = new ManualResetEvent(false);
 		public void SetNewNote (string text)
 		{
 			var note = new Note{Text = text, DateCreated = DateTime.Now, Media = GetAllDataElements()};
@@ -62,8 +67,14 @@ namespace Lisa.Zuma.BlueJay.IOS.Models
 
 					Store (callback, () => {
 						DeleteAllDataElements ();
+						resetEvent.Set();
 					});
 				});
+				resetEvent.WaitOne ();
+				if (OnNotePosted != null) {
+
+					OnNotePosted();
+				}
 			} else {
 				new UIAlertView("Leeg bericht", "Je probeert een leeg bericht te plaatsen, dit is niet toegestaan !"
 					, null, "Begrepen !", null).Show();
