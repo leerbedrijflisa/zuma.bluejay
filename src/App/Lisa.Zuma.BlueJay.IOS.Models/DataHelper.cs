@@ -142,6 +142,25 @@ namespace Lisa.Zuma.BlueJay.IOS.Models
 			return database.GetPickerItems;
 		}
 
+		public void AddDossierDetail(string category, string content, Action completed) {
+
+			var detail = new DossierDetail () {
+				Category = category,
+				Contents = content
+			};
+
+			var request = new RestRequest ("api/dossier/{dossierId}/detail", Method.POST);
+			request.RequestFormat = DataFormat.Json;
+			request.AddHeader ("Authorization", string.Format ("bearer {0}", database.accessToken))
+				.AddUrlSegment ("dossierId", database.getCurrentDossier ().ToString())
+				.AddObject (detail);
+
+			client.ExecuteAsync<DossierDetail> (request, response => {
+
+				completed();
+			});
+		}
+
 		public void SyncNotesDataByID(int id, Action DoSomething)
 		{
 			SyncAllNotesDataFromDosierData(id, ()=>{
