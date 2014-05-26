@@ -49,7 +49,7 @@ namespace Lisa.Zuma.BlueJay.WebApi.Providers
                     context.Options.AuthenticationType);
                 ClaimsIdentity cookiesIdentity = await userManager.CreateIdentityAsync(user,
                     CookieAuthenticationDefaults.AuthenticationType);
-                AuthenticationProperties properties = CreateProperties(user.UserName);
+                AuthenticationProperties properties = CreateProperties(user.UserName, user.Id);
                 AuthenticationTicket ticket = new AuthenticationTicket(oAuthIdentity, properties);
                 context.Validated(ticket);
                 context.Request.Context.Authentication.SignIn(cookiesIdentity);
@@ -92,11 +92,12 @@ namespace Lisa.Zuma.BlueJay.WebApi.Providers
             return Task.FromResult<object>(null);
         }
 
-        public static AuthenticationProperties CreateProperties(string userName)
+        public static AuthenticationProperties CreateProperties(string userName, string id)
         {
             IDictionary<string, string> data = new Dictionary<string, string>
             {
-                { "userName", userName }
+                { "userName", userName },
+                { "userId", id }
             };
             return new AuthenticationProperties(data);
         }

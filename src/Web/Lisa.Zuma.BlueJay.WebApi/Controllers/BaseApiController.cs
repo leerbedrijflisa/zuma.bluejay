@@ -2,6 +2,7 @@
 using Lisa.Zuma.BlueJay.Web.Data.Entities;
 using Lisa.Zuma.BlueJay.Web.Data.Managers;
 using Lisa.Zuma.BlueJay.WebApi.Extensions;
+using Lisa.Zuma.BlueJay.WebApi.Helpers;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using System;
@@ -15,6 +16,9 @@ namespace Lisa.Zuma.BlueJay.WebApi.Controllers
 {
     public class BaseApiController : ApiController
     {
+        /// <summary>
+        /// Gives access to all entities in the database.
+        /// </summary>
         protected IUnitOfWork UoW
         {
             get
@@ -32,6 +36,9 @@ namespace Lisa.Zuma.BlueJay.WebApi.Controllers
             }
         }
 
+        /// <summary>
+        /// Provides access to the built-in UserManager.
+        /// </summary>
         protected ApplicationUserManager<UserData> UserManager
         {
             get
@@ -40,11 +47,30 @@ namespace Lisa.Zuma.BlueJay.WebApi.Controllers
             }
         }
 
+        /// <summary>
+        /// Provides access to the built-in RoleManager.
+        /// </summary>
         protected RoleManager<IdentityRole> RoleManager
         {
             get
             {
                 return UoW.RoleManager;
+            }
+        }
+
+        /// <summary>
+        /// Provides access to the StorageHelper.
+        /// </summary>
+        protected StorageHelper StorageHelper
+        {
+            get
+            {
+                if (storageHelper == null)
+                {
+                    storageHelper = new StorageHelper("ZumaBlueJayStorageConnectionString", "bluejay");
+                }
+
+                return storageHelper;
             }
         }
 
@@ -71,6 +97,7 @@ namespace Lisa.Zuma.BlueJay.WebApi.Controllers
             base.Dispose(disposing);
         }
 
-        private UnitOfWork uow;
+        private IUnitOfWork uow;
+        private StorageHelper storageHelper;
     }
 }
