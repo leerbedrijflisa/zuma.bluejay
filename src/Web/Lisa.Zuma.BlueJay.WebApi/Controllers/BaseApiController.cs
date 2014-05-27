@@ -7,6 +7,7 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Web;
 using System.Web.Http;
@@ -67,7 +68,7 @@ namespace Lisa.Zuma.BlueJay.WebApi.Controllers
             {
                 if (storageHelper == null)
                 {
-                    storageHelper = new StorageHelper("ZumaBlueJayStorageConnectionString", "bluejay");
+                    storageHelper = new StorageHelper("ZumaBlueJayStorageConnectionString", ConfigurationManager.AppSettings["ZumaBlueJayStorageContainer"]);
                 }
 
                 return storageHelper;
