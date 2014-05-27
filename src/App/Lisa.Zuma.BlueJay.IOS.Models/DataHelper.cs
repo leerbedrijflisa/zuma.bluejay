@@ -254,9 +254,13 @@ namespace Lisa.Zuma.BlueJay.IOS.Models
 			return database.getCurrentDossier ();
 		}
 	
-		public List<ProfileItemsData> GetProfileItems()
-		{
-			return database.GetProfileItemsByProfileID (1);
+//		public List<ProfileItemsData> GetProfileItems()
+//		{
+//			return database.GetProfileItemsByProfileID (1);
+//		}
+
+		public IEnumerable<ProfileItemsData> GetProfileItems() {
+			return database.GetProfileItemsByDossierId (getCurrentDossier ());
 		}
 
 		public string GetCurrentDossierDataName()

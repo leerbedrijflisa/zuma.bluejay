@@ -181,13 +181,20 @@ namespace Lisa.Zuma.BlueJay.IOS.Data
 
 		public void InsertProfileItem (ProfileItemsData newItem)
 		{
-			newItem.ProfileID = 1;
+			//newItem.ProfileID = 1
 			db.Insert (newItem);
 		}
 
 		public List<ProfileItemsData> GetProfileItemsByProfileID (int profileId)
 		{
 		var result = db.Query<ProfileItemsData> ("SELECT * FROM ProfileItemsData WHERE ProfileID='" + profileId + "'");
+
+			return result;
+		}
+
+		public IEnumerable<ProfileItemsData> GetProfileItemsByDossierId(int dossierId) {
+		
+			var result = db.Query<ProfileItemsData> ("SELECT * FROM ProfileItemsData WHERE DossierDataID = '" + dossierId + "'");
 
 			return result;
 		}
