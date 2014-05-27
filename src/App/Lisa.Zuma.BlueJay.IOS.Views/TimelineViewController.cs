@@ -32,6 +32,7 @@ namespace Lisa.Zuma.BlueJay.IOS.Views
 			btnEditProfile.TouchUpInside += eventHandlers.CreatePush<ProfileViewController>();
 //			btnRefresh.TouchUpInside += eventHandlers.Create(UpdateList);
 			btnRefresh.TouchUpInside += eventHandlers.Create (RefreshButtonUpdateList);
+			btnLogout.TouchUpInside += eventHandlers.CreatePush<loginViewController>();
 
 //			dataHelper.SyncNotesDataByID (DossierID, UpdateList);
 		}
@@ -70,9 +71,6 @@ namespace Lisa.Zuma.BlueJay.IOS.Views
 			base.ViewWillAppear (animated);
 			this.NavigationController.SetNavigationBarHidden (true, true);
 			dataHelper.SyncNotesDataByID (DossierID, UpdateList);
-			//UpdateList ();
-
-			lblTitle.Text = dataHelper.GetCurrentDossierDataName();
 
 		}
 
@@ -85,6 +83,8 @@ namespace Lisa.Zuma.BlueJay.IOS.Views
 			backgroundColor.BackgroundColor = UIColor.Black;
 			backgroundColor.Alpha = 0.5f;
 			View.Add (backgroundColor);
+
+			lblTitle.Text = dataHelper.GetCurrentDossierDataName();
 
 			var x = View.Frame.Width / 2 -300;
 			var y = View.Frame.Height / 2 - 300;
