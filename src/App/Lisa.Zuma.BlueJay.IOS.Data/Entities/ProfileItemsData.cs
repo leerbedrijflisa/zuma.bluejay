@@ -10,6 +10,7 @@ namespace Lisa.Zuma.BlueJay.IOS.Data
 		public int ProfileID { get; set;}
 		public string Title { get; set; }
 		public string Content { get; set; }
+		public int DossierDataID {get;set;}
 	}
 }
 
