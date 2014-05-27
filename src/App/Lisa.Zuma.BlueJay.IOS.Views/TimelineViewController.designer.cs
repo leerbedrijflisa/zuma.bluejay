@@ -16,6 +16,9 @@ namespace Lisa.Zuma.BlueJay.IOS.Views
 		MonoTouch.UIKit.UIButton btnEditProfile { get; set; }
 
 		[Outlet]
+		MonoTouch.UIKit.UIButton btnLogout { get; set; }
+
+		[Outlet]
 		MonoTouch.UIKit.UIButton btnNewNote { get; set; }
 
 		[Outlet]
@@ -44,14 +47,19 @@ namespace Lisa.Zuma.BlueJay.IOS.Views
 				btnRefresh = null;
 			}
 
+			if (lblTitle != null) {
+				lblTitle.Dispose ();
+				lblTitle = null;
+			}
+
 			if (wvTimeline != null) {
 				wvTimeline.Dispose ();
 				wvTimeline = null;
 			}
 
-			if (lblTitle != null) {
-				lblTitle.Dispose ();
-				lblTitle = null;
+			if (btnLogout != null) {
+				btnLogout.Dispose ();
+				btnLogout = null;
 			}
 		}
 	}

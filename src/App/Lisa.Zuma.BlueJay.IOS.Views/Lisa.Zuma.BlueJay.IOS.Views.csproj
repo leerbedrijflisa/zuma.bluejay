@@ -169,6 +169,11 @@
     <BundleResource Include="Resources\password.png" />
     <BundleResource Include="Resources\unknown.png" />
     <BundleResource Include="Resources\username.png" />
+    <BundleResource Include="Resources\message.png" />
+    <BundleResource Include="Resources\camera.png" />
+    <BundleResource Include="Resources\refresh.png" />
+    <BundleResource Include="Resources\profile.png" />
+    <BundleResource Include="Resources\logout.png" />
   </ItemGroup>
   <ItemGroup>
     <XamarinComponentReference Include="xamarin.mobile">
