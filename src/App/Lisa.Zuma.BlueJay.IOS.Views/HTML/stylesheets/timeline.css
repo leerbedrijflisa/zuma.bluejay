@@ -5,6 +5,8 @@
   padding: 0;
   margin: 0;
   position: relative;
+  margin-top: -20px;
+  padding-top:30px;
   /* Highlight */
 
   /* Spine */
@@ -13,7 +15,7 @@
 .timeline > li {
   float: left;
   clear: left;
-  width: 436px;
+  width: 421px;
   margin-bottom: 15px;
   position: relative;
   z-index: 2;
@@ -23,23 +25,24 @@
   clear: right;
 }
 .timeline .pointer {
-  background: url(../images/icons-4.png) -41px -28px no-repeat;
-  width: 19px;
-  height: 15px;
+  background: url(../images/icons-4.png) 0px -36px;
+  width: 54px;
+  height: 30px;
   position: absolute;
-  right: -18px;
-  top: 87%;
+  right: -53px;
+  bottom: 20px;
 }
 .timeline .right > .pointer {
-  left: -18px;
-  right: auto;
-  background-position: -61px -28px;
+ left: -41px;
+right: auto;
+background-position: -83px -35px;
+width: 43px;
 }
 .timeline > .left + .right > .pointer {
   top: 40px;
 }
 .timeline > .right + li > .pointer {
-  top: 93%;
+  top: 91%;
 }
 .timeline .highlight {
   clear: both;
@@ -77,15 +80,16 @@
   padding: 0px;
 }
 .imageUnit {
-  border-top: 1px #ccc solid;
+  border-top: 1px #d7d7d7 solid;
   padding-top: 5px;
-  margin: 5px 10px 5px 10px;
+  padding: 5px 10px 5px 10px;
   font-size: 11px;
 }
 .imageUnit .imageUnit-content {
   display: inline-block;
   vertical-align: top;
   padding-left: 5px;
+  padding-top: 10px;
 }
 .imageUnit .imageUnit-content > p {
   margin: 0;
@@ -178,7 +182,7 @@
 
 .videoHolder{
   background-color: black;
-  width: 434px;
+  width: 419px;
   height: 240px;
 }
 
@@ -216,5 +220,5 @@ p.text{
 }
 
 p.time{
- color:#B4BBCD;
+ color:#E4E4E4;
 }

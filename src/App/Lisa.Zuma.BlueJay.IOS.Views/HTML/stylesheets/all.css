@@ -1,7 +1,7 @@
 @charset "utf-8";
 
 body{
-    background:#eef2ff;
+    background:#d7d7d7;
     font-size:12px; 
     line-height:1.4;
     font-family:tahoma,verdana,arial,sans-serif;
@@ -9,11 +9,11 @@ body{
 
 .container{
     width:901px;
-    margin:20px auto;
+    margin:20px;
 }
 
 a, a:visited{
-    color:#008268;
+    color:#37a0d5;
     text-decoration:none;
 }
 
