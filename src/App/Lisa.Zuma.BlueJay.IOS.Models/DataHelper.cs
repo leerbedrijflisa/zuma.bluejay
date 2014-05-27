@@ -179,10 +179,20 @@ namespace Lisa.Zuma.BlueJay.IOS.Models
 				var callback = JsonConvert.DeserializeObject<List<Dossier>> (response.Content);
 
 				database.deleteDossiers();
+				database.Clear("ProfileItemsData");
 
 				foreach(var dossiers in callback )
 				{
 					database.Insert(new DosierData{Name = dossiers.Name, DossierId = dossiers.Id});
+					dossiers.Details
+						.Select(d => new ProfileItemsData() {
+							Title = d.Category,
+							Content = d.Contents,
+							ProfileID = d.Id,
+							DossierDataID = dossiers.Id
+						})
+						.ToList()
+						.ForEach(pi => database.InsertProfileItem(pi));
 				}
 
 				DoFunc();
@@ -277,7 +287,7 @@ namespace Lisa.Zuma.BlueJay.IOS.Models
 
 		public void InsertProfileItem(string title, string content)
 		{
-			database.InsertProfileItem (new ProfileItemsData{Title = title, Content = content});
+			database.InsertProfileItem (new ProfileItemsData{Title = title, Content = content, DossierDataID = getCurrentDossier()});
 		}
 
 		public List<TemporaryItemMediaData> GetSummaryOfMediaItems()
