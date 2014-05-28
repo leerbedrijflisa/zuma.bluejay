@@ -65,6 +65,9 @@ namespace Lisa.Zuma.BlueJay.IOS
 					"<p class='roll'>"+role+"</p>"+
 					"<p class='time'> "+date+"</p>"+
 					"</div>"+
+				"<div class='imageUnit-content' style='float:right; padding-top:15px;'>"+
+					"<p class='time'> "+date+"</p>"+
+					"</div>"+
 					"</div>"+
 
 					
@@ -86,7 +89,7 @@ namespace Lisa.Zuma.BlueJay.IOS
 				foreach (var x in media) {
 					if (x.Location.Contains (".png"))
 					{
-						NoteMedia += "<img class='noteImage "+dataHelper.getCurrentDossier()+" "+noteId+" "+x.mediaId+"' style='max-width:320px; max-height:240px;' src='" + x.Location + "' >";
+						NoteMedia += "<div style='max-width:419px; max-height:240px; overflow:hidden;'><img width='419' class='noteImage "+dataHelper.getCurrentDossier()+" "+noteId+" "+x.mediaId+"' style='margin-top:-40px;' src='" + x.Location + "' ></div>";
 					}
 
 					if (x.Location.Contains (".mp4"))
@@ -98,7 +101,7 @@ namespace Lisa.Zuma.BlueJay.IOS
 			}
 
 			if (text != null && text != "") {
-				NoteMedia += "<p>" + text + "</p>";
+				NoteMedia += "<p class='text'>" + text + "</p>";
 			}
 
 			return NoteMedia;

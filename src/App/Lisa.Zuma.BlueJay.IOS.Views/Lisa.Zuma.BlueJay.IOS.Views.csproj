@@ -151,6 +151,10 @@
       <DependentUpon>LockScreenSettings.cs</DependentUpon>
     </Compile>
     <Compile Include="Helpers\ProfileTableSource.cs" />
+    <Compile Include="ChoiceCameraOptionViewController.cs" />
+    <Compile Include="ChoiceCameraOptionViewController.designer.cs">
+      <DependentUpon>ChoiceCameraOptionViewController.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -165,15 +169,6 @@
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Info.plist" />
-    <BundleResource Include="Resources\arrow.png" />
-    <BundleResource Include="Resources\password.png" />
-    <BundleResource Include="Resources\unknown.png" />
-    <BundleResource Include="Resources\username.png" />
-    <BundleResource Include="Resources\message.png" />
-    <BundleResource Include="Resources\camera.png" />
-    <BundleResource Include="Resources\refresh.png" />
-    <BundleResource Include="Resources\profile.png" />
-    <BundleResource Include="Resources\logout.png" />
   </ItemGroup>
   <ItemGroup>
     <XamarinComponentReference Include="xamarin.mobile">
@@ -184,17 +179,6 @@
       <Version>1.0</Version>
       <Visible>False</Visible>
     </XamarinComponentReference>
-  </ItemGroup>
-  <ItemGroup>
-    <InterfaceDefinition Include="LockScreenSettings.xib" />
-    <InterfaceDefinition Include="MediaSummaryViewController.xib" />
-    <InterfaceDefinition Include="loginViewController.xib" />
-    <InterfaceDefinition Include="NewNoteViewController.xib" />
-    <InterfaceDefinition Include="LockScreenViewController.xib" />
-    <InterfaceDefinition Include="TimelineViewController.xib" />
-    <InterfaceDefinition Include="ProfileViewController.xib" />
-    <InterfaceDefinition Include="NewProfileItemViewController.xib" />
-    <InterfaceDefinition Include="SummaryViewController.xib" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="HTML\images\active-unit.png" />
@@ -214,5 +198,17 @@
     <Content Include="HTML\stylesheets\jquery.excoloSlider.css" />
     <Content Include="HTML\stylesheets\timeline.css" />
     <Content Include="HTML\images\loader.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <InterfaceDefinition Include="NewNoteViewController.xib" />
+    <InterfaceDefinition Include="ChoiceCameraOptionViewController.xib" />
+    <InterfaceDefinition Include="TimelineViewController.xib" />
+    <InterfaceDefinition Include="loginViewController.xib" />
+    <InterfaceDefinition Include="LockScreenSettings.xib" />
+    <InterfaceDefinition Include="LockScreenViewController.xib" />
+    <InterfaceDefinition Include="SummaryViewController.xib" />
+    <InterfaceDefinition Include="MediaSummaryViewController.xib" />
+    <InterfaceDefinition Include="ProfileViewController.xib" />
+    <InterfaceDefinition Include="NewProfileItemViewController.xib" />
   </ItemGroup>
 </Project>

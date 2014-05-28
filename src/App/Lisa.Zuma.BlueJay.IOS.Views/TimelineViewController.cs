@@ -19,7 +19,9 @@ namespace Lisa.Zuma.BlueJay.IOS.Views
 			eventHandlers = new EventHandlers (this);
 			backgroundColor = new UIButton ();
 			OverlayView = new UIView ();
+			camera = new Camera ();
 			DossierID = dataHelper.getCurrentDossier();
+			myPopOver = new UIPopoverController(new ChoiceCameraOptionViewController()); 
 		}
 
 		public override void ViewDidLoad ()
@@ -33,6 +35,7 @@ namespace Lisa.Zuma.BlueJay.IOS.Views
 //			btnRefresh.TouchUpInside += eventHandlers.Create(UpdateList);
 			btnRefresh.TouchUpInside += eventHandlers.Create (RefreshButtonUpdateList);
 			btnLogout.TouchUpInside += eventHandlers.CreatePush<loginViewController>();
+			btnCamera.TouchUpInside += eventHandlers.Create (ShowCameraPopOver);
 
 //			dataHelper.SyncNotesDataByID (DossierID, UpdateList);
 		}
@@ -40,6 +43,12 @@ namespace Lisa.Zuma.BlueJay.IOS.Views
 		public void RefreshButtonUpdateList() {
 		
 			this.ViewWillAppear (false);
+		}
+
+		public void ShowCameraPopOver()
+		{
+			myPopOver.PopoverContentSize = new SizeF (277f, 79f);
+			myPopOver.PresentFromRect (btnCamera.Frame, this.View, UIPopoverArrowDirection.Up, true);
 		}
 
 		public void UpdateList()
@@ -86,10 +95,10 @@ namespace Lisa.Zuma.BlueJay.IOS.Views
 
 			lblTitle.Text = dataHelper.GetCurrentDossierDataName();
 
-			var x = View.Frame.Width / 2 -300;
-			var y = View.Frame.Height / 2 - 300;
+			var x = View.Frame.Width / 2 - 210;
+			var y = View.Frame.Height / 2 - 250;
 
-			OverlayView.Frame = new RectangleF(x, y, 400, 600);
+			OverlayView.Frame = new RectangleF(x, y, 423, 498);
 			OverlayView.Add (newNoteViewController.View);
 
 			View.Add (OverlayView);
@@ -101,6 +110,8 @@ namespace Lisa.Zuma.BlueJay.IOS.Views
 		private NewNoteViewController newNoteViewController;
 		private EventHandlers eventHandlers;
 		private UIView OverlayView;
+		private Camera camera;
+		private UIPopoverController myPopOver;
 		public int DossierID;
 
 
