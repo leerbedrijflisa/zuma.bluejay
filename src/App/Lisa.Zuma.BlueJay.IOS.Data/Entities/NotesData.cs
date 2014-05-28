@@ -13,6 +13,7 @@ namespace Lisa.Zuma.BlueJay.IOS.Data
 		[PrimaryKey, AutoIncrement]
 		public int ID { get; set; }
 		public int OwnerID{ get; set; } 
+		public int noteId{ get; set;}
 		public int DosierDataID { get; set; }
 		public string Text { get; set; }	
 		public DateTime Date{ get; set;}
@@ -24,7 +25,7 @@ namespace Lisa.Zuma.BlueJay.IOS.Data
 				string Result = "";
 
 				foreach (var Results in Media) {
-					Result += Results.Location + "@";
+					Result += Results.Location + "*"+ Results.mediaId +"@";
 				}
 
 				return Result;
@@ -33,10 +34,15 @@ namespace Lisa.Zuma.BlueJay.IOS.Data
 			set {
 				var SplitValue = value.Split (new char[]{ '@' }, StringSplitOptions.RemoveEmptyEntries);
 
-				foreach (var x in SplitValue) {
-					var model = new Media { Location = x };
-					Media.Add (model);
+				for (var i = 0; i < SplitValue.Length; i++) {
+
+					var SplitValueDash = SplitValue[i].Split (new char[]{ '*' }, StringSplitOptions.RemoveEmptyEntries);
+
+						var model = new Media { Location = SplitValueDash [0], mediaId = int.Parse (SplitValueDash [1]) };
+						Media.Add (model);
+
 				}
+
 			}
 		}
 

@@ -25,8 +25,6 @@ namespace Lisa.Zuma.BlueJay.IOS.Views
 			InitializeUI ();
 
 			btnSave.TouchUpInside += SaveNoteData;
-			btnCamera.TouchUpInside += TakeVideo;
-			btnPhotoCamera.TouchUpInside += TakePhoto;
 			btnPickVideo.TouchUpInside += PickVideo;
 			btnPickPhoto.TouchUpInside += PickImage;
 
@@ -44,26 +42,30 @@ namespace Lisa.Zuma.BlueJay.IOS.Views
 			};   
 
 			txtInput = new UITextView();
-			txtInput.Frame = new RectangleF(20, 70, 380, 350);
+			txtInput.Frame = new RectangleF(20, 20, 380, 320);
 			txtInput.BackgroundColor = UIColor.FromRGB(242, 242, 242);
-
+			txtInput.Text = "Voer hier tekst in...";
 			View.Add(txtInput);
 		}
 
 		private void SaveNoteData(Object sender, EventArgs args)
 		{
-			parentView.NavigationController.PushViewController(new TimelineViewController(), false);
+//			parentView.NavigationController.PushViewController(new TimelineViewController(), false);
+			dataHelper.OnNotePosted += () => {
+				parentView.NavigationController.PushViewController(new TimelineViewController(), false);
+			};
 			dataHelper.SetNewNote (txtInput.Text);
 		}
 
 		private void TakeVideo(Object sender, EventArgs args)
 		{
 			camera.CaptureVideo(String.Format("{0:d-M-yyyy-HH-mm-ss}", DateTime.Now), () => UpdateButtonNumber ());
+
 		}
 
 		private void TakePhoto(Object sender, EventArgs args)
 		{
-			camera.CapturePhoto(String.Format("{0:d-M-yyyy-HH-mm-ss}", DateTime.Now), () => UpdateButtonNumber ());
+			camera.CapturePhoto(String.Format("{0:d-M-yyyy-HH-mm-ss}", DateTime.Now), () => {UpdateButtonNumber();});
 		}
 
 		private void PickImage(Object sender, EventArgs args)

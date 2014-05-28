@@ -28,15 +28,23 @@ namespace Lisa.Zuma.BlueJay.WebApi.Controllers
             }
                         
             var dossierModel = Converter.ToDossier(dossier, RoleManager.Roles);
+            foreach (var note in dossierModel.Notes)
+            {
+                foreach (var media in note.Media)
+                {
+                    var filename = StorageHelper.GetFileNameFromSasUri(media.Location);
+                    media.Location = StorageHelper.GetReadableSasUri(filename, new TimeSpan(0, 2, 0)).AbsoluteUri;
+                }
+            }
 
             return Ok(dossierModel);
         }
 
         [Route("")]
-        public IHttpActionResult Get()
+        public async Task<IHttpActionResult> Get()
         {
             // TODO: Fix problem with context issue when using CurrentUser property in BaseApiController.
-            var u = UoW.UserManager.FindById(User.Identity.GetUserId());
+            var u = await UoW.UserManager.FindByIdAsync(User.Identity.GetUserId());
             var dossierModels = Converter.ToDossier(u.Dossiers, RoleManager.Roles);
 
             return Ok(dossierModels);

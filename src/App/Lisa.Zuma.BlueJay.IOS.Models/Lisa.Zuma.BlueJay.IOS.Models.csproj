@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">iPhoneSimulator</Platform>
-    <ProductVersion>10.0.0</ProductVersion>
+    <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{6F9D4C63-C542-4D87-8DBA-22A82498E3BA}</ProjectGuid>
     <ProjectTypeGuids>{6BC8ED88-2882-458C-8E55-DFD12B67127B};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -100,7 +100,7 @@
     </Reference>
     <Reference Include="System.Net.Http" />
     <Reference Include="Lisa.Zuma.BlueJay.Models">
-      <HintPath>..\..\..\..\..\Downloads\Lisa.Zuma.BlueJay.Models.dll</HintPath>
+      <HintPath>..\..\Web\Lisa.Zuma.BlueJay.Models\bin\Debug\Lisa.Zuma.BlueJay.Models.dll</HintPath>
     </Reference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

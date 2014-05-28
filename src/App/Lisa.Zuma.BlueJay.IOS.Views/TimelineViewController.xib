@@ -1,14 +1,17 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.iPad.XIB" version="3.0" toolsVersion="4514" systemVersion="13B42" targetRuntime="iOS.CocoaTouch.iPad" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.iPad.XIB" version="3.0" toolsVersion="5056" systemVersion="13C64" targetRuntime="iOS.CocoaTouch.iPad" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3747"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="TimelineViewController">
             <connections>
-                <outlet property="btnEditProfile" destination="MKT-jS-oPa" id="n9r-AG-VaO"/>
-                <outlet property="btnNewNote" destination="coL-pu-rUE" id="RGH-eu-ow3"/>
-                <outlet property="btnRefresh" destination="KPS-Hj-g0n" id="unq-vE-n29"/>
+                <outlet property="btnCamera" destination="tNO-3j-iY0" id="J5b-JG-s5R"/>
+                <outlet property="btnEditProfile" destination="f76-0U-4Pq" id="dz7-Ta-yQL"/>
+                <outlet property="btnLogout" destination="U5s-gh-yxi" id="cpc-Jk-aCe"/>
+                <outlet property="btnNewNote" destination="EC3-VH-Jtn" id="fkJ-aB-5sq"/>
+                <outlet property="btnRefresh" destination="KPS-Hj-g0n" id="o1H-Av-5AX"/>
+                <outlet property="lblTitle" destination="Kc2-SZ-8QR" id="Yby-rP-ZYW"/>
                 <outlet property="view" destination="2" id="3"/>
                 <outlet property="wvTimeline" destination="knZ-ya-Z2F" id="hQc-LJ-qv8"/>
             </connections>
@@ -18,46 +21,102 @@
             <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
-                <webView contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="knZ-ya-Z2F">
-                    <rect key="frame" x="0.0" y="86" width="768" height="938"/>
+                <webView contentMode="center" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="knZ-ya-Z2F">
+                    <rect key="frame" x="0.0" y="156" width="768" height="868"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                    <color key="backgroundColor" cocoaTouchSystemColor="tableCellGroupedBackgroundColor"/>
+                    <color key="backgroundColor" red="0.84313725490196079" green="0.84313725490196079" blue="0.84313725490196079" alpha="1" colorSpace="calibratedRGB"/>
+                    <dataDetectorType key="dataDetectorTypes"/>
                 </webView>
-                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Martijn" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5Q6-FB-mNX">
-                    <rect key="frame" x="42" y="16" width="169" height="62"/>
+                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="fill" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KPS-Hj-g0n">
+                    <rect key="frame" x="441" y="111" width="120" height="45"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <fontDescription key="fontDescription" name="HelveticaNeue-UltraLight" family="Helvetica Neue" pointSize="64"/>
+                    <fontDescription key="fontDescription" name="HelveticaNeue-Thin" family="Helvetica Neue" pointSize="17"/>
+                    <inset key="contentEdgeInsets" minX="43" minY="-1" maxX="0.0" maxY="0.0"/>
+                    <state key="normal" title="Verversen" backgroundImage="refresh.png">
+                        <color key="titleColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                </button>
+                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oFg-lb-0Pa">
+                    <rect key="frame" x="0.0" y="0.0" width="768" height="110"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <color key="backgroundColor" red="0.14777176249999999" green="0.71914437350000004" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MKT-jS-oPa">
-                    <rect key="frame" x="644" y="37" width="112" height="30"/>
+                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Martijn" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Kc2-SZ-8QR">
+                    <rect key="frame" x="370" y="26" width="126" height="62"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <color key="backgroundColor" red="0.094117656349999995" green="0.61960786580000005" blue="0.62745100259999997" alpha="1" colorSpace="deviceRGB"/>
-                    <state key="normal" title="Bewerk profiel">
-                        <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <fontDescription key="fontDescription" name="HelveticaNeue-UltraLight" family="Helvetica Neue" pointSize="45"/>
+                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="f76-0U-4Pq">
+                    <rect key="frame" x="705" y="45" width="43" height="43"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <inset key="contentEdgeInsets" minX="-6" minY="0.0" maxX="0.0" maxY="0.0"/>
+                    <state key="normal" backgroundImage="profile.png">
+                        <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    </state>
+                </button>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="unknown.png" translatesAutoresizingMaskIntoConstraints="NO" id="lJO-Pk-WwE">
+                    <rect key="frame" x="273" y="19" width="89" height="86"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                </imageView>
+                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Bijzonderheid 1 - bijzonderheid 2" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SBJ-u9-jVu">
+                    <rect key="frame" x="370" y="80" width="253" height="21"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <fontDescription key="fontDescription" name="HelveticaNeue-Thin" family="Helvetica Neue" pointSize="14"/>
+                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="fill" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tNO-3j-iY0">
+                    <rect key="frame" x="320" y="110" width="123" height="46"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <fontDescription key="fontDescription" name="HelveticaNeue-Thin" family="Helvetica Neue" pointSize="17"/>
+                    <inset key="contentEdgeInsets" minX="52" minY="3" maxX="0.0" maxY="0.0"/>
+                    <state key="normal" title="Camera" backgroundImage="camera.png">
+                        <color key="titleColor" red="0.69162547831632648" green="0.69162547831632648" blue="0.69162547831632648" alpha="1" colorSpace="calibratedRGB"/>
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
                 </button>
-                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="coL-pu-rUE">
-                    <rect key="frame" x="582" y="37" width="54" height="30"/>
+                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="fill" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="EC3-VH-Jtn">
+                    <rect key="frame" x="205" y="110" width="117" height="46"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <color key="backgroundColor" red="0.094117656349999995" green="0.61960786580000005" blue="0.62745100259999997" alpha="1" colorSpace="deviceRGB"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="28"/>
-                    <inset key="contentEdgeInsets" minX="0.0" minY="-4" maxX="0.0" maxY="0.0"/>
-                    <state key="normal" title="+"/>
-                </button>
-                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KPS-Hj-g0n">
-                    <rect key="frame" x="492" y="37" width="82" height="30"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <color key="backgroundColor" red="0.094117656349999995" green="0.61960786580000005" blue="0.62745100259999997" alpha="1" colorSpace="deviceRGB"/>
-                    <state key="normal" title="Refresh">
-                        <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <fontDescription key="fontDescription" name="HelveticaNeue-Thin" family="Helvetica Neue" pointSize="17"/>
+                    <inset key="contentEdgeInsets" minX="46" minY="3" maxX="0.0" maxY="0.0"/>
+                    <state key="normal" title="Bericht" backgroundImage="message.png">
+                        <color key="titleColor" red="0.69162547829999999" green="0.69162547829999999" blue="0.69162547829999999" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
                 </button>
+                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="U5s-gh-yxi">
+                    <rect key="frame" x="20" y="45" width="49" height="43"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <inset key="contentEdgeInsets" minX="-6" minY="0.0" maxX="0.0" maxY="0.0"/>
+                    <state key="normal" image="logout.png">
+                        <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    </state>
+                </button>
+                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ikn-PA-qeo">
+                    <rect key="frame" x="0.0" y="153" width="768" height="3"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <color key="backgroundColor" red="0.79860889670000001" green="0.79860889670000001" blue="0.79860889670000001" alpha="1" colorSpace="calibratedRGB"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
             </subviews>
-            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-            <simulatedStatusBarMetrics key="simulatedStatusBarMetrics" statusBarStyle="blackOpaque"/>
+            <color key="backgroundColor" red="0.95109215561224492" green="0.95109215561224492" blue="0.95109215561224492" alpha="1" colorSpace="calibratedRGB"/>
+            <simulatedStatusBarMetrics key="simulatedStatusBarMetrics" statusBarStyle="lightContent"/>
         </view>
     </objects>
+    <resources>
+        <image name="camera.png" width="131" height="51"/>
+        <image name="logout.png" width="42" height="43"/>
+        <image name="message.png" width="131" height="51"/>
+        <image name="profile.png" width="42" height="43"/>
+        <image name="refresh.png" width="131" height="51"/>
+        <image name="unknown.png" width="132" height="133"/>
+    </resources>
 </document>

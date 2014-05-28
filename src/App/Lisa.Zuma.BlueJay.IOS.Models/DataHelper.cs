@@ -2,7 +2,6 @@ using System;
 using Lisa.Zuma.BlueJay.IOS.Data;
 using System.Collections.Generic;
 using System.IO;
-using Lisa.Zuma.BlueJay.Models;
 using RestSharp;
 using Newtonsoft.Json;
 using System.Net.Http;
@@ -10,11 +9,16 @@ using System.Linq;
 using System.Net;
 using Newtonsoft.Json.Linq;
 using MonoTouch.UIKit;
+using Lisa.Zuma.BlueJay.Models;
+using System.Threading;
 
 namespace Lisa.Zuma.BlueJay.IOS.Models
 {
 	public class DataHelper
 	{
+		public delegate void NotePostedEventHandler();
+		public event NotePostedEventHandler OnNotePosted;
+
 		public DataHelper ()
 		{
 			database = new Database ();
@@ -34,7 +38,10 @@ namespace Lisa.Zuma.BlueJay.IOS.Models
 						var jsonResponse = JsonConvert.DeserializeObject<signInRequestInformation>(response.Content);
 						database.Clear("UserData");
 						database.Insert(new UserData{ Name = jsonResponse.userName, AccesToken = jsonResponse.access_token });
-						SuccessFunction();
+						database.AccessToken();
+
+						//
+						SyncDossiers(SuccessFunction);
 					}
 					else
 					{
@@ -43,12 +50,13 @@ namespace Lisa.Zuma.BlueJay.IOS.Models
 				});
 		}
 
+		private ManualResetEvent resetEvent = new ManualResetEvent(false);
 		public void SetNewNote (string text)
 		{
 			var note = new Note{Text = text, DateCreated = DateTime.Now, Media = GetAllDataElements()};
 			if (note.Media.Count > 0 || !string.IsNullOrEmpty (note.Text)) {
 				//var user = database.GetCurrentUser ();
-				var request = new RestRequest (string.Format ("api/dossier/{0}/Notes/", 1), Method.POST);
+				var request = new RestRequest (string.Format ("api/dossier/{0}/Notes/", database.getCurrentDossier()), Method.POST);
 				request.AddHeader ("Authorization", "bearer " + database.accessToken);
 				request.RequestFormat = DataFormat.Json;
 				request.AddBody (note);
@@ -59,8 +67,14 @@ namespace Lisa.Zuma.BlueJay.IOS.Models
 
 					Store (callback, () => {
 						DeleteAllDataElements ();
+						resetEvent.Set();
 					});
 				});
+				resetEvent.WaitOne ();
+				if (OnNotePosted != null) {
+
+					OnNotePosted();
+				}
 			} else {
 				new UIAlertView("Leeg bericht", "Je probeert een leeg bericht te plaatsen, dit is niet toegestaan !"
 					, null, "Begrepen !", null).Show();
@@ -97,9 +111,10 @@ namespace Lisa.Zuma.BlueJay.IOS.Models
 						using (var uploadResponse = await httpClient.PutAsync(media.Location, content))
 						{
 
-							var request = new RestRequest("api/dossier/1/Notes/{noteId}/media/{id}", Method.PUT);
+							var request = new RestRequest("api/dossier/{dosierId}/Notes/{noteId}/media/{id}", Method.PUT);
 							request.RequestFormat = DataFormat.Json;
 							request.AddUrlSegment("noteId", note.Id.ToString());
+							request.AddUrlSegment("dosierId", database.getCurrentDossier().ToString());
 							request.AddUrlSegment("id", media.Id.ToString());		
 							request.AddHeader("Authorization", "bearer "+ database.accessToken);
 							request.AddBody(media);
@@ -107,14 +122,14 @@ namespace Lisa.Zuma.BlueJay.IOS.Models
 							var resp = client.Execute<NoteMedia>(request);
 							var noteMedia = new Media 
 							{
+								mediaId = resp.Data.Id,
 								Name = resp.Data.Name,
 								Location = resp.Data.Location
+								
 							};
 
 							dbNote.Media.Add (noteMedia);
 							database.Update(dbNote);
-
-
 						}
 					}
 				}
@@ -127,6 +142,25 @@ namespace Lisa.Zuma.BlueJay.IOS.Models
 			return database.GetPickerItems;
 		}
 
+		public void AddDossierDetail(string category, string content, Action completed) {
+
+			var detail = new DossierDetail () {
+				Category = category,
+				Contents = content
+			};
+
+			var request = new RestRequest ("api/dossier/{dossierId}/detail", Method.POST);
+			request.RequestFormat = DataFormat.Json;
+			request.AddHeader ("Authorization", string.Format ("bearer {0}", database.accessToken))
+				.AddUrlSegment ("dossierId", database.getCurrentDossier ().ToString())
+				.AddObject (detail);
+
+			client.ExecuteAsync<DossierDetail> (request, response => {
+
+				completed();
+			});
+		}
+
 		public void SyncNotesDataByID(int id, Action DoSomething)
 		{
 			SyncAllNotesDataFromDosierData(id, ()=>{
@@ -134,34 +168,69 @@ namespace Lisa.Zuma.BlueJay.IOS.Models
 			});
 		}
 
+		public void SyncDossiers(Action DoFunc)
+		{
+//			database.deleteDossiers ();
+
+			var request = new RestRequest ("api/dossier/", Method.GET);
+			request.AddHeader  ("Authorization", "bearer "+ database.accessToken);
+			client.ExecuteAsync (request, response => {
+
+				var callback = JsonConvert.DeserializeObject<List<Dossier>> (response.Content);
+
+				database.deleteDossiers();
+				database.Clear("ProfileItemsData");
+
+				foreach(var dossiers in callback )
+				{
+					database.Insert(new DosierData{Name = dossiers.Name, DossierId = dossiers.Id});
+					dossiers.Details
+						.Select(d => new ProfileItemsData() {
+							Title = d.Category,
+							Content = d.Contents,
+							ProfileID = d.Id,
+							DossierDataID = dossiers.Id
+						})
+						.ToList()
+						.ForEach(pi => database.InsertProfileItem(pi));
+				}
+
+				DoFunc();
+
+			});
+		}
+
 		public void SyncAllNotesDataFromDosierData(int dosier, Action AsyncFunc){
 
 			database.DeleteAllNotesForSync();
 
-			var request = new RestRequest (string.Format("api/dossier/{0}/Notes/", dosier), Method.GET);
+			var request = new RestRequest (string.Format("api/dossier/{0}/Notes/", getCurrentDossier()), Method.GET);
 			request.AddHeader  ("Authorization", "bearer "+ database.accessToken);
 			client.ExecuteAsync (request, response => {
 
 				var callback = JsonConvert.DeserializeObject<List<Note>> (response.Content);
-
-				callback
-					.Select (n => new NotesData () {
-					DosierDataID = dosier, 
-					OwnerID = 1, 
-					Text = n.Text, 
-					Date = n.DateCreated,
-					Media = n.Media
-					
-								.Select (m => new Media () { 
-						Name = m.Name, 
-						Location = m.Location 
+				if(callback != null){
+					callback
+						.Select (n => new NotesData () {
+						DosierDataID = dosier, 
+						OwnerID = 1, 
+						Text = n.Text, 
+						noteId = n.Id,
+						Date = n.DateCreated,
+						Media = n.Media
+						
+									.Select (m => new Media () { 
+									mediaId = m.Id,
+									Name = m.Name, 
+							Location = m.Location 
+						})
+									.ToList ()
 					})
-								.ToList ()
-				})
-					.ToList ()
-					.ForEach (n => {
-					database.Insert (n);
-				});
+						.ToList ()
+						.ForEach (n => {
+						database.Insert (n);
+					});
+				}
 				AsyncFunc ();
 
 			});
@@ -184,10 +253,31 @@ namespace Lisa.Zuma.BlueJay.IOS.Models
 		{
 			return database.GetAllDosierDatas ();
 		}
-	
-		public List<ProfileItemsData> GetProfileItems()
+
+		public void insertNewCurrentDossier(int id)
 		{
-			return database.GetProfileItemsByProfileID (1);
+			database.setCurrentDossier (id);
+		}
+
+		public int getCurrentDossier()
+		{
+			return database.getCurrentDossier ();
+		}
+	
+//		public List<ProfileItemsData> GetProfileItems()
+//		{
+//			return database.GetProfileItemsByProfileID (1);
+//		}
+
+		public IEnumerable<ProfileItemsData> GetProfileItems() {
+			return database.GetProfileItemsByDossierId (getCurrentDossier ());
+		}
+
+		public string GetCurrentDossierDataName()
+		{
+			DosierData value =  database.GetCurrentDossier();
+
+			return value.Name;
 		}
 
 		public void DeleteAllDataElements()
@@ -197,7 +287,7 @@ namespace Lisa.Zuma.BlueJay.IOS.Models
 
 		public void InsertProfileItem(string title, string content)
 		{
-			database.InsertProfileItem (new ProfileItemsData{Title = title, Content = content});
+			database.InsertProfileItem (new ProfileItemsData{Title = title, Content = content, DossierDataID = getCurrentDossier()});
 		}
 
 		public List<TemporaryItemMediaData> GetSummaryOfMediaItems()
@@ -209,6 +299,16 @@ namespace Lisa.Zuma.BlueJay.IOS.Models
 		{
 			return database.ReturnAllTemporaryMediaItems ()
 						   .Count;
+		}
+
+		public void newCombination(string combination)
+		{
+			database.Update (new LockScreenData { IsActive = 1, SecurityCode = int.Parse (combination) });
+		}
+
+		public string token()
+		{
+			return database.accessToken;
 		}
 
 		private List<NoteMedia> GetAllDataElements()

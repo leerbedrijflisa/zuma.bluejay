@@ -19,7 +19,17 @@ namespace Lisa.Zuma.BlueJay.IOS.Views
 			base.ViewDidLoad ();
 
 			btnSignIn.TouchUpInside += SignIn;
+
 		}
+
+		public override void ViewWillAppear (bool animated)
+		{
+			base.ViewWillAppear (animated);
+
+			this.NavigationController.SetNavigationBarHidden (true, true);
+		}
+
+
 
 		private void SignIn(Object sender, EventArgs args)
 		{
@@ -34,10 +44,15 @@ namespace Lisa.Zuma.BlueJay.IOS.Views
 			}, () => {
 				InvokeOnMainThread (delegate { 
 					loadingOverlay.Hide();
-					new UIAlertView("Verkeerde inlog", "De ingevoerde gegevens zijn onjuist"
+					new UIAlertView("Verkeerde gegevens", "De ingevoerde gegevens zijn onjuist"
 						, null, "probeer opniew...", null).Show();
 				});
 			});
+
+			this.txtPassword.ShouldReturn += (textField) => { 
+				textField.ResignFirstResponder();
+				return true; 
+			};
 		}
 
 		private DataHelper dataHelper;

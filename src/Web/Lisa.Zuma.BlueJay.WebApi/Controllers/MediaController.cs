@@ -60,8 +60,12 @@ namespace Lisa.Zuma.BlueJay.WebApi.Controllers
             {
                 return NotFound();
             }
-            
+
             var model = Converter.ToNoteMedia(media);
+            
+            var fileName = StorageHelper.GetFileNameFromSasUri(media.MediaLocation);
+            model.Location = StorageHelper.GetReadableSasUri(fileName, new TimeSpan(0, 2, 0)).AbsoluteUri;
+
             return Ok(model);
         }
 
@@ -84,11 +88,10 @@ namespace Lisa.Zuma.BlueJay.WebApi.Controllers
             {
                 return NotFound();
             }
-
-            var storageHelper = new StorageHelper("ZumaBlueJayStorageConnectionString", "bluejay");
-            var filename = storageHelper.GetFileNameFromSasUri(media.MediaLocation);
-            //media.MediaLocation = storageHelper.GetReadableSasUri(filename, new TimeSpan(0, 2, 0)).AbsoluteUri;
-            media.MediaLocation = storageHelper.GetReadableSasUri(filename, new TimeSpan(1, 0, 0)).AbsoluteUri;
+                        
+            var filename = StorageHelper.GetFileNameFromSasUri(media.MediaLocation);
+            media.MediaLocation = StorageHelper.GetReadableSasUri(filename, new TimeSpan(0, 2, 0)).AbsoluteUri;
+            //media.MediaLocation = StorageHelper.GetReadableSasUri(filename, new TimeSpan(1, 0, 0)).AbsoluteUri;
 
             UoW.Save();
 
@@ -121,8 +124,7 @@ namespace Lisa.Zuma.BlueJay.WebApi.Controllers
             UoW.NoteMediaRepository.Delete(media);
             UoW.Save();
 
-            var storageHelper = new StorageHelper("ZumaBlueJayStorageConnectionString", "bluejay");
-            storageHelper.RemoveFromStorageByUri(location);
+            StorageHelper.RemoveFromStorageByUri(location);
 
             return Ok();
         }

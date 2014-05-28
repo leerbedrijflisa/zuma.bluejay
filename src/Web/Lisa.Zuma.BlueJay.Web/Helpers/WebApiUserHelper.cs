@@ -16,15 +16,6 @@ namespace Lisa.Zuma.BlueJay.Web.Helpers
         }
 
         /// <summary>
-        /// Gets all users available on the WebApi.
-        /// </summary>
-        /// <returns></returns>
-        public IEnumerable<User> GetAll()
-        {
-            return GetAllAsync().Result;
-        }
-
-        /// <summary>
         /// Gets all users available on the WebApi in an asynchronous manner.
         /// </summary>
         /// <returns></returns>
@@ -35,16 +26,6 @@ namespace Lisa.Zuma.BlueJay.Web.Helpers
 
             var response = await Client.ExecuteTaskAsync<List<User>>(request);
             return response.Data;
-        }
-
-        /// <summary>
-        /// Gets a user by its id.
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        public User Get(string id)
-        {
-            return GetAsync(id).Result;
         }
 
         /// <summary>
@@ -60,16 +41,6 @@ namespace Lisa.Zuma.BlueJay.Web.Helpers
 
             var response = await Client.ExecuteTaskAsync<User>(request);
             return response.Data;
-        }
-
-        /// <summary>
-        /// Updates the user and attached roles.
-        /// </summary>
-        /// <param name="user">The user to update</param>
-        /// <returns></returns>
-        public User UpdateUser(User user)
-        {
-            return UpdateUserAsync(user).Result;
         }
 
         /// <summary>

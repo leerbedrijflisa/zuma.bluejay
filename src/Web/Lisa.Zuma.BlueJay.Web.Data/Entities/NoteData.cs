@@ -25,6 +25,10 @@ namespace Lisa.Zuma.BlueJay.Web.Data.Entities
         [Required]
         public int DossierId { get; set; }
 
+        [Required]
+        [MaxLength(128)]
+        public string PosterId { get; set; }
+
         public virtual DossierData Dossier { get; set; }
         public virtual ICollection<NoteMediaData> Media { get; set; }
     }

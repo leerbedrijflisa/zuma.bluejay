@@ -26,14 +26,15 @@ namespace Lisa.Zuma.BlueJay.IOS.Views
 			return true;
 		}
 
-		public override void DidEnterBackground (UIApplication application)
-		{
-			var RootNavigationController = new UINavigationController ();
-
-			RootNavigationController.PushViewController (new LockScreenViewController(), true);
-
-			this.window.RootViewController = RootNavigationController;
-		}
+//		public override void DidEnterBackground (UIApplication application)
+//		{
+//			var RootNavigationController = new UINavigationController ();
+//
+//			RootNavigationController.PushViewController (new LockScreenViewController(), true);
+//
+//			this.window.RootViewController = RootNavigationController;
+//
+//		}
 
 		public override UIViewController GetViewController (UIApplication application, string[] restorationIdentifierComponents, NSCoder coder)
 		{

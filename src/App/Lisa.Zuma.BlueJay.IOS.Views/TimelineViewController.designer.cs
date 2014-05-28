@@ -13,13 +13,22 @@ namespace Lisa.Zuma.BlueJay.IOS.Views
 	partial class TimelineViewController
 	{
 		[Outlet]
+		MonoTouch.UIKit.UIButton btnCamera { get; set; }
+
+		[Outlet]
 		MonoTouch.UIKit.UIButton btnEditProfile { get; set; }
+
+		[Outlet]
+		MonoTouch.UIKit.UIButton btnLogout { get; set; }
 
 		[Outlet]
 		MonoTouch.UIKit.UIButton btnNewNote { get; set; }
 
 		[Outlet]
 		MonoTouch.UIKit.UIButton btnRefresh { get; set; }
+
+		[Outlet]
+		MonoTouch.UIKit.UILabel lblTitle { get; set; }
 
 		[Outlet]
 		MonoTouch.UIKit.UIWebView wvTimeline { get; set; }
@@ -31,9 +40,24 @@ namespace Lisa.Zuma.BlueJay.IOS.Views
 				btnEditProfile = null;
 			}
 
+			if (btnLogout != null) {
+				btnLogout.Dispose ();
+				btnLogout = null;
+			}
+
 			if (btnNewNote != null) {
 				btnNewNote.Dispose ();
 				btnNewNote = null;
+			}
+
+			if (btnRefresh != null) {
+				btnRefresh.Dispose ();
+				btnRefresh = null;
+			}
+
+			if (lblTitle != null) {
+				lblTitle.Dispose ();
+				lblTitle = null;
 			}
 
 			if (wvTimeline != null) {
@@ -41,9 +65,9 @@ namespace Lisa.Zuma.BlueJay.IOS.Views
 				wvTimeline = null;
 			}
 
-			if (btnRefresh != null) {
-				btnRefresh.Dispose ();
-				btnRefresh = null;
+			if (btnCamera != null) {
+				btnCamera.Dispose ();
+				btnCamera = null;
 			}
 		}
 	}

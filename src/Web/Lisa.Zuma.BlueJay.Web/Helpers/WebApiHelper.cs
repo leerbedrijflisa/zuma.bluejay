@@ -25,17 +25,6 @@ namespace Lisa.Zuma.BlueJay.Web.Helpers
         }
 
         /// <summary>
-        /// Tries to log the user in on the WebApi.
-        /// </summary>
-        /// <param name="username">The username</param>
-        /// <param name="password">The password</param>
-        /// <returns></returns>
-        public WebApiLoginResult Login(string username, string password)
-        {
-            return LoginAsync(username, password).Result;
-        }
-
-        /// <summary>
         /// Tries to log the user in on the WebApi in an asynchronous manner.
         /// </summary>
         /// <param name="username">The username</param>
@@ -53,16 +42,6 @@ namespace Lisa.Zuma.BlueJay.Web.Helpers
             var loginResult = new WebApiLoginResult(response.Data);
 
             return loginResult;
-        }
-
-        /// <summary>
-        /// Gets the available claims from the WebApi.
-        /// </summary>
-        /// <param name="accessToken">The access token received after a successful login.</param>
-        /// <returns></returns>
-        public List<Claim> GetClaims(string accessToken)
-        {
-            return GetClaimsAsync(accessToken).Result;
         }
 
         /// <summary>
@@ -87,18 +66,6 @@ namespace Lisa.Zuma.BlueJay.Web.Helpers
                 .ToList();
 
             return claims;
-        }
-
-        /// <summary>
-        /// Tries to log the user in on the WebApi, retrieve a set of claims and transform them into a ClaimsIdentity.
-        /// </summary>
-        /// <param name="username">The username</param>
-        /// <param name="password">The password</param>
-        /// <param name="authenticationType">The authentication type used in the local application</param>
-        /// <returns></returns>
-        public WebApiLoginIdentityResult LoginAndGetIdentity(string username, string password, string authenticationType)
-        {
-            return LoginAndGetIdentityAsync(username, password, authenticationType).Result;
         }
 
         /// <summary>
@@ -127,11 +94,6 @@ namespace Lisa.Zuma.BlueJay.Web.Helpers
 
             result.Identity = identity;
             return result;
-        }
-
-        public RegisterUserResult RegisterUser(RegisterUserViewModel userModel)
-        {
-            return RegisterUserAsync(userModel).Result;
         }
 
         public async Task<RegisterUserResult> RegisterUserAsync(RegisterUserViewModel userModel)

@@ -13,6 +13,9 @@ namespace Lisa.Zuma.BlueJay.IOS.Views
 	partial class SummaryViewController
 	{
 		[Outlet]
+		MonoTouch.UIKit.UIButton btnLockScreenSettings { get; set; }
+
+		[Outlet]
 		MonoTouch.UIKit.UITableView tblCell { get; set; }
 		
 		void ReleaseDesignerOutlets ()
@@ -20,6 +23,11 @@ namespace Lisa.Zuma.BlueJay.IOS.Views
 			if (tblCell != null) {
 				tblCell.Dispose ();
 				tblCell = null;
+			}
+
+			if (btnLockScreenSettings != null) {
+				btnLockScreenSettings.Dispose ();
+				btnLockScreenSettings = null;
 			}
 		}
 	}

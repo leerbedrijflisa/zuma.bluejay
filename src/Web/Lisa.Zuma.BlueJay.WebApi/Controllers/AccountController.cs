@@ -267,7 +267,7 @@ namespace Lisa.Zuma.BlueJay.WebApi.Controllers
                     OAuthDefaults.AuthenticationType);
                 ClaimsIdentity cookieIdentity = await Manager.CreateIdentityAsync(user,
                     CookieAuthenticationDefaults.AuthenticationType);
-                AuthenticationProperties properties = ApplicationOAuthProvider.CreateProperties(user.UserName);
+                AuthenticationProperties properties = ApplicationOAuthProvider.CreateProperties(user.UserName, user.Id);
                 Authentication.SignIn(properties, oAuthIdentity, cookieIdentity);
             }
             else

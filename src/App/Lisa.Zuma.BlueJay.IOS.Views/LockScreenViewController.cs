@@ -3,20 +3,26 @@ using System.Drawing;
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
 using System.Collections.Generic;
+using Lisa.Zuma.BlueJay.IOS.Models;
 
 namespace Lisa.Zuma.BlueJay.IOS.Views
 {
 	public partial class LockScreenViewController : UIViewController
 	{
-		public LockScreenViewController () : base ("LockScreenViewController", null)
+		private int State;
+		private DataHelper dataHelper;
+	
+		public LockScreenViewController (int state = 0) : base ("LockScreenViewController", null)
 		{
 			DummyCombination = 1234;
+
+			State = state;
 		}
 			
 		public override void ViewDidLoad ()
 		{
 			base.ViewDidLoad ();
-			ButtonHandle ();
+				ButtonHandle ();
 			NavigationController.SetNavigationBarHidden (true, false);
 		}
 
@@ -50,19 +56,43 @@ namespace Lisa.Zuma.BlueJay.IOS.Views
 
 				Console.WriteLine (Combination.Length);
 
-				if (Combination.Length == 4) {
-
-					if (Combination == DummyCombination.ToString ()) {
-						Console.WriteLine ("Yes!");
-						Combination = string.Empty;
-						NavigationController.PushViewController (new SummaryViewController(), true);
-					} else {
-						Console.WriteLine ("Nope !");
-						CominationFailedAnimation ();
-					}
-
+				if (Combination.Length == 4 && State == null) {
+					CombinationIsValid ();
 				}
 
+				if (Combination.Length == 4 && State != null) {
+					CombinationIsValid ();
+				}
+
+			}
+		}
+		string firstCombination;
+		string confirmCombination;
+		private void NewCombination()
+		{
+
+
+			if (confirmCombination == firstCombination){
+				lblTitle.Text = "Voer nogmaals de combinatie in..";
+				dataHelper.newCombination (Combination);
+			}
+
+			if (firstCombination == null) {
+				firstCombination = Combination;
+			}
+
+
+		}
+
+		public void CombinationIsValid()
+		{
+			if (Combination == DummyCombination.ToString ()) {
+				Console.WriteLine ("Yes!");
+				Combination = string.Empty;
+				NavigationController.PushViewController (new SummaryViewController(), true);
+			} else {
+				Console.WriteLine ("Nope !");
+				CominationFailedAnimation ();
 			}
 		}
 
