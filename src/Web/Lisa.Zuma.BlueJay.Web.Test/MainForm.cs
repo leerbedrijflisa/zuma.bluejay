@@ -1045,7 +1045,7 @@ namespace Lisa.Zuma.BlueJay.Web.Test
         }
 
         private const string debugUrl = "http://localhost:14689/";
-        private const string betaUrl = "http://zumabluejay-test.azurewebsites.net/";
-        private const string productionUrl = "http://zumabluejay.azurewebsites.net/";
+        private const string betaUrl = "http://zumabluejay-apitest.azurewebsites.net/";
+        private const string productionUrl = "http://zumabluejay-api.azurewebsites.net/";
     }
 }
