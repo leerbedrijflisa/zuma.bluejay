@@ -27,21 +27,22 @@ namespace Lisa.Zuma.BlueJay.IOS.Views
 
 		public override void ViewWillAppear (bool animated)
 		{
-			var profileItems = dataHelper.GetProfileItems();
+			var profileItems = dataHelper.GetProfileItems ();
 
 			var itemGroup = new List<TableItemGroup> ();
-			profileItems.ForEach (p => {
-				var group = itemGroup.FirstOrDefault (g => g.Name == p.Title);
-				if (group == null) {
-					group = new TableItemGroup ();
-					group.Name = p.Title;
-					itemGroup.Add(group);
-				}
+			profileItems.ToList()
+				.ForEach (p => {
+					var group = itemGroup.FirstOrDefault (g => g.Name == p.Title);
+					if (group == null) {
+						group = new TableItemGroup ();
+						group.Name = p.Title;
+						itemGroup.Add(group);
+					}
 
-				group.Items.Add (new TableItem {
-					Heading = p.Content
+					group.Items.Add (new TableItem {
+						Heading = p.Content
+					});
 				});
-			});
 				
 			tblProfile.Source = new ProfileTableSource (itemGroup);
 		}

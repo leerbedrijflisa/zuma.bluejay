@@ -142,6 +142,25 @@ namespace Lisa.Zuma.BlueJay.IOS.Models
 			return database.GetPickerItems;
 		}
 
+		public void AddDossierDetail(string category, string content, Action completed) {
+
+			var detail = new DossierDetail () {
+				Category = category,
+				Contents = content
+			};
+
+			var request = new RestRequest ("api/dossier/{dossierId}/detail", Method.POST);
+			request.RequestFormat = DataFormat.Json;
+			request.AddHeader ("Authorization", string.Format ("bearer {0}", database.accessToken))
+				.AddUrlSegment ("dossierId", database.getCurrentDossier ().ToString())
+				.AddObject (detail);
+
+			client.ExecuteAsync<DossierDetail> (request, response => {
+
+				completed();
+			});
+		}
+
 		public void SyncNotesDataByID(int id, Action DoSomething)
 		{
 			SyncAllNotesDataFromDosierData(id, ()=>{
@@ -160,10 +179,20 @@ namespace Lisa.Zuma.BlueJay.IOS.Models
 				var callback = JsonConvert.DeserializeObject<List<Dossier>> (response.Content);
 
 				database.deleteDossiers();
+				database.Clear("ProfileItemsData");
 
 				foreach(var dossiers in callback )
 				{
 					database.Insert(new DosierData{Name = dossiers.Name, DossierId = dossiers.Id});
+					dossiers.Details
+						.Select(d => new ProfileItemsData() {
+							Title = d.Category,
+							Content = d.Contents,
+							ProfileID = d.Id,
+							DossierDataID = dossiers.Id
+						})
+						.ToList()
+						.ForEach(pi => database.InsertProfileItem(pi));
 				}
 
 				DoFunc();
@@ -235,9 +264,13 @@ namespace Lisa.Zuma.BlueJay.IOS.Models
 			return database.getCurrentDossier ();
 		}
 	
-		public List<ProfileItemsData> GetProfileItems()
-		{
-			return database.GetProfileItemsByProfileID (1);
+//		public List<ProfileItemsData> GetProfileItems()
+//		{
+//			return database.GetProfileItemsByProfileID (1);
+//		}
+
+		public IEnumerable<ProfileItemsData> GetProfileItems() {
+			return database.GetProfileItemsByDossierId (getCurrentDossier ());
 		}
 
 		public string GetCurrentDossierDataName()
@@ -254,7 +287,7 @@ namespace Lisa.Zuma.BlueJay.IOS.Models
 
 		public void InsertProfileItem(string title, string content)
 		{
-			database.InsertProfileItem (new ProfileItemsData{Title = title, Content = content});
+			database.InsertProfileItem (new ProfileItemsData{Title = title, Content = content, DossierDataID = getCurrentDossier()});
 		}
 
 		public List<TemporaryItemMediaData> GetSummaryOfMediaItems()
