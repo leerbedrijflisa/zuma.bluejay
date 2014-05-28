@@ -169,6 +169,18 @@
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Info.plist" />
+    <BundleResource Include="Resources\logout.png" />
+    <BundleResource Include="Resources\profile.png" />
+    <BundleResource Include="Resources\refresh.png" />
+    <BundleResource Include="Resources\camera.png" />
+    <BundleResource Include="Resources\message.png" />
+    <BundleResource Include="Resources\password.png" />
+    <BundleResource Include="Resources\unknown.png" />
+    <BundleResource Include="Resources\username.png" />
+    <BundleResource Include="Resources\ios_7_galaxy-wide.jpg" />
+    <BundleResource Include="Resources\number-emtpy.png" />
+    <BundleResource Include="Resources\number-insert.png" />
+    <BundleResource Include="Resources\roundje.png" />
   </ItemGroup>
   <ItemGroup>
     <XamarinComponentReference Include="xamarin.mobile">
