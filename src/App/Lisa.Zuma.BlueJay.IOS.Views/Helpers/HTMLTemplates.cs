@@ -38,6 +38,9 @@ namespace Lisa.Zuma.BlueJay.IOS
 				"<link href='../HTML/stylesheets/jquery.excoloSlider.css' rel='stylesheet' />"+
 		
 			"<body class='index'>" +
+				"<div class='imgOverlay'>" +
+				"<div class='imgDivv'></div>" +
+				"</div>" +
 			"<div class='container'>" +
 			"<ol class='timeline clearfix'>" +
 			"<li class='spine'></li>" +
@@ -122,7 +125,11 @@ namespace Lisa.Zuma.BlueJay.IOS
 
 				TemporaryMedia = this.NoteMediaHTML(note.noteId.ToString(), note.Text, note.Media);
 
+				if (note.OwnerID == db.getCurrentUserId ()) {
+					direction = "right";
+				} else {
 					direction = "left";
+				}
 					role = "Begeleider";
 
 

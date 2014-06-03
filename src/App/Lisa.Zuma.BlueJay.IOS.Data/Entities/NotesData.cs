@@ -12,7 +12,7 @@ namespace Lisa.Zuma.BlueJay.IOS.Data
 
 		[PrimaryKey, AutoIncrement]
 		public int ID { get; set; }
-		public int OwnerID{ get; set; } 
+		public string OwnerID{ get; set; } 
 		public int noteId{ get; set;}
 		public int DosierDataID { get; set; }
 		public string Text { get; set; }	

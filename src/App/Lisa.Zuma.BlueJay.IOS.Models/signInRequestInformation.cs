@@ -10,6 +10,7 @@ namespace Lisa.Zuma.BlueJay.IOS.Models
 		public string expires_in { get; set; }
 		public string token_type{ get; set; }
 		public string userName { get; set; } 
+		public string userId { get; set; } 
 	}
 }
 

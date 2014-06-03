@@ -10,7 +10,6 @@ namespace Lisa.Zuma.BlueJay.IOS.Views
 	public partial class SummaryViewController : UIViewController
 	{
 		private TableHelper tableHelper;
-		private TableSource tableSource;
 		private DataHelper dataHelper;
 
 		public SummaryViewController () : base ("SummaryViewController", null)
@@ -47,13 +46,7 @@ namespace Lisa.Zuma.BlueJay.IOS.Views
 
 			sourceFromTablehelper.RowClicked += RowClicked_handler;
 			tblCell.Source = sourceFromTablehelper;
-
-			UIPopoverController myPopOver = new UIPopoverController(new LockScreenSettings()); 
-
-//			btnLockScreenSettings.TouchUpInside += (sender, e) => {
-//				myPopOver.PopoverContentSize = new SizeF (View.Frame.Width - 30f, View.Frame.Height - 10f);
-//				myPopOver.PresentFromRect (btnLockScreenSettings.Frame, this.View, UIPopoverArrowDirection.Up, true);
-//			};   
+			  
 		}
 
 		public void NewCombinationDelegate()
@@ -68,8 +61,7 @@ namespace Lisa.Zuma.BlueJay.IOS.Views
 			this.NavigationController.SetNavigationBarHidden (true, true);
 
 			// If jumpToNextView == true, only one dossier is available so open the timeline directly.
-			if (jumpToNextView) {
-			
+			if (jumpToNextView){
 				NavigationController.PushViewController (new TimelineViewController (), false);
 			}
 		}

@@ -10,6 +10,7 @@ namespace Lisa.Zuma.BlueJay.IOS.Data
 		public string Name { get; set; }
 		public string AccesToken { get; set; }
 		public string RefreshToken { get; set; }
+		public string userId { get; set; }
 	}
 }
 

@@ -19,11 +19,11 @@ namespace Lisa.Zuma.BlueJay.IOS.Views
 			base.ViewDidLoad ();
 
 			btnPhoto.TouchUpInside += delegate {
-				camera.CaptureVideo(String.Format("{0:d-M-yyyy-HH-mm-ss}", DateTime.Now), () => {});
+				camera.CapturePhoto(String.Format("{0:d-M-yyyy-HH-mm-ss}", DateTime.Now), () => {});
 			};
 
 			btnVideo.TouchUpInside += delegate {
-				camera.CapturePhoto(String.Format("{0:d-M-yyyy-HH-mm-ss}", DateTime.Now), () => {});
+				camera.CaptureVideo(String.Format("{0:d-M-yyyy-HH-mm-ss}", DateTime.Now), () => {});
 			};
 			
 			// Perform any additional setup after loading the view, typically from a nib.

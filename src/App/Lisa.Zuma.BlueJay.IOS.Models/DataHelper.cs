@@ -22,7 +22,7 @@ namespace Lisa.Zuma.BlueJay.IOS.Models
 		public DataHelper ()
 		{
 			database = new Database ();
-			client = new RestClient ("http://zumabluejay-apitest.azurewebsites.net");
+			client = new RestClient ("http://zumabluejay-api.azurewebsites.net");
 		}
 
 		public void SignIn(string username, string password, Action SuccessFunction, Action FailFunction)
@@ -37,10 +37,9 @@ namespace Lisa.Zuma.BlueJay.IOS.Models
 					{
 						var jsonResponse = JsonConvert.DeserializeObject<signInRequestInformation>(response.Content);
 						database.Clear("UserData");
-						database.Insert(new UserData{ Name = jsonResponse.userName, AccesToken = jsonResponse.access_token });
+						database.Insert(new UserData{ Name = jsonResponse.userName, AccesToken = jsonResponse.access_token, userId = jsonResponse.userId });
 						database.AccessToken();
 
-						//
 						SyncDossiers(SuccessFunction);
 					}
 					else
@@ -213,7 +212,7 @@ namespace Lisa.Zuma.BlueJay.IOS.Models
 					callback
 						.Select (n => new NotesData () {
 						DosierDataID = dosier, 
-						OwnerID = 1, 
+						OwnerID = n.PosterId.ToString(), 
 						Text = n.Text, 
 						noteId = n.Id,
 						Date = n.DateCreated,
@@ -248,7 +247,7 @@ namespace Lisa.Zuma.BlueJay.IOS.Models
 		{
 			database.InsertNewTemporaryMediaItem (new TemporaryItemMediaData{Type = type, fileName = Path.GetFileName(path), Path = path});
 		}
-
+			
 		public List<DosierData> GetDosierDatas()
 		{
 			return database.GetAllDosierDatas ();
