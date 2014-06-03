@@ -9,10 +9,7 @@ namespace Lisa.Zuma.BlueJay.IOS.Views
 {
 	public partial class SummaryViewController : UIViewController
 	{
-		private TableHelper tableHelper;
-		private TableSource tableSource;
-		private DataHelper dataHelper;
-
+	
 		public SummaryViewController () : base ("SummaryViewController", null)
 		{
 			tableHelper = new TableHelper ();
@@ -34,33 +31,21 @@ namespace Lisa.Zuma.BlueJay.IOS.Views
 		{
 			base.ViewDidLoad ();
 			NavigationItem.SetHidesBackButton (true, false);
-			var dosiers = dataHelper.GetDosierDatas();
+			var dossiers = dataHelper.GetDosierDatas();
 
-			jumpToNextView = (dosiers.Count == 1);
+			jumpToNextView = (dossiers.Count == 1);
 			if (jumpToNextView) {
 
-				dataHelper.insertNewCurrentDossier (dosiers.First().DossierId);
+				dataHelper.insertNewCurrentDossier (dossiers.First().DossierId);
 				// Return to prevent table from being filled! 
 				return;
 			}
-			var sourceFromTablehelper = tableHelper.CreateSource(dosiers, d => d.DossierId, d => d.Name);
+			var sourceFromTablehelper = tableHelper.CreateSource(dossiers, d => d.DossierId, d => d.Name);
 
 			sourceFromTablehelper.RowClicked += RowClicked_handler;
 			tblCell.Source = sourceFromTablehelper;
-
-			UIPopoverController myPopOver = new UIPopoverController(new LockScreenSettings()); 
-
-//			btnLockScreenSettings.TouchUpInside += (sender, e) => {
-//				myPopOver.PopoverContentSize = new SizeF (View.Frame.Width - 30f, View.Frame.Height - 10f);
-//				myPopOver.PresentFromRect (btnLockScreenSettings.Frame, this.View, UIPopoverArrowDirection.Up, true);
-//			};   
 		}
-
-		public void NewCombinationDelegate()
-		{
-			NavigationController.PushViewController (new LockScreenViewController (1), true);
-		}
-
+			
 		public override void ViewDidAppear (bool animated)
 		{
 			Reachability.getStatus ();
@@ -75,6 +60,9 @@ namespace Lisa.Zuma.BlueJay.IOS.Views
 		}
 
 		private bool jumpToNextView = false;
+		private TableHelper tableHelper;
+		private TableSource tableSource;
+		private DataHelper dataHelper;
 	}
 }
 
