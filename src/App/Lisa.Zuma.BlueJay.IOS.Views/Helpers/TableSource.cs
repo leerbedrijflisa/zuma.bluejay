@@ -13,7 +13,6 @@ namespace Lisa.Zuma.BlueJay.IOS.Views
 	public class TableSource : UITableViewSource {
 		List<TableItem> tableItems;
 		string cellIdentifier = "TableCell";
-		DataHelper dataHelper;
 
 		public TableSource (List<TableItem> items)
 		{

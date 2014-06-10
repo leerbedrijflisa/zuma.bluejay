@@ -4,7 +4,6 @@ using MonoTouch.Foundation;
 using MonoTouch.UIKit;
 using Lisa.Zuma.BlueJay.IOS.Models;
 using System.IO;
-using GCDiscreetNotification;
 
 namespace Lisa.Zuma.BlueJay.IOS.Views
 {

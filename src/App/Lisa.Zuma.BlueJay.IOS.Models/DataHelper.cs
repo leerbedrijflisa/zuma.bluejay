@@ -41,7 +41,7 @@ namespace Lisa.Zuma.BlueJay.IOS.Models
 					if (response.StatusCode == HttpStatusCode.OK)
 					{
 						var jsonResponse = JsonConvert.DeserializeObject<signInRequestInformation>(response.Content);
-						database.Clear("UserData");
+						database.ClearTable("UserData");
 						database.Insert(new UserData{ Name = jsonResponse.userName, AccesToken = jsonResponse.access_token, userId = jsonResponse.userId });
 						database.AccessToken();
 
@@ -130,7 +130,7 @@ namespace Lisa.Zuma.BlueJay.IOS.Models
 				var callback = JsonConvert.DeserializeObject<List<Dossier>> (response.Content);
 
 				database.deleteDossiers();
-				database.Clear("ProfileItemsData");
+				database.ClearTable("ProfileItemsData");
 
 				foreach(var dossiers in callback )
 				{
@@ -156,7 +156,7 @@ namespace Lisa.Zuma.BlueJay.IOS.Models
 		/// </summary>
 		public void SyncAllNotesDataFromDossierData(int dosier, Action ExecuteWhenReady){
 
-			database.DeleteAllNotesForSync();
+			database.ClearTable("NotesData");
 
 			var request = new RestRequest (string.Format("api/dossier/{0}/Notes/", getCurrentDossier()), Method.GET);
 			request.AddHeader  ("Authorization", "bearer "+ database.accessToken);
@@ -226,7 +226,7 @@ namespace Lisa.Zuma.BlueJay.IOS.Models
 
 		public void DeleteAllDataElements()
 		{
-			database.DeleteAllTemporaryMediaItems();
+			database.ClearTable("TemporaryItemMediaData");
 		}
 
 		public void InsertProfileItem(string title, string content)
@@ -234,15 +234,14 @@ namespace Lisa.Zuma.BlueJay.IOS.Models
 			database.InsertProfileItem (new ProfileItemsData{Title = title, Content = content, DossierDataID = getCurrentDossier()});
 		}
 
-		public List<TemporaryItemMediaData> GetSummaryOfMediaItems()
+		public IEnumerable<TemporaryItemMediaData> GetSummaryOfMediaItems()
 		{
 			return database.ReturnAllTemporaryMediaItems ();
 		}
 
 		public int SummaryItemsCount()
 		{
-			return database.ReturnAllTemporaryMediaItems ()
-						   .Count;
+			return database.ReturnAllTemporaryMediaItems ().Count();
 		}
 
 //		public void newCombination(string combination)

@@ -11,7 +11,6 @@ namespace Lisa.Zuma.BlueJay.IOS.Views
 	{
 		public NewProfileItemViewController () : base ("NewProfileItemViewController", null)
 		{
-			tableHelper = new TableHelper();
 			dataHelper = new DataHelper ();
 			eventHandlers = new EventHandlers (this);
 		}
@@ -21,19 +20,17 @@ namespace Lisa.Zuma.BlueJay.IOS.Views
 			base.ViewDidLoad ();
 
 			InitializeUI ();
-
 			btnAddProfileItem.TouchUpInside += eventHandlers.Create(CreateNewProfileItem);
 		}
 
 		private void CreateNewProfileItem()
 		{
-			if(!string.IsNullOrEmpty(txtTitle.Text) && !string.IsNullOrEmpty(txtContent.Text)){
-			
+			if(!string.IsNullOrEmpty(txtTitle.Text) && !string.IsNullOrEmpty(txtContent.Text))
+			{
 				dataHelper.AddDossierDetail (txtTitle.Text, txtContent.Text, InsertProfileItem);
-
-				//dataHelper.InsertProfileItem(txtTitle.Text, txtContent.Text);
-				//NavigationController.PushViewController (new ProfileViewController(), true);
-			}else{
+			}
+			else
+			{
 				new UIAlertView("Lege invoervelden", "vul alle velden in !"
 					, null, "probeer opniew...", null).Show();
 			}
@@ -42,7 +39,6 @@ namespace Lisa.Zuma.BlueJay.IOS.Views
 		private void InsertProfileItem()
 		{
 			InvokeOnMainThread(() => {
-
 				dataHelper.InsertProfileItem(txtTitle.Text, txtContent.Text);
 				NavigationController.PushViewController(new ProfileViewController(), true);
 			});
@@ -94,7 +90,6 @@ namespace Lisa.Zuma.BlueJay.IOS.Views
 			};
 		}
 
-		private TableHelper tableHelper;
 		private DataHelper dataHelper;
 		private string selectedCat;
 		private UIPickerView picker;

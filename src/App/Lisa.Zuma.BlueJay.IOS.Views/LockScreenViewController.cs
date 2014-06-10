@@ -9,14 +9,13 @@ namespace Lisa.Zuma.BlueJay.IOS.Views
 {
 	public partial class LockScreenViewController : UIViewController
 	{
-		private int State;
-		private DataHelper dataHelper;
+//		private int State;
 	
 		public LockScreenViewController (int state = 0) : base ("LockScreenViewController", null)
 		{
 			DummyCombination = 1234;
 
-			State = state;
+//			State = state;
 		}
 			
 		public override void ViewDidLoad ()
@@ -56,18 +55,16 @@ namespace Lisa.Zuma.BlueJay.IOS.Views
 
 				Console.WriteLine (Combination.Length);
 
-				if (Combination.Length == 4 && State == null) {
-					CombinationIsValid ();
-				}
-
-				if (Combination.Length == 4 && State != null) {
-					CombinationIsValid ();
-				}
+//				if (Combination.Length == 4 && State == null) {
+//					CombinationIsValid ();
+//				}
+//
+//				if (Combination.Length == 4 && State != null) {
+//					CombinationIsValid ();
+//				}
 
 			}
 		}
-		string firstCombination;
-		string confirmCombination;
 		private void NewCombination()
 		{
 
@@ -77,9 +74,9 @@ namespace Lisa.Zuma.BlueJay.IOS.Views
 //				dataHelper.newCombination (Combination);
 //			}
 
-			if (firstCombination == null) {
-				firstCombination = Combination;
-			}
+//			if (firstCombination == null) {
+//				firstCombination = Combination;
+//			}
 
 
 		}
