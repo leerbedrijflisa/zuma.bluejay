@@ -23,21 +23,20 @@ namespace Lisa.Zuma.BlueJay.IOS.Views
 			base.ViewDidLoad ();
 
 			InitializeUI ();
-
-			btnSave.TouchUpInside += SaveNoteData;
-			btnPickVideo.TouchUpInside += PickVideo;
-			btnPickPhoto.TouchUpInside += PickImage;
-
 		}
 
 		private void InitializeUI()
 		{
 
-			UIPopoverController myPopOver = new UIPopoverController(new MediaSummaryViewController()); 
+			btnSave.TouchUpInside += SaveNoteData;
+			btnPickVideo.TouchUpInside += PickVideo;
+			btnPickPhoto.TouchUpInside += PickImage;
+
+			UIPopoverController listOfEmbeddedMediaListPopOver = new UIPopoverController(new MediaSummaryViewController());
 
 			btnMediaSummary.TouchUpInside += (sender, e) => {
-				myPopOver.PopoverContentSize = new SizeF (450f, 420f);
-				myPopOver.PresentFromRect (btnMediaSummary.Frame, this.View, UIPopoverArrowDirection.Down, true);
+				listOfEmbeddedMediaListPopOver.PopoverContentSize = new SizeF (450f, 420f);
+				listOfEmbeddedMediaListPopOver.PresentFromRect (btnMediaSummary.Frame, this.View, UIPopoverArrowDirection.Down, true);
 				UpdateButtonNumber();
 			};   
 
@@ -50,23 +49,13 @@ namespace Lisa.Zuma.BlueJay.IOS.Views
 
 		private void SaveNoteData(Object sender, EventArgs args)
 		{
-//			parentView.NavigationController.PushViewController(new TimelineViewController(), false);
 			dataHelper.OnNotePosted += () => {
 				parentView.NavigationController.PushViewController(new TimelineViewController(), false);
 			};
+
 			dataHelper.SetNewNote (txtInput.Text);
 		}
 
-		private void TakeVideo(Object sender, EventArgs args)
-		{
-			camera.CaptureVideo(String.Format("{0:d-M-yyyy-HH-mm-ss}", DateTime.Now), () => UpdateButtonNumber ());
-
-		}
-
-		private void TakePhoto(Object sender, EventArgs args)
-		{
-			camera.CapturePhoto(String.Format("{0:d-M-yyyy-HH-mm-ss}", DateTime.Now), () => {UpdateButtonNumber();});
-		}
 
 		private void PickImage(Object sender, EventArgs args)
 		{

@@ -20,7 +20,11 @@ namespace Lisa.Zuma.BlueJay.IOS.Views
 		public override void ViewDidLoad ()
 		{
 			base.ViewDidLoad ();
+			InitializeUI ();
+		}
 
+		public void InitializeUI()
+		{
 			btnNewItem.TouchUpInside += eventHandlers.CreatePush<NewProfileItemViewController> ();
 			btnBack.TouchUpInside += eventHandlers.CreatePush<TimelineViewController> ();
 		}

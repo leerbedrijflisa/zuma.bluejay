@@ -11,6 +11,7 @@ using Newtonsoft.Json.Linq;
 using MonoTouch.UIKit;
 using Lisa.Zuma.BlueJay.Models;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace Lisa.Zuma.BlueJay.IOS.Models
 {
@@ -48,92 +49,91 @@ namespace Lisa.Zuma.BlueJay.IOS.Models
 					}
 				});
 		}
-
-		private ManualResetEvent resetEvent = new ManualResetEvent(false);
+			
 		public void SetNewNote (string text)
 		{
 			var note = new Note{Text = text, DateCreated = DateTime.Now, Media = GetAllDataElements()};
-			if (note.Media.Count > 0 || !string.IsNullOrEmpty (note.Text)) {
+			if (note.Media.Count > 0 || !string.IsNullOrEmpty (note.Text))
+			{
 				//var user = database.GetCurrentUser ();
 				var request = new RestRequest (string.Format ("api/dossier/{0}/Notes/", database.getCurrentDossier()), Method.POST);
 				request.AddHeader ("Authorization", "bearer " + database.accessToken);
 				request.RequestFormat = DataFormat.Json;
 				request.AddBody (note);
 
-				client.ExecuteAsync (request, response => {
-					Console.WriteLine ("klaar :" + response.Content);
-					var callback = JsonConvert.DeserializeObject<Note> (response.Content);
+				var response = client.Execute<Note>(request);
+				Store (response.Data);
+				DeleteAllDataElements ();
 
-					Store (callback, () => {
-						DeleteAllDataElements ();
-						resetEvent.Set();
-					});
-				});
-				resetEvent.WaitOne ();
-				if (OnNotePosted != null) {
+				if (OnNotePosted != null)
+				{
 
 					OnNotePosted();
 				}
-			} else {
+
+			}
+			else
+			{
 				new UIAlertView("Leeg bericht", "Je probeert een leeg bericht te plaatsen, dit is niet toegestaan !"
 					, null, "Begrepen !", null).Show();
 			}
 		}
 
-		private async void Store(Note note, Action AsynFunc) {
+		private void Store(Note note)
+		{
+			var dbNote = new NotesData (note.Text);
+			database.Insert (dbNote);
+			StoreMediaWithNote (note, dbNote);
+		}
 
-			var dbNote = new NotesData 
-			{
-				Text = note.Text,
-				Media = new List<Media>()
-			};
-
-			database.Insert(dbNote);
-
+		private void StoreMediaWithNote(Note note, NotesData dbNote)
+		{
 			foreach (var media in note.Media) 
 			{
-				string url;
-				var extension = Path.GetExtension("../Documents/"+media.Name);
-				if (extension.StartsWith("."))
+				var extension = Path.GetExtension("../Documents/" + media.Name);
+				extension = extension.Substring(1);		// remove the period from the extension
+			
+				using (var uploadResponse = StoreFileContentInAzure("../Documents/" + media.Name, media.Location, MimeTypesHelper.MimeTypes[extension]))
 				{
-					extension = extension.Substring(1);
-				}
-
-				using (var httpClient = new HttpClient())
-				{
-					using (var fileStream = File.OpenRead("../Documents/"+media.Name))
+					var noteMedia = RequestMediaUrl(note.Id, media);
+					var mediaData = new Media 
 					{
-						var content = new StreamContent(fileStream);
-						content.Headers.Add("Content-Type", MimeTypesHelper.MimeTypes[extension]);
-						content.Headers.Add("x-ms-blob-type", "BlockBlob");
+						mediaId = noteMedia.Id,
+						Name = noteMedia.Name,
+						Location = noteMedia.Location
+					};
 
-						using (var uploadResponse = await httpClient.PutAsync(media.Location, content))
-						{
-
-							var request = new RestRequest("api/dossier/{dosierId}/Notes/{noteId}/media/{id}", Method.PUT);
-							request.RequestFormat = DataFormat.Json;
-							request.AddUrlSegment("noteId", note.Id.ToString());
-							request.AddUrlSegment("dosierId", database.getCurrentDossier().ToString());
-							request.AddUrlSegment("id", media.Id.ToString());		
-							request.AddHeader("Authorization", "bearer "+ database.accessToken);
-							request.AddBody(media);
-
-							var resp = client.Execute<NoteMedia>(request);
-							var noteMedia = new Media 
-							{
-								mediaId = resp.Data.Id,
-								Name = resp.Data.Name,
-								Location = resp.Data.Location
-								
-							};
-
-							dbNote.Media.Add (noteMedia);
-							database.Update(dbNote);
-						}
-					}
+					dbNote.Media.Add(mediaData);
+					database.Update(dbNote);
 				}
 			}
-			AsynFunc ();
+		}
+
+		private NoteMedia RequestMediaUrl(int noteId, NoteMedia media)
+		{
+			var request = new RestRequest("api/dossier/{dosierId}/Notes/{noteId}/media/{id}", Method.PUT);
+			request.RequestFormat = DataFormat.Json;
+			request.AddUrlSegment("noteId", noteId.ToString());
+			request.AddUrlSegment("dosierId", database.getCurrentDossier().ToString());
+			request.AddUrlSegment("id", media.Id.ToString());		
+			request.AddHeader("Authorization", "bearer "+ database.accessToken);
+			request.AddBody(media);
+
+			return client.Execute<NoteMedia>(request).Data;
+		}
+
+		private HttpResponseMessage StoreFileContentInAzure(string filePath, string location, string mimeType)
+		{
+			using (var fileStream = File.OpenRead(filePath))
+			{
+				using (var httpClient = new HttpClient ()) {
+					var content = new StreamContent (fileStream);
+					content.Headers.Add ("Content-Type", mimeType);
+					content.Headers.Add ("x-ms-blob-type", "BlockBlob");
+
+					return httpClient.PutAsync (location, content).Result;
+				}
+			}
 		}
 
 		public IList<string> picker()
