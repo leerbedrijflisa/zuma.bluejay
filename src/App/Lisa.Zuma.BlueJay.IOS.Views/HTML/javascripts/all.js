@@ -1,6 +1,6 @@
  $(function () {
 
-            var url = "http://zumabluejay-api.azurewebsites.net/api/";
+            var url = "http://zumabluejay-apitest.azurewebsites.net/api/";
             var token = $("html").find("custom").attr("token");
 
             console.log(token);

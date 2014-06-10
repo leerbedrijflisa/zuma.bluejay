@@ -23,7 +23,7 @@ namespace Lisa.Zuma.BlueJay.IOS.Models
 		public DataHelper ()
 		{
 			database = new Database ();
-			client = new RestClient ("http://zumabluejay-api.azurewebsites.net");
+			client = new RestClient ("http://zumabluejay-apitest.azurewebsites.net");
 		}
 
 		public void SignIn(string username, string password, Action SuccessFunction, Action FailFunction)
