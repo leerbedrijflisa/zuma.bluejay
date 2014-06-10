@@ -6,7 +6,14 @@ namespace Lisa.Zuma.BlueJay.IOS.Data
 {
 	public class NotesData
 	{
-		public NotesData(){
+		public NotesData()
+		{
+			Media = new List<Media> ();
+		}
+
+		public NotesData(string text)
+		{
+			Text = text;
 			Media = new List<Media> ();
 		}
 
