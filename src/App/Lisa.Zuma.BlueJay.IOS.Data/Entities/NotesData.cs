@@ -6,13 +6,20 @@ namespace Lisa.Zuma.BlueJay.IOS.Data
 {
 	public class NotesData
 	{
-		public NotesData(){
+		public NotesData()
+		{
+			Media = new List<Media> ();
+		}
+
+		public NotesData(string text)
+		{
+			Text = text;
 			Media = new List<Media> ();
 		}
 
 		[PrimaryKey, AutoIncrement]
 		public int ID { get; set; }
-		public int OwnerID{ get; set; } 
+		public string OwnerID{ get; set; } 
 		public int noteId{ get; set;}
 		public int DosierDataID { get; set; }
 		public string Text { get; set; }	

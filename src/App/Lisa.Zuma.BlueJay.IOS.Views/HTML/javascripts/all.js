@@ -5,8 +5,17 @@
 
             console.log(token);
 
+            $('img.noteImage').bind("tapstart tap", function(){
+              var imgURL = $(this).attr("src");
+              $(".imgDivv").html('<img src="'+ imgURL +'">');
+              $(".imgOverlay").fadeIn();
+            });
 
-            $('img.noteImage').bind("doubletap", function(){ alert($(this).attr("src")); });
+            $('.imgOverlay').bind('tapstart tap', function(){
+              $(this).fadeOut();
+            });
+
+            $('img.noteImage').bind("tapstart tap", function(){ alert($(this).attr("src")); });
 
             		$.each($(".noteImage"), function(i, val){
             		//alert('update');
@@ -65,7 +74,7 @@
 					success: function(data){
 						$(videoFrontDiv).toggle();
 						//alert(data.location);
-							$(videoFrontDiv).parent().append('<video width="432" style="background:black;" height="240" class="video" preload="auto" controls><source src="'+data.location+'" type="video/mp4"> Your browser does not support the video tag.</video>');
+							$(videoFrontDiv).parent().append('<video width="419" style="background:black;" height="240" class="video" preload="auto" controls><source src="'+data.location+'" type="video/mp4"> Your browser does not support the video tag.</video>');
 
 						$(".video").play();     
 				        $(".video").bind("timeupdate", function (e) {

@@ -60,6 +60,13 @@ namespace Lisa.Zuma.BlueJay.IOS.Data
 			}
 		}
 
+		public string getCurrentUserId()
+		{
+			var result = db.Table<UserData> ();
+
+			return result.First ().userId;
+		}
+
 		public void setCurrentDossier(int id)
 		{
 			db.Query<CurrentDossier> ("DELETE FROM CurrentDossier");
