@@ -29,14 +29,7 @@ namespace Lisa.Zuma.BlueJay.IOS.Views
 		{
 			if(!string.IsNullOrEmpty(txtTitle.Text) && !string.IsNullOrEmpty(txtContent.Text)){
 			
-				dataHelper.AddDossierDetail (txtTitle.Text, txtContent.Text, () => {
-				
-					InvokeOnMainThread(() => {
-
-						dataHelper.InsertProfileItem(txtTitle.Text, txtContent.Text);
-						NavigationController.PushViewController(new ProfileViewController(), true);
-					});
-				});
+				dataHelper.AddDossierDetail (txtTitle.Text, txtContent.Text, InsertProfileItem);
 
 				//dataHelper.InsertProfileItem(txtTitle.Text, txtContent.Text);
 				//NavigationController.PushViewController (new ProfileViewController(), true);
@@ -44,6 +37,15 @@ namespace Lisa.Zuma.BlueJay.IOS.Views
 				new UIAlertView("Lege invoervelden", "vul alle velden in !"
 					, null, "probeer opniew...", null).Show();
 			}
+		}
+
+		private void InsertProfileItem()
+		{
+			InvokeOnMainThread(() => {
+
+				dataHelper.InsertProfileItem(txtTitle.Text, txtContent.Text);
+				NavigationController.PushViewController(new ProfileViewController(), true);
+			});
 		}
 
 		private void InitializeUI()

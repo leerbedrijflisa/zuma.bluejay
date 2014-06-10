@@ -72,10 +72,10 @@ namespace Lisa.Zuma.BlueJay.IOS.Views
 		{
 
 
-			if (confirmCombination == firstCombination){
-				lblTitle.Text = "Voer nogmaals de combinatie in..";
-				dataHelper.newCombination (Combination);
-			}
+//			if (confirmCombination == firstCombination){
+//				lblTitle.Text = "Voer nogmaals de combinatie in..";
+//				dataHelper.newCombination (Combination);
+//			}
 
 			if (firstCombination == null) {
 				firstCombination = Combination;

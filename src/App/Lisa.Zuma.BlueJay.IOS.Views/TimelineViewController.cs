@@ -52,7 +52,7 @@ namespace Lisa.Zuma.BlueJay.IOS.Views
 			var parsedHTML = templateParser.ParseTimeLine(dossierId);
 			string contentDirectoryPath = Path.Combine (NSBundle.MainBundle.BundlePath, "HTML/");
 
-			//execute at the main thread
+			//reloading the webview is an UI event and is only allowd in the mainthread. 
 			InvokeOnMainThread (() => {
 				wvTimeline.LoadHtmlString(parsedHTML, new NSUrl(contentDirectoryPath, true));
 				wvTimeline.ScalesPageToFit = true;

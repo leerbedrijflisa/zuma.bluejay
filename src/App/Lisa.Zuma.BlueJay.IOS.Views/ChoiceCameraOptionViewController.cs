@@ -6,6 +6,9 @@ using MonoTouch.UIKit;
 
 namespace Lisa.Zuma.BlueJay.IOS.Views
 {
+	/// <summary>
+	/// Choice camera option popup view controller. very simple class for a tiny feature.
+	/// </summary>
 	public partial class ChoiceCameraOptionViewController : UIViewController
 	{
 		public ChoiceCameraOptionViewController () : base ("ChoiceCameraOptionViewController", null)
@@ -13,17 +16,16 @@ namespace Lisa.Zuma.BlueJay.IOS.Views
 			camera = new Camera ();
 		}
 			
-
 		public override void ViewDidLoad ()
 		{
 			base.ViewDidLoad ();
 
 			btnPhoto.TouchUpInside += delegate {
-				camera.CapturePhoto(String.Format("{0:d-M-yyyy-HH-mm-ss}", DateTime.Now), () => {});
+				camera.CapturePhoto(String.Format("{0:d-M-yyyy-HH-mm-ss}", DateTime.Now), null);
 			};
 
 			btnVideo.TouchUpInside += delegate {
-				camera.CaptureVideo(String.Format("{0:d-M-yyyy-HH-mm-ss}", DateTime.Now), () => {});
+				camera.CaptureVideo(String.Format("{0:d-M-yyyy-HH-mm-ss}", DateTime.Now), null);
 			};
 			
 			// Perform any additional setup after loading the view, typically from a nib.

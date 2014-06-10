@@ -31,7 +31,7 @@ namespace Lisa.Zuma.BlueJay.IOS.Views
 		{
 			base.ViewDidLoad ();
 			NavigationItem.SetHidesBackButton (true, false);
-			var dossiers = dataHelper.GetDosierDatas();
+			var dossiers = dataHelper.GetDossierDatas();
 
 			jumpToNextView = (dossiers.Count == 1);
 			if (jumpToNextView) {

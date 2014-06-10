@@ -59,15 +59,12 @@ namespace Lisa.Zuma.BlueJay.IOS.Views
 
 		private void PickImage(Object sender, EventArgs args)
 		{
-			camera.PickPhotoAsync (() => {
-				UpdateButtonNumber ();
-			});
-
+			camera.PickPhotoAsync (UpdateButtonNumber);
 		}
 
 		private void PickVideo(Object sender, EventArgs args)
 		{
-			camera.PickVideoAsync(() => UpdateButtonNumber ());
+			camera.PickVideoAsync(UpdateButtonNumber);
 		}
 
 		public void UpdateButtonNumber()

@@ -25,7 +25,11 @@ namespace Lisa.Zuma.BlueJay.IOS.Models
 			database = new Database ();
 			client = new RestClient ("http://zumabluejay-apitest.azurewebsites.net");
 		}
+			
 
+		/// <summary>
+		/// Signs the in on the remote server with a username and password, by success you get a response with a accestoken wich you can use to communicate with the server.
+		/// </summary>
 		public void SignIn(string username, string password, Action SuccessFunction, Action FailFunction)
 		{
 			client.Authenticator = new SimpleAuthenticator("username", username, "password", password);
@@ -79,6 +83,189 @@ namespace Lisa.Zuma.BlueJay.IOS.Models
 			}
 		}
 
+		public IList<string> picker()
+		{
+			return database.GetPickerItems;
+		}
+
+		/// <summary>
+		/// Add details to dossier and post to the server with a restRequest
+		/// </summary>
+		public void AddDossierDetail(string category, string content, Action completed) {
+
+			var detail = new DossierDetail () {
+				Category = category,
+				Contents = content
+			};
+
+			var request = new RestRequest ("api/dossier/{dossierId}/detail", Method.POST);
+			request.RequestFormat = DataFormat.Json;
+			request.AddHeader ("Authorization", string.Format ("bearer {0}", database.accessToken))
+				.AddUrlSegment ("dossierId", database.getCurrentDossier ().ToString())
+				.AddObject (detail);
+
+			client.ExecuteAsync<DossierDetail> (request, response => {
+
+				completed();
+			});
+		}
+
+		public void SyncNotesDataByID(int id, Action DoSomething)
+		{
+			SyncAllNotesDataFromDossierData(id, ()=>{
+					DoSomething();
+			});
+		}
+
+
+		/// <summary>
+		/// Syncs the dossiers everytime when you open the App.
+		/// </summary>
+		public void SyncDossiers(Action ExecuteWhenReady)
+		{
+			var request = new RestRequest ("api/dossier/", Method.GET);
+			request.AddHeader  ("Authorization", "bearer "+ database.accessToken);
+			client.ExecuteAsync (request, response => {
+
+				var callback = JsonConvert.DeserializeObject<List<Dossier>> (response.Content);
+
+				database.deleteDossiers();
+				database.Clear("ProfileItemsData");
+
+				foreach(var dossiers in callback )
+				{
+					database.Insert(new DossierData{Name = dossiers.Name, DossierId = dossiers.Id});
+					dossiers.Details
+						.Select(d => new ProfileItemsData() {
+							Title = d.Category,
+							Content = d.Contents,
+							ProfileID = d.Id,
+							DossierDataID = dossiers.Id
+						})
+						.ToList()
+						.ForEach(pi => database.InsertProfileItem(pi));
+				}
+
+				ExecuteWhenReady();
+
+			});
+		}
+
+		/// <summary>
+		/// Syncs all notes from Dossier by id.
+		/// </summary>
+		public void SyncAllNotesDataFromDossierData(int dosier, Action ExecuteWhenReady){
+
+			database.DeleteAllNotesForSync();
+
+			var request = new RestRequest (string.Format("api/dossier/{0}/Notes/", getCurrentDossier()), Method.GET);
+			request.AddHeader  ("Authorization", "bearer "+ database.accessToken);
+			client.ExecuteAsync (request, response => {
+
+				var callback = JsonConvert.DeserializeObject<List<Note>> (response.Content);
+				if(callback != null){
+					callback
+						.Select (n => new NotesData () {
+						DossierDataID = dosier, 
+						OwnerID = n.PosterId.ToString(), 
+						Text = n.Text, 
+						noteId = n.Id,
+						Date = n.DateCreated,
+						Media = n.Media
+						
+									.Select (m => new Media () { 
+									mediaId = m.Id,
+									Name = m.Name, 
+							Location = m.Location 
+						})
+									.ToList ()
+					})
+						.ToList ()
+						.ForEach (n => {
+						database.Insert (n);
+					});
+				}
+				ExecuteWhenReady ();
+
+			});
+		}
+
+		public void InsertNewDataElement(int type, string path)
+		{
+			database.InsertNewTemporaryMediaItem (new TemporaryItemMediaData{Type = type, fileName = Path.GetFileName(path), Path = path});
+		}
+			
+		public List<DossierData> GetDossierDatas()
+		{
+			return database.GetAllDossierDatas ();
+		}
+
+		/// <summary>
+		/// Inserts the new current dossier in database
+		/// </summary>
+		public void insertNewCurrentDossier(int id)
+		{
+			database.setCurrentDossier (id);
+		}
+
+		public int getCurrentDossier()
+		{
+			return database.getCurrentDossier ();
+		}
+	
+		public IEnumerable<ProfileItemsData> GetProfileItems() {
+			return database.GetProfileItemsByDossierId (getCurrentDossier ());
+		}
+
+		public string GetCurrentDossierDataName()
+		{
+			DossierData value =  database.GetCurrentDossier();
+
+			return value.Name;
+		}
+
+		public void DeleteAllDataElements()
+		{
+			database.DeleteAllTemporaryMediaItems();
+		}
+
+		public void InsertProfileItem(string title, string content)
+		{
+			database.InsertProfileItem (new ProfileItemsData{Title = title, Content = content, DossierDataID = getCurrentDossier()});
+		}
+
+		public List<TemporaryItemMediaData> GetSummaryOfMediaItems()
+		{
+			return database.ReturnAllTemporaryMediaItems ();
+		}
+
+		public int SummaryItemsCount()
+		{
+			return database.ReturnAllTemporaryMediaItems ()
+						   .Count;
+		}
+
+//		public void newCombination(string combination)
+//		{
+//			database.Update (new LockScreenData { IsActive = 1, SecurityCode = int.Parse (combination) });
+//		}
+
+		public string token()
+		{
+			return database.accessToken;
+		}
+
+		private List<NoteMedia> GetAllDataElements()
+		{
+			List<NoteMedia> MediaModel = new List<NoteMedia> ();
+
+			foreach(var x in database.ReturnAllTemporaryMediaItems()){
+				MediaModel.Add (new NoteMedia { Name = x.fileName });
+			}
+		
+			return MediaModel;
+		}
+
 		private void Store(Note note)
 		{
 			var dbNote = new NotesData (note.Text);
@@ -86,13 +273,17 @@ namespace Lisa.Zuma.BlueJay.IOS.Models
 			StoreMediaWithNote (note, dbNote);
 		}
 
+		/// <summary>
+		/// Stores the media with note
+		/// When the upload is finished the note in the databas will be updated.
+		/// </summary>
 		private void StoreMediaWithNote(Note note, NotesData dbNote)
 		{
 			foreach (var media in note.Media) 
 			{
 				var extension = Path.GetExtension("../Documents/" + media.Name);
 				extension = extension.Substring(1);		// remove the period from the extension
-			
+
 				using (var uploadResponse = StoreFileContentInAzure("../Documents/" + media.Name, media.Location, MimeTypesHelper.MimeTypes[extension]))
 				{
 					var noteMedia = RequestMediaUrl(note.Id, media);
@@ -109,6 +300,9 @@ namespace Lisa.Zuma.BlueJay.IOS.Models
 			}
 		}
 
+		/// <summary>
+		/// Request the mediaURL for writing the file to azure
+		/// </summary>
 		private NoteMedia RequestMediaUrl(int noteId, NoteMedia media)
 		{
 			var request = new RestRequest("api/dossier/{dosierId}/Notes/{noteId}/media/{id}", Method.PUT);
@@ -135,192 +329,6 @@ namespace Lisa.Zuma.BlueJay.IOS.Models
 				}
 			}
 		}
-
-		public IList<string> picker()
-		{
-			return database.GetPickerItems;
-		}
-
-		public void AddDossierDetail(string category, string content, Action completed) {
-
-			var detail = new DossierDetail () {
-				Category = category,
-				Contents = content
-			};
-
-			var request = new RestRequest ("api/dossier/{dossierId}/detail", Method.POST);
-			request.RequestFormat = DataFormat.Json;
-			request.AddHeader ("Authorization", string.Format ("bearer {0}", database.accessToken))
-				.AddUrlSegment ("dossierId", database.getCurrentDossier ().ToString())
-				.AddObject (detail);
-
-			client.ExecuteAsync<DossierDetail> (request, response => {
-
-				completed();
-			});
-		}
-
-		public void SyncNotesDataByID(int id, Action DoSomething)
-		{
-			SyncAllNotesDataFromDosierData(id, ()=>{
-					DoSomething();
-			});
-		}
-
-		public void SyncDossiers(Action DoFunc)
-		{
-//			database.deleteDossiers ();
-
-			var request = new RestRequest ("api/dossier/", Method.GET);
-			request.AddHeader  ("Authorization", "bearer "+ database.accessToken);
-			client.ExecuteAsync (request, response => {
-
-				var callback = JsonConvert.DeserializeObject<List<Dossier>> (response.Content);
-
-				database.deleteDossiers();
-				database.Clear("ProfileItemsData");
-
-				foreach(var dossiers in callback )
-				{
-					database.Insert(new DosierData{Name = dossiers.Name, DossierId = dossiers.Id});
-					dossiers.Details
-						.Select(d => new ProfileItemsData() {
-							Title = d.Category,
-							Content = d.Contents,
-							ProfileID = d.Id,
-							DossierDataID = dossiers.Id
-						})
-						.ToList()
-						.ForEach(pi => database.InsertProfileItem(pi));
-				}
-
-				DoFunc();
-
-			});
-		}
-
-		public void SyncAllNotesDataFromDosierData(int dosier, Action AsyncFunc){
-
-			database.DeleteAllNotesForSync();
-
-			var request = new RestRequest (string.Format("api/dossier/{0}/Notes/", getCurrentDossier()), Method.GET);
-			request.AddHeader  ("Authorization", "bearer "+ database.accessToken);
-			client.ExecuteAsync (request, response => {
-
-				var callback = JsonConvert.DeserializeObject<List<Note>> (response.Content);
-				if(callback != null){
-					callback
-						.Select (n => new NotesData () {
-						DosierDataID = dosier, 
-						OwnerID = n.PosterId.ToString(), 
-						Text = n.Text, 
-						noteId = n.Id,
-						Date = n.DateCreated,
-						Media = n.Media
-						
-									.Select (m => new Media () { 
-									mediaId = m.Id,
-									Name = m.Name, 
-							Location = m.Location 
-						})
-									.ToList ()
-					})
-						.ToList ()
-						.ForEach (n => {
-						database.Insert (n);
-					});
-				}
-				AsyncFunc ();
-
-			});
-
-//				foreach(var Result in callback){
-//
-//
-//					var note = new NotesData{DosierDataID = dosier, OwnerID = 1, Text = Result.Text, Media = Result.Media};
-//					database.Insert(note);
-//				}
-
-		}
-
-		public void InsertNewDataElement(int type, string path)
-		{
-			database.InsertNewTemporaryMediaItem (new TemporaryItemMediaData{Type = type, fileName = Path.GetFileName(path), Path = path});
-		}
-			
-		public List<DosierData> GetDosierDatas()
-		{
-			return database.GetAllDosierDatas ();
-		}
-
-		public void insertNewCurrentDossier(int id)
-		{
-			database.setCurrentDossier (id);
-		}
-
-		public int getCurrentDossier()
-		{
-			return database.getCurrentDossier ();
-		}
-	
-//		public List<ProfileItemsData> GetProfileItems()
-//		{
-//			return database.GetProfileItemsByProfileID (1);
-//		}
-
-		public IEnumerable<ProfileItemsData> GetProfileItems() {
-			return database.GetProfileItemsByDossierId (getCurrentDossier ());
-		}
-
-		public string GetCurrentDossierDataName()
-		{
-			DosierData value =  database.GetCurrentDossier();
-
-			return value.Name;
-		}
-
-		public void DeleteAllDataElements()
-		{
-			database.DeleteAllTemporaryMediaItems();
-		}
-
-		public void InsertProfileItem(string title, string content)
-		{
-			database.InsertProfileItem (new ProfileItemsData{Title = title, Content = content, DossierDataID = getCurrentDossier()});
-		}
-
-		public List<TemporaryItemMediaData> GetSummaryOfMediaItems()
-		{
-			return database.ReturnAllTemporaryMediaItems ();
-		}
-
-		public int SummaryItemsCount()
-		{
-			return database.ReturnAllTemporaryMediaItems ()
-						   .Count;
-		}
-
-		public void newCombination(string combination)
-		{
-			database.Update (new LockScreenData { IsActive = 1, SecurityCode = int.Parse (combination) });
-		}
-
-		public string token()
-		{
-			return database.accessToken;
-		}
-
-		private List<NoteMedia> GetAllDataElements()
-		{
-			List<NoteMedia> MediaModel = new List<NoteMedia> ();
-
-			foreach(var x in database.ReturnAllTemporaryMediaItems()){
-				MediaModel.Add (new NoteMedia { Name = x.fileName });
-			}
-		
-			return MediaModel;
-		}
-
 
 		private Database database;
 		private RestClient client;

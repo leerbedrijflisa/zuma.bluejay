@@ -21,7 +21,7 @@ namespace Lisa.Zuma.BlueJay.IOS.Views
 			dataHelper = new DataHelper ();
 		}
 
-		public void CaptureVideo(string date, Action Ready){
+		public void CaptureVideo(string date, Action executeWhenReady){
 
 			var picker = new MediaPicker ();
 			picker.TakeVideoAsync (new StoreVideoOptions {
@@ -30,11 +30,11 @@ namespace Lisa.Zuma.BlueJay.IOS.Views
 			}).ContinueWith (t => {
 				ALAssetsLibrary library = new ALAssetsLibrary();                   
 				library.WriteVideoToSavedPhotosAlbum (new NSUrl(t.Result.Path), (assetUrl, error) =>{});
-				SaveFileToMedialibrary(t.Result, ".mp4", () => Ready());
+				SaveFileToMedialibrary(t.Result, ".mp4", executeWhenReady);
 			}, TaskScheduler.FromCurrentSynchronizationContext());
 		}
 
-		public void CapturePhoto(string date, Action Ready){
+		public void CapturePhoto(string date, Action executeWhenReady){
 
 			var picker = new MediaPicker ();
 
@@ -44,21 +44,21 @@ namespace Lisa.Zuma.BlueJay.IOS.Views
 			}).ContinueWith (t => {
 				var Image = UIImage.FromFile(t.Result.Path);
 				Image.SaveToPhotosAlbum((image, error) => {});
-				SaveFileToMedialibrary(t.Result, ".png", () => Ready());
+				SaveFileToMedialibrary(t.Result, ".png", executeWhenReady);
 			}, TaskScheduler.FromCurrentSynchronizationContext());
 		}
 
-		public void PickVideoAsync( Action Ready)
+		public void PickVideoAsync( Action executeWhenReady)
 		{
 			var picker = new MediaPicker();
-			picker.PickVideoAsync().ContinueWith (t => SaveFileToMedialibrary(t.Result, ".mp4", () => Ready()), TaskScheduler.FromCurrentSynchronizationContext());
+			picker.PickVideoAsync().ContinueWith (t => SaveFileToMedialibrary(t.Result, ".mp4", executeWhenReady), TaskScheduler.FromCurrentSynchronizationContext());
 
 		}
 
-		public void PickPhotoAsync(Action Ready)
+		public void PickPhotoAsync(Action executeWhenReady)
 		{
 			var picker = new MediaPicker();
-			picker.PickPhotoAsync().ContinueWith (t => SaveFileToMedialibrary(t.Result, ".png", () => Ready()), TaskScheduler.FromCurrentSynchronizationContext());
+			picker.PickPhotoAsync().ContinueWith (t => SaveFileToMedialibrary(t.Result, ".png", executeWhenReady), TaskScheduler.FromCurrentSynchronizationContext());
 		}
 
 		private void SaveFileToMedialibrary(MediaFile file, string ext, Action ResultFunc)
