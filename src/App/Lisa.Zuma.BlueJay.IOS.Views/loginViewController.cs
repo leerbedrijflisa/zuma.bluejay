@@ -19,7 +19,6 @@ namespace Lisa.Zuma.BlueJay.IOS.Views
 			base.ViewDidLoad ();
 
 			btnSignIn.TouchUpInside += SignIn;
-
 		}
 
 		public override void ViewWillAppear (bool animated)

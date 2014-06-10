@@ -66,7 +66,6 @@ namespace Lisa.Zuma.BlueJay.IOS
 					"<div class='imageUnit-content'>"+
 					"<h4><a href='#'>"+PosterName+"</a></h4>"+
 					"<p class='roll'>"+role+"</p>"+
-					"<p class='time'> "+date+"</p>"+
 					"</div>"+
 				"<div class='imageUnit-content' style='float:right; padding-top:15px;'>"+
 					"<p class='time'> "+date+"</p>"+
@@ -81,7 +80,6 @@ namespace Lisa.Zuma.BlueJay.IOS
 
 			return NoteHTMLContent;
 		}
-		int mediaId;
 		private string NoteMediaHTML(string noteId, string text, List<Media> media){
 
 			NoteMedia = "";

@@ -58,7 +58,7 @@ namespace Lisa.Zuma.BlueJay.IOS.Views
 			UIView.Animate (
 				0.5, // duration
 				() => { Alpha = 0; },
-				() => { RemoveFromSuperview(); }
+				 RemoveFromSuperview
 			);
 		}
 	}

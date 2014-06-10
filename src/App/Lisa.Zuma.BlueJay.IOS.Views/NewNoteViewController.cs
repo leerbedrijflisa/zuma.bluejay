@@ -21,9 +21,23 @@ namespace Lisa.Zuma.BlueJay.IOS.Views
 		public override void ViewDidLoad ()
 		{
 			base.ViewDidLoad ();
-
+		
 			InitializeUI ();
 		}
+
+		public void UpdateButtonNumber()
+		{
+			var count = dataHelper.SummaryItemsCount();
+
+			var buttonTitle = String.Format ("Er zijn {0} mediaitems toegevoegd...", count);
+			btnMediaSummary.SetTitle (buttonTitle, UIControlState.Normal);
+		}
+
+		public override void ViewDidAppear (bool animated)
+		{
+			UpdateButtonNumber();
+		}
+
 
 		private void InitializeUI()
 		{
@@ -59,28 +73,12 @@ namespace Lisa.Zuma.BlueJay.IOS.Views
 
 		private void PickImage(Object sender, EventArgs args)
 		{
-			camera.PickPhotoAsync (() => {
-				UpdateButtonNumber ();
-			});
-
+			camera.PickPhotoAsync (UpdateButtonNumber);
 		}
 
 		private void PickVideo(Object sender, EventArgs args)
 		{
-			camera.PickVideoAsync(() => UpdateButtonNumber ());
-		}
-
-		public void UpdateButtonNumber()
-		{
-			var count = dataHelper.SummaryItemsCount ();
-
-			var buttonTitle = String.Format ("Er zijn {0} mediaitems toegevoegd...", count);
-			btnMediaSummary.SetTitle (buttonTitle, UIControlState.Normal);
-		}
-
-		public override void ViewDidAppear (bool animated)
-		{
-			UpdateButtonNumber ();
+			camera.PickVideoAsync(UpdateButtonNumber);
 		}
 			
 		private TimelineViewController parentView;

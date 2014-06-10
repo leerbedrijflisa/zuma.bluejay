@@ -21,7 +21,7 @@ namespace Lisa.Zuma.BlueJay.IOS.Data
 		public int ID { get; set; }
 		public string OwnerID{ get; set; } 
 		public int noteId{ get; set;}
-		public int DosierDataID { get; set; }
+		public int DossierDataID { get; set; }
 		public string Text { get; set; }	
 		public DateTime Date{ get; set;}
 		[Ignore]

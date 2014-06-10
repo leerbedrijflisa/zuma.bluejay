@@ -98,15 +98,13 @@
     <Compile Include="Components\SQLite.cs" />
     <Compile Include="Database.cs" />
     <Compile Include="MimeTypesHelper.cs" />
-    <Compile Include="Entities\DosierData.cs" />
     <Compile Include="Entities\NotesData.cs" />
-    <Compile Include="Entities\ProfileData.cs" />
     <Compile Include="Entities\ProfileItemsData.cs" />
     <Compile Include="Entities\TemporaryItemMediaData.cs" />
     <Compile Include="Entities\UserData.cs" />
     <Compile Include="Entities\Media.cs" />
-    <Compile Include="Entities\LockScreenData.cs" />
     <Compile Include="Entities\CurrentDossier.cs" />
+    <Compile Include="Entities\DossierData.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

@@ -3,6 +3,7 @@ using System.IO;
 using System.Linq;
 using System.Collections.Generic;
 using RestSharp;
+using SQLite;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
 using System.Net.Http;
@@ -13,11 +14,10 @@ namespace Lisa.Zuma.BlueJay.IOS.Data
 	public class Database
 	{
 		private string pathToDatabase;
-		private SQLite.SQLiteConnection db;
+		private SQLiteConnection db;
 		private UserData ReturnUser;
 		private NotesData ReturnNote;
 		private UserData ReturnUserLoggedIn;
-		private RestClient client;
 		public string accessToken;
 
 		public Database ()
@@ -29,32 +29,18 @@ namespace Lisa.Zuma.BlueJay.IOS.Data
 			pathToDatabase = Path.Combine(documents, "BlueJay_DB.db");
 			db = new SQLite.SQLiteConnection (pathToDatabase);
 
-			db.CreateTable<DosierData>();
+			db.CreateTable<DossierData>();
 			db.CreateTable<NotesData>();
 			db.CreateTable<ProfileItemsData>();
 			db.CreateTable<UserData> ();
-			//db.DropTable<TemporaryItemMedia> ();
 			db.CreateTable<TemporaryItemMediaData> ();
-			db.CreateTable<LockScreenData> ();
 			db.CreateTable<CurrentDossier> ();
-
-			//CreateDummyInfo ();
 			AccessToken ();
-		}
-
-		public void CreateDummyInfo()
-		{
-			var count = db.Query<DosierData>("SELECT * FROM DosierData");
-
-			if (count.Count == 0) {
-				db.Insert(new DosierData{Name = "Martijn"});
-			}
-
 		}
 
 		public void AccessToken()
 		{
-			var token = db.Table<UserData> ();
+			var token = db.Table<UserData> ().Take(1);
 			foreach (var accesstoken in token) {
 				accessToken = accesstoken.AccesToken;
 			}
@@ -62,7 +48,7 @@ namespace Lisa.Zuma.BlueJay.IOS.Data
 
 		public string getCurrentUserId()
 		{
-			var result = db.Table<UserData> ();
+			var result = db.Table<UserData> ().Take(1);
 
 			return result.First ().userId;
 		}
@@ -71,7 +57,7 @@ namespace Lisa.Zuma.BlueJay.IOS.Data
 		{
 			db.Query<CurrentDossier> ("DELETE FROM CurrentDossier");
 
-			var result = db.Query<DosierData>("SELECT * FROM DosierData WHERE DossierId =" + id + " LIMIT 1");
+			var result = db.Query<DossierData>("SELECT * FROM DossierData WHERE DossierId =" + id + " LIMIT 1");
 
 			foreach (var res in result) {
 				db.Insert (new CurrentDossier{ currentDossier = res.DossierId });
@@ -101,56 +87,55 @@ namespace Lisa.Zuma.BlueJay.IOS.Data
 			db.Query<UserData>("UPDATE UserData SET LoggedIn = 1 WHERE ID = '"+ id +"'");
 		}
 
-		public List<DosierData> GetDosierDatas(int id)
+		public List<DossierData> GetDosierDatas(int id)
 		{
-			var Result = db.Query<DosierData>("SELECT * FROM DosierData WHERE ID='"+id+"'");
+			var Result = db.Query<DossierData>("SELECT * FROM DossierData WHERE ID='"+id+"'");
 
 			return Result;
 		}
 
-		public List<DosierData> GetAllDosierDatas()
+		public List<DossierData> GetAllDossierDatas()
 		{
-			var result = db.Query<DosierData>("SELECT * FROM DosierData");
+			var result = db.Query<DossierData>("SELECT * FROM DossierData");
 
 			return result;
 		}
 
-		public List<NotesData> GetNotesDataFromDosierData(int id)
+		public IEnumerable<NotesData> GetNotesDataFromDosierData(int id)
 		{
-			var Result = db.Query<NotesData>("SELECT * FROM NotesData WHERE DosierDataID='"+id+"' ORDER BY ID DESC");
-			//			db.Table<NotesData> ().Where(t => t.ID == id).OrderByDescending(t => t.ID);
-			//
-			//			var result = from note in db.Table<NotesData>()
-			//				where note.DosierDataID == id
-			//				orderby note.ID descending
-			//				select new { Name = note.ID.ToString() };
+			var result = db.Table<NotesData> ()
+						 	.Where(t => t.DossierDataID == id)
+							.OrderByDescending(t => t.ID);
 
-			return Result;
+			return result;
 		}
 
 		public void deleteDossiers()
 		{
-			db.Query<DosierData> ("DELETE FROM DosierData");
+			db.Query<DossierData> ("DELETE FROM DossierData");
 		}
 
 		public UserData GetUserById(int id)
 		{
-			var Result = db.Query<UserData>("SELECT * FROM UserData WHERE ID='"+id+"'");
+			var result = db.Table<UserData> ()
+				.Where (t => t.ID == id);
 
-			foreach (var Query in Result) {
+			foreach (var Query in result) {
 				ReturnUser = Query;
 			}
 
 			return ReturnUser;
 		}
 
-		DosierData dossierData;
+		DossierData dossierData;
 
-		public DosierData GetCurrentDossier()
+		public DossierData GetCurrentDossier()
 		{
-			var result = db.Query<DosierData> ("SELECT * FROM DosierData WHERE DossierId = " + getCurrentDossier());
+			var result = db.Table<DossierData> ()
+				.OrderByDescending (i => i.ID)
+				.Take (1);
 
-			dossierData = new DosierData ();
+			dossierData = new DossierData ();
 
 			foreach (var res in result) {
 				dossierData.Name = res.Name;
@@ -162,9 +147,10 @@ namespace Lisa.Zuma.BlueJay.IOS.Data
 
 		public UserData GetCurrentUser()
 		{
-			var Result = db.Query<UserData>("SELECT * FROM UserData WHERE LoggedIn=1");
+			var result = db.Table<UserData> ()
+							.Take(1);
 
-			foreach (var Query in Result) {
+			foreach (var Query in result) {
 				ReturnUserLoggedIn = Query;
 			}
 			return ReturnUserLoggedIn;
@@ -173,9 +159,12 @@ namespace Lisa.Zuma.BlueJay.IOS.Data
 
 		public NotesData GetMediaFromNoteByID(int id)
 		{
-			var Result = db.Query<NotesData>("SELECT * FROM NotesData WHERE ID='"+id+"' LIMIT 1");
 
-			foreach (var Query in Result) {
+			var result = db.Table<NotesData> ()
+							.Where (t => t.ID == id)
+							.Take (1);
+
+			foreach (var Query in result) {
 				ReturnNote = Query;
 			}
 			return ReturnNote;
@@ -188,21 +177,19 @@ namespace Lisa.Zuma.BlueJay.IOS.Data
 
 		public void InsertProfileItem (ProfileItemsData newItem)
 		{
-			//newItem.ProfileID = 1
 			db.Insert (newItem);
 		}
 
-		public List<ProfileItemsData> GetProfileItemsByProfileID (int profileId)
+		public IEnumerable<ProfileItemsData> GetProfileItemsByProfileID (int profileId)
 		{
-		var result = db.Query<ProfileItemsData> ("SELECT * FROM ProfileItemsData WHERE ProfileID='" + profileId + "'");
-
+			var result = db.Table<ProfileItemsData>()
+				.Where(pid => pid.ProfileID == profileId);
 			return result;
 		}
 
-		public IEnumerable<ProfileItemsData> GetProfileItemsByDossierId(int dossierId) {
-		
-			var result = db.Query<ProfileItemsData> ("SELECT * FROM ProfileItemsData WHERE DossierDataID = '" + dossierId + "'");
-
+		public IEnumerable<ProfileItemsData> GetProfileItemsByDossierId(int dossierId)
+		{
+			var result = db.Table<ProfileItemsData>().Where(did => did.DossierDataID == dossierId);
 			return result;
 		}
 
@@ -222,38 +209,20 @@ namespace Lisa.Zuma.BlueJay.IOS.Data
 			}
 		}
 
-		public void Clear(string tableName)
+		public void ClearTable(string tableName)
 		{
-//			db.Delete(tableName);
-//			db.CreateCommand ("DELETE FROM" + tableName);
 			db.Execute ("DELETE FROM " + tableName);
-		}
-
-		public void DeleteAllNotesForSync()
-		{
-			db.Query<NotesData> ("DELETE FROM NotesData");
 		}
 
 		public void InsertNewTemporaryMediaItem (TemporaryItemMediaData item)
 		{
 			db.Insert(item);
 		}
-
-		public void DeleteAllTemporaryMediaItems ()
+						
+		public IEnumerable<TemporaryItemMediaData> ReturnAllTemporaryMediaItems ()
 		{
-			db.Query<TemporaryItemMediaData> ("DELETE FROM TemporaryItemMediaData");
-		}
-
-		public void ClearLockScreenInformation ()
-		{
-			db.Query<LockScreenData> ("DELETE FROM LockScreenData");
-		}
-
-		public List<TemporaryItemMediaData> ReturnAllTemporaryMediaItems ()
-		{
-		var Result = db.Query<TemporaryItemMediaData> ("SELECT * FROM TemporaryItemMediaData");
-
-			return Result;
+			var result = db.Table<TemporaryItemMediaData> ();
+			return result;
 		}
 
 		public readonly IList<string> GetPickerItems = new List<string> {

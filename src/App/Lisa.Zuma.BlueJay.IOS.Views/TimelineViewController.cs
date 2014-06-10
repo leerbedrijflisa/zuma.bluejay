@@ -4,7 +4,6 @@ using MonoTouch.Foundation;
 using MonoTouch.UIKit;
 using Lisa.Zuma.BlueJay.IOS.Models;
 using System.IO;
-using GCDiscreetNotification;
 
 namespace Lisa.Zuma.BlueJay.IOS.Views
 {
@@ -52,7 +51,7 @@ namespace Lisa.Zuma.BlueJay.IOS.Views
 			var parsedHTML = templateParser.ParseTimeLine(dossierId);
 			string contentDirectoryPath = Path.Combine (NSBundle.MainBundle.BundlePath, "HTML/");
 
-			//execute at the main thread
+			//reloading the webview is an UI event and is only allowd in the mainthread. 
 			InvokeOnMainThread (() => {
 				wvTimeline.LoadHtmlString(parsedHTML, new NSUrl(contentDirectoryPath, true));
 				wvTimeline.ScalesPageToFit = true;
