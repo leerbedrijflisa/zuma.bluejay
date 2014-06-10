@@ -152,7 +152,6 @@ namespace Lisa.Zuma.BlueJay.WebApi.Helpers
             var policy = new SharedAccessBlobPolicy
             {
                 Permissions = permissions,
-                SharedAccessStartTime = DateTime.UtcNow,
                 SharedAccessExpiryTime = DateTime.UtcNow.Add(expire)
             };
 
