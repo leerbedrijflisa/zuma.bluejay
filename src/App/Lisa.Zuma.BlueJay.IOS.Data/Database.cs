@@ -55,9 +55,9 @@ namespace Lisa.Zuma.BlueJay.IOS.Data
 
 		public void setCurrentDossier(int id)
 		{
-			db.Query<CurrentDossier> ("DELETE FROM CurrentDossier");
+			ClearTable ("CurrentDossier");
 
-			var result = db.Query<DossierData>("SELECT * FROM DossierData WHERE DossierId =" + id + " LIMIT 1");
+			var result = db.Table<DossierData>().Where(t => t.DossierId == id).Take(1);
 
 			foreach (var res in result) {
 				db.Insert (new CurrentDossier{ currentDossier = res.DossierId });
@@ -68,9 +68,7 @@ namespace Lisa.Zuma.BlueJay.IOS.Data
 
 		public int getCurrentDossier()
 		{
-
-
-			var result = db.Query<CurrentDossier> ("SELECT * FROM CurrentDossier ORDER BY Id DESC LIMIT 1");
+			var result = db.Table<CurrentDossier> ().OrderByDescending().Take(1);
 	
 			foreach(var value in result)
 			{
@@ -78,25 +76,18 @@ namespace Lisa.Zuma.BlueJay.IOS.Data
 			}
 
 			return ReturnInt;
-
 		}
-
-		public void DummyLoggedIn(int id)
+			
+		public IEnumerable<DossierData> GetDosierDatas(int id)
 		{
-			db.Query<UserData>("UPDATE UserData SET LoggedIn = 0");
-			db.Query<UserData>("UPDATE UserData SET LoggedIn = 1 WHERE ID = '"+ id +"'");
-		}
-
-		public List<DossierData> GetDosierDatas(int id)
-		{
-			var Result = db.Query<DossierData>("SELECT * FROM DossierData WHERE ID='"+id+"'");
+			var Result = db.Table<DossierData>().Where(i => i.ID == id);
 
 			return Result;
 		}
 
 		public List<DossierData> GetAllDossierDatas()
 		{
-			var result = db.Query<DossierData>("SELECT * FROM DossierData");
+			var result = db.Table<DossierData>();
 
 			return result;
 		}
@@ -108,11 +99,6 @@ namespace Lisa.Zuma.BlueJay.IOS.Data
 							.OrderByDescending(t => t.ID);
 
 			return result;
-		}
-
-		public void deleteDossiers()
-		{
-			db.Query<DossierData> ("DELETE FROM DossierData");
 		}
 
 		public UserData GetUserById(int id)

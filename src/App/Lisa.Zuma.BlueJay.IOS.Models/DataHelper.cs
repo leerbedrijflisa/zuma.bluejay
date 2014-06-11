@@ -129,7 +129,7 @@ namespace Lisa.Zuma.BlueJay.IOS.Models
 
 				var callback = JsonConvert.DeserializeObject<List<Dossier>> (response.Content);
 
-				database.deleteDossiers();
+				database.ClearTable("DossierData");
 				database.ClearTable("ProfileItemsData");
 
 				foreach(var dossiers in callback )
