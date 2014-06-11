@@ -67,7 +67,7 @@ border-radius: 50%;
     /*border: 1px solid #3B5998;*/
 }
 
-    .imgOverlay{
+.imgOverlay{
   position: fixed;
   height:100%;
   width: 100%;

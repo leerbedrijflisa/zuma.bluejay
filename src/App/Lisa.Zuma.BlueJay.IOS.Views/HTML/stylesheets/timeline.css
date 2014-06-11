@@ -184,6 +184,7 @@ width: 43px;
   background-color: black;
   width: 419px;
   height: 240px;
+  padding:0;
 }
 
 .videoHolder .play{

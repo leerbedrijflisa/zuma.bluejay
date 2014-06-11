@@ -72,21 +72,11 @@
 	                    "Authorization": token
 	                },
 					success: function(data){
-						$(videoFrontDiv).toggle();
-						//alert(data.location);
-							$(videoFrontDiv).parent().append('<video width="419" style="background:black;" height="240" class="video" preload="auto" controls><source src="'+data.location+'" type="video/mp4"> Your browser does not support the video tag.</video>');
-
-						$(".video").play();     
-				        $(".video").bind("timeupdate", function (e) {
-				            if(this.currentTime == this.duration){alert('klaar')}
-				            console.log('klaas');
-				        });
-					},
-					error: function(){
-					alert('fout error');
+						$(videoFrontDiv).find('.play').toggle();
+							$(videoFrontDiv).append('<video style=" width:418px; height:240px;" class="video"  preload="auto" controls><source src="'+data.location+'" type="video/mp4"> Your browser does not support the video tag.</video>');
+						$(videoFrontDiv).css("padding", 0, "margin", "0");
 					}
 				});
-					
              // 
 
              //console.log(video);
