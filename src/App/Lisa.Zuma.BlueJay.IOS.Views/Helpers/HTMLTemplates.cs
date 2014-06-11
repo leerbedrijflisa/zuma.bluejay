@@ -95,7 +95,7 @@ namespace Lisa.Zuma.BlueJay.IOS
 
 					if (x.Location.Contains (".mp4"))
 					{
-						NoteMedia += "<div class='videoHolder "+ dataHelper.getCurrentDossier() +" "+noteId+" "+ x.mediaId +"' style=' height:240px;'><span class='play'><img src='images/play.png' width=100%></span></div>";
+						NoteMedia += "<div style='max-width:500px; max-height:240px;' class='videoHolder "+ dataHelper.getCurrentDossier() +" "+noteId+" "+ x.mediaId +"' style=' height:240px;'><span class='play'><img src='images/play.png' width=100%></span></div>";
 					}
 				}
 				NoteMedia += "</div>";

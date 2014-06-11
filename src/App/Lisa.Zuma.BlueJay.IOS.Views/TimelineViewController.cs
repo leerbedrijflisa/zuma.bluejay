@@ -33,8 +33,10 @@ namespace Lisa.Zuma.BlueJay.IOS.Views
 			btnLogout.TouchUpInside += eventHandlers.CreatePush<loginViewController>();
 			btnCamera.TouchUpInside += eventHandlers.Create (ShowCameraPopOver);
 			lblTitle.Text = dataHelper.GetCurrentDossierDataName();
-		}
 
+			ChoiceCameraOptionViewController.hidePopUp += DismissCameraPopover;
+		}
+			
 		public void RefreshButtonUpdateList() 
 		{
 			this.ViewWillAppear (false);
@@ -46,12 +48,19 @@ namespace Lisa.Zuma.BlueJay.IOS.Views
 			cameraOptionsPopOver.PresentFromRect (btnCamera.Frame, this.View, UIPopoverArrowDirection.Up, true);
 		}
 
+		public void DismissCameraPopover(Object sender, EventArgs e)
+		{
+			if (cameraOptionsPopOver.PopoverVisible) {
+				cameraOptionsPopOver.Dismiss (true);
+			}
+		}
+
 		public void UpdateList()
 		{
 			var parsedHTML = templateParser.ParseTimeLine(dossierId);
 			string contentDirectoryPath = Path.Combine (NSBundle.MainBundle.BundlePath, "HTML/");
 
-			//reloading the webview is an UI event and is only allowd in the mainthread. 
+			//reloading the webview is an UI event and is only allowed in the mainthread. 
 			InvokeOnMainThread (() => {
 				wvTimeline.LoadHtmlString(parsedHTML, new NSUrl(contentDirectoryPath, true));
 				wvTimeline.ScalesPageToFit = true;
@@ -61,6 +70,8 @@ namespace Lisa.Zuma.BlueJay.IOS.Views
 		//This function will be temporary, depending on the UI.
 		public void HideNoteCreator()
 		{
+			dataHelper.DeleteAllDataElements ();
+			newNoteViewController.UpdateButtonNumber ();
 			backgroundColor.Hidden = true;
 			overlayView.Hidden = true;
 		}
