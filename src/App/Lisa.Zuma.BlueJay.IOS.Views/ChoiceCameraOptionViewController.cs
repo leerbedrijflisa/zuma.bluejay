@@ -15,6 +15,8 @@ namespace Lisa.Zuma.BlueJay.IOS.Views
 		{
 			camera = new Camera ();
 		}
+
+		public static event EventHandler hidePopUp;
 			
 		public override void ViewDidLoad ()
 		{
@@ -22,16 +24,19 @@ namespace Lisa.Zuma.BlueJay.IOS.Views
 
 			btnPhoto.TouchUpInside += delegate {
 				camera.CapturePhoto(String.Format("{0:d-M-yyyy-HH-mm-ss}", DateTime.Now), null);
+				hidePopUp(this, EventArgs.Empty);
 			};
 
 			btnVideo.TouchUpInside += delegate {
 				camera.CaptureVideo(String.Format("{0:d-M-yyyy-HH-mm-ss}", DateTime.Now), null);
+				hidePopUp(this, EventArgs.Empty);
 			};
 			
 			// Perform any additional setup after loading the view, typically from a nib.
 		}
 
 		private Camera camera;
+
 	}
 }
 

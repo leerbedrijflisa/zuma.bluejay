@@ -33,8 +33,10 @@ namespace Lisa.Zuma.BlueJay.IOS.Views
 			btnLogout.TouchUpInside += eventHandlers.CreatePush<loginViewController>();
 			btnCamera.TouchUpInside += eventHandlers.Create (ShowCameraPopOver);
 			lblTitle.Text = dataHelper.GetCurrentDossierDataName();
-		}
 
+			ChoiceCameraOptionViewController.hidePopUp += DismissCameraPopover;
+		}
+			
 		public void RefreshButtonUpdateList() 
 		{
 			this.ViewWillAppear (false);
@@ -44,6 +46,13 @@ namespace Lisa.Zuma.BlueJay.IOS.Views
 		{
 			cameraOptionsPopOver.PopoverContentSize = new SizeF (277f, 79f);
 			cameraOptionsPopOver.PresentFromRect (btnCamera.Frame, this.View, UIPopoverArrowDirection.Up, true);
+		}
+
+		public void DismissCameraPopover(Object sender, EventArgs e)
+		{
+			if (cameraOptionsPopOver.PopoverVisible) {
+				cameraOptionsPopOver.Dismiss (true);
+			}
 		}
 
 		public void UpdateList()
