@@ -68,7 +68,7 @@ namespace Lisa.Zuma.BlueJay.IOS.Data
 
 		public int getCurrentDossier()
 		{
-			var result = db.Table<CurrentDossier> ().OrderByDescending().Take(1);
+			var result = db.Table<CurrentDossier> ().OrderByDescending(t => t.Id).Take(1);
 	
 			foreach(var value in result)
 			{
@@ -85,7 +85,7 @@ namespace Lisa.Zuma.BlueJay.IOS.Data
 			return Result;
 		}
 
-		public List<DossierData> GetAllDossierDatas()
+		public IEnumerable<DossierData> GetAllDossierDatas()
 		{
 			var result = db.Table<DossierData>();
 

@@ -27,7 +27,7 @@ namespace Lisa.Zuma.BlueJay.IOS.Views
 			NavigationItem.SetHidesBackButton (true, false);
 			var dossiers = dataHelper.GetDossierDatas();
 
-			jumpToNextView = (dossiers.Count == 1);
+			jumpToNextView = (dossiers.Count() == 1);
 			if (jumpToNextView) 
 			{
 				dataHelper.insertNewCurrentDossier (dossiers.First().DossierId);

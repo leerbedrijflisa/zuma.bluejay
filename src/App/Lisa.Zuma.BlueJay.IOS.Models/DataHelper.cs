@@ -195,7 +195,7 @@ namespace Lisa.Zuma.BlueJay.IOS.Models
 			database.InsertNewTemporaryMediaItem (new TemporaryItemMediaData{Type = type, fileName = Path.GetFileName(path), Path = path});
 		}
 			
-		public List<DossierData> GetDossierDatas()
+		public IEnumerable<DossierData> GetDossierDatas()
 		{
 			return database.GetAllDossierDatas ();
 		}
@@ -243,6 +243,7 @@ namespace Lisa.Zuma.BlueJay.IOS.Models
 		{
 			return database.ReturnAllTemporaryMediaItems ().Count();
 		}
+			
 
 //		public void newCombination(string combination)
 //		{

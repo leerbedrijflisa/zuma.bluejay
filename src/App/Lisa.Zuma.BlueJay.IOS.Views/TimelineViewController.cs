@@ -61,6 +61,8 @@ namespace Lisa.Zuma.BlueJay.IOS.Views
 		//This function will be temporary, depending on the UI.
 		public void HideNoteCreator()
 		{
+			dataHelper.DeleteAllDataElements ();
+			newNoteViewController.UpdateButtonNumber ();
 			backgroundColor.Hidden = true;
 			overlayView.Hidden = true;
 		}
