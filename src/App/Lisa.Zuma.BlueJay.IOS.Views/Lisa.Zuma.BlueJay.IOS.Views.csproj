@@ -186,7 +186,9 @@
     </XamarinComponentReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="HTML\images\active-unit.png" />
+    <Content Include="HTML\images\active-unit.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="HTML\images\icons.png" />
     <Content Include="HTML\images\icons-2.png" />
     <Content Include="HTML\images\icons-3.png" />
@@ -195,14 +197,21 @@
     <Content Include="HTML\images\line.png" />
     <Content Include="HTML\images\pagericon.png" />
     <Content Include="HTML\images\play.png" />
-    <Content Include="HTML\javascripts\all.js" />
+    <Content Include="HTML\javascripts\all.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="HTML\javascripts\jquery.excoloSlider.js" />
     <Content Include="HTML\javascripts\jquery.excoloSlider.min.js" />
     <Content Include="HTML\javascripts\jquery-1.9.1.min.js" />
-    <Content Include="HTML\stylesheets\all.css" />
+    <Content Include="HTML\stylesheets\all.css">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="HTML\stylesheets\jquery.excoloSlider.css" />
-    <Content Include="HTML\stylesheets\timeline.css" />
+    <Content Include="HTML\stylesheets\timeline.css">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="HTML\images\loader.gif" />
+    <Content Include="HTML\images\background.png" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="NewNoteViewController.xib" />

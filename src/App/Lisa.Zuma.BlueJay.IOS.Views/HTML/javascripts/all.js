@@ -1,23 +1,37 @@
  $(function () {
 
-            var url = "http://zumabluejay-apitest.azurewebsites.net/api/";
+            var url = "http://zumabluejay-api.azurewebsites.net/api/";
             var token = $("html").find("custom").attr("token");
 
-            console.log(token);
+              $(".imgOverlay").bind("tap", function(){
+              	$(this).fadeOut();
+              });
 
-            $('img.noteImage').bind("tapstart tap", function(){
-              var imgURL = $(this).attr("src");
-              $(".imgDivv").html('<img src="'+ imgURL +'">');
-              $(".imgOverlay").fadeIn();
-            });
 
-            $('.imgOverlay').bind('tapstart tap', function(){
-              $(this).fadeOut();
-            });
+             $("img.noteImage").bind("tap", function(){
+              var src = $(this).attr("src");
 
-            $('img.noteImage').bind("tapstart tap", function(){ alert($(this).attr("src")); });
+				$(".imgDivv" ).fadeIn();
+				$(".imgDivv").html('<img class="replaced" src='+src+'>');
+				$(".replaced").css("max-height", $("body").height() - 50 +"px");
+				$(".replaced").css("max-width", $("body").width()- 50+"px");
+				$(".imgDivv").css("width", $("img.replaced").width());
+				$(".imgDivv").css("height", $("img.replaced").height());
+              	$(".imgOverlay").fadeIn();
 
-            		$.each($(".noteImage"), function(i, val){
+              	//alert($(".replaced").css("max-width"))
+              	var parseWidh = $("body").width() - $("img.replaced").width();
+              	parseWidh = parseWidh / 2;
+
+              	var parseHeight = $("body").height() - $("img.replaced").css('max-width');
+              	parseHeight = parseHeight / 2;
+
+              	$('.imgDivv').css('margin-left', parseWidh);
+              	$('.imgDivv').css('margin-top', parseHeight);
+
+             });
+
+             $.each($(".noteImage"), function(i, val){
             		//alert('update');
             			var splitted = $(this).attr("class").split(' ');
 
@@ -46,15 +60,9 @@
               		
             		});
 
+            $("span.play").bind("tap", function(){
 
 
-
-            $("span.play").bind("touchstart tap", function(){
-
-              /*$(this).bind("canplay", function() {
-              	alert('hello');
-              });*/
-             
               var videoFrontDiv = $(this).parent();
 			  var splitted = $(videoFrontDiv).attr("class").split(' ');
 
@@ -73,25 +81,11 @@
 	                },
 					success: function(data){
 						$(videoFrontDiv).find('.play').toggle();
-							$(videoFrontDiv).append('<video style=" width:418px; height:240px;" class="video"  preload="auto" controls><source src="'+data.location+'" type="video/mp4"> Your browser does not support the video tag.</video>');
+						$(videoFrontDiv).append('<video style=" width:418px; height:240px;" class="video"  preload="auto" controls><source src="'+data.location+'" type="video/mp4"> Your browser does not support the video tag.</video>');
 						$(videoFrontDiv).css("padding", 0, "margin", "0");
 					}
 				});
-             // 
-
-             //console.log(video);
 
             });
-             
-       /*     $(".sliderDiv").excoloSlider({
-              repeat: false,
-              autoPlay: false,
-              animationDuration : 250,
-              prevnextNav: false,
-              autoSize : true,
-              width: 434,
-              height: 240
-            });
-
-            */
+           
         });

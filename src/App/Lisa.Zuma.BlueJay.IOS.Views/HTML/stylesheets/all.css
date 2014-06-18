@@ -72,8 +72,8 @@ border-radius: 50%;
   height:100%;
   width: 100%;
   background:url('../images/background.png');
-  left:0;
   top:0;
+  left:0;
   z-index:300;
   display: none;
 }
@@ -81,8 +81,6 @@ border-radius: 50%;
 .imgDivv{
   background: white;
   padding:10px;
-  margin: auto;
-  margin-top:calc(10%);
   padding:0;
 }
 
