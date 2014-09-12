@@ -60,10 +60,9 @@
               		
             		});
 
-            $("span.play").bind("tap", function(){
+            $(".play").bind("tap", function(){
 
-
-              var videoFrontDiv = $(this).parent();
+              var videoFrontDiv = $(this).find(".videoHolder");
 			  var splitted = $(videoFrontDiv).attr("class").split(' ');
 
               var dosierId = splitted[1];
@@ -71,7 +70,7 @@
               var mediaId = splitted[3];
 
               $(this).find("img").attr("src", "../HTML/images/loader.gif");
-
+              $(this).find(".playbutton").hide();
                $.ajax({
 	                type: 'GET',
 	                dataType: 'json',
@@ -80,9 +79,12 @@
 	                    "Authorization": token
 	                },
 					success: function(data){
-						$(videoFrontDiv).find('.play').toggle();
-						$(videoFrontDiv).append('<video style=" width:418px; height:240px;" class="video"  preload="auto" controls><source src="'+data.location+'" type="video/mp4"> Your browser does not support the video tag.</video>');
+						
+						$(videoFrontDiv).find('.video').show();
+						//$(videoFrontDiv).find('.play').toggle();
+						$(videoFrontDiv).find('.video').html('<source src="'+data.location+'" type="video/mp4"> Your browser does not support the video tag.');
 						$(videoFrontDiv).css("padding", 0, "margin", "0");
+						$(videoFrontDiv).find('.video').play();
 					}
 				});
 

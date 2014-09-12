@@ -178,21 +178,37 @@ width: 43px;
   display: inline-block;
   margin-right: 4px;
   vertical-align: middle;
+  background-color:yellow;
 }
 
 .videoHolder{
-  background-color: black;
+  background-color:black;
   width: 419px;
   height: 240px;
   padding:0;
+
 }
 
-.videoHolder .play{
-  width:100px;
-  height:100px;
+.video{
+  float:left;
+  margin-bottom:-100px;
+  display: none;
+  }
+
+.play{
+  width: auto;
+  height: auto;
+  background-color:red;
   display: block;
-  margin:auto;
-  padding-top:65px;
+  position: relative;
+}
+
+.playbutton{
+  position: absolute;
+  top: 75px;
+  left: 165px;
+  height: 100px;
+  width: 100px;
 }
 
 .icon-status {
